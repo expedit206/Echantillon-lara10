@@ -15,7 +15,7 @@ class Admin extends Authenticatable
         'nom',
         'prenom',
         'email',
-        'motDePasse'
+        'password'
     ];
 
 

@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.collapse{
+    visibility: visible;
+}
+
+@media screen and (min-width: 768px) {
+    .show {
+        width: calc(var(--nav-width) + 200px);
+    }
+
+    .body-pd {
+        padding-left: calc(var(--nav-width) + 220px);
+    }
+
+}
+
+.dropdown-toggle::after {
+/* display: none; */
+}

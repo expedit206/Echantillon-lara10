@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\Etudiant\EtudiantController;
 use App\Http\Controllers\Auth\Enseignant\EnseignantController;
 use App\Http\Controllers\Auth\Admin\AuthenticatedSessionController;
 
@@ -25,9 +25,12 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 
 Route::prefix('admin')->middleware(['monAuth:admin'])->group(function () {
     Route::get('home',[RegisteredUserController::class, 'home'])->middleware(['monAuth:admin'])->name('admin.home');//verified
-    Route::get('students/{search?}', [AdminController::class, 'allStudents'])->name('admin.allStudents');
 });
 
+Route::get('students', [EtudiantController::class, 'index'])->name('students');
+
+Route::get('students/filiere/{filiere}', [EtudiantController::class, 'studentsByFiliere'])->name('studentsByFiliere');
+Route::get('students/niveau/{niveau}', [EtudiantController::class, 'studentsByNiveau'])->name('studentsByNiveau');
 // Route::prefix('admin')->middleware('monGuest:admin')->group(function () {
 
 //     Route::get('register', [EnseignantController::class, 'showRegister'])->name('admin.register');

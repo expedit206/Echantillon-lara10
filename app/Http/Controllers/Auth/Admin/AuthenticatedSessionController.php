@@ -17,7 +17,7 @@ class AuthenticatedSessionController extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('admi');
+        return Auth::guard('admin');
     }
 
     public function create(): View

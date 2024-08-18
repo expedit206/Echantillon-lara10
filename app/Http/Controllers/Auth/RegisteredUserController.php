@@ -37,13 +37,12 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
         $user = Admin::create([
             'role' => 'secretaire',
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
-            'motDePasse' => Hash::make($request->password),
+            'password' => Hash::make($request->password),
             'created_at'=>now(),
             'updated_at'=>now()
         ]);

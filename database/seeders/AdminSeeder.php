@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
                 'nom' => 'expedit',
                 'prenom' => 'dominique',
                 'email' => 'expedit@gmail.com',
-                'motDePasse' => Hash::make('123456789'), // Assurez-vous de hacher les mots de passe
+                'password' => Hash::make('123456789'), // Assurez-vous de hacher les mots de passe
                 'created_at'=>now()
             ]
         ]);

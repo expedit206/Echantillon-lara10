@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Niveau;
 use App\Models\Filiere;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -36,12 +37,12 @@ class Etudiant extends Authenticatable
 
     public function filiere(): BelongsTo
     {
-        return $this->belongsTo(Filiere::class, 'foreign_key', 'other_key');
+        return $this->belongsTo(Filiere::class, 'idFiliere', 'id');
     }
 
 
     public function niveau(): BelongsTo
     {
-        return $this->belongsTo(Niveau::class, 'foreign_key', 'other_key');
+        return $this->belongsTo(Niveau::class, 'idNiveau', 'id');
     }
 }

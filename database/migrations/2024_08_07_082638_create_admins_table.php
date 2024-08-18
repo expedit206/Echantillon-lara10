@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nom'); // String nom
             $table->string('prenom'); // String prenom
             $table->string('email')->unique(); // String email
-            $table->string('motDePasse'); // String motDePasse
+            $table->string('password'); // String motDePasse
             $table->timestamps(); // created_at et updated_at
         });
     }
