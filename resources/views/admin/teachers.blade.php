@@ -1,12 +1,12 @@
 <x-layout>
-    @section('title','Students')
+    @section('title','Teachers')
 
     @section('content')
     <x-header />
     <x-menu />
 
     <div class="filter ">
-        <form method="get" action="{{ route('students') }}" id="form" class="px-3 text-white  grid-cols-4 content flex gap-5 items-center justify-around bg-orange-400 py-2">
+        <form method="get" action="{{ route('teachers') }}" id="form" class="px-3 text-white  grid-cols-4 content flex gap-5 items-center justify-around bg-orange-400 py-2">
             @csrf
             <h3>Filtrer par:</h3>
 
@@ -45,8 +45,7 @@
             </article>
 
             <article class="flex flex-col w-full">
-
-                <label for="anciennete">Unité de valeur</label>
+                <label for="anciennete">Trie par</label>
 
 
               <select type="text" id="anciennete" name="anciennete" class="text-black ounded-md" list="listdate" placeholder="----------------------------"  onchange="
@@ -54,7 +53,8 @@
                 submit()
                 "
                 oninput=" this.value=this.value">
-                <option value=""></option>
+
+<option value=""></option>
 
                 @foreach ($filieres as  $filiere)
 
@@ -89,19 +89,19 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($students as $student)
+                @forelse ($teachers as $student)
                     <tr>
                         <th scope="row">{{ $student['code'] }}</th>
                         <th scope="row">{{ $student['nom'] }}</th>
                         <th scope="row">{{ $student['prenom'] }}</th>
                         <th scope="row">{{ $student['sexe'] }}</th>
                         <th scope="row">
-                            <a href="{{ route('studentsByNiveau',['niveau'=>$student->niveau]) }}">
+                            <a href="{{ route('teachersByNiveau',['niveau'=>$student->niveau]) }}">
                             {{ $student->niveau->nom }}
                             </a>
                         </th>
                         <th scope="row">
-                            <a href="{{ route('studentsByFiliere',['filiere'=>$student->filiere]) }}">
+                            <a href="{{ route('teachersByFiliere',['filiere'=>$student->filiere]) }}">
                                 {{ $student->filiere->nom }}
                             </a>
                         </th>
@@ -121,7 +121,7 @@
             </tbody>
         </table>
 
-        {{ $students->appends(request()->input())->links() }}
+        {{ $teachers->appends(request()->input())->links() }}
     </div>
 @endsection
 

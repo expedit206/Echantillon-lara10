@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Niveau;
 use App\Models\Filiere;
-use App\Models\Etudiant;
+use App\Models\Enseignant;
 use Illuminate\Http\Request;
 
-class EtudiantController extends Controller
+class EnseignantController extends Controller
 {
     public function index(Request $request)
     {
 
-        $students = Etudiant::latest()->paginate(15);
+        $teachers =Enseignant::latest()->paginate(15);
+        // dd($teachers);
 // dd($request);
         if($request['search'] || $request['niveau'] || $request['filiere'] || $request['anciennete']){
             $search=$request['search'];
@@ -26,7 +27,7 @@ class EtudiantController extends Controller
             switch($anciennete){
                 case 'Plus recent':
                     // dd($filiere );
-                    $students = Etudiant::orderBy('created_at', 'desc')
+                    $teachers = Enseignant::orderBy('created_at', 'desc')
                   -> where(function ($query) use ($search){
                         $query->where('nom','like','%' .$search. '%')
                         ->orWhere('prenom','like', '%' . $search . '%')
@@ -45,7 +46,7 @@ class EtudiantController extends Controller
                         break;
                 case 'Moins recent':
 
-                    $students = Etudiant::orderBy('created_at', 'asc')
+                    $teachers = Enseignant::orderBy('created_at', 'asc')
                   -> where(function ($query) use ($search){
                         $query->where('nom','like','%' .$search. '%')
                         ->orWhere('prenom','like', '%' . $search . '%')
@@ -64,7 +65,7 @@ class EtudiantController extends Controller
                         break;
 
                         case 'A à Z':
-                            $students = Etudiant::orderBy('nom', 'asc')
+                            $teachers = Enseignant::orderBy('nom', 'asc')
                           -> where(function ($query) use ($search){
                                 $query->where('nom','like','%' .$search. '%')
                                 ->orWhere('prenom','like', '%' . $search . '%')
@@ -81,7 +82,7 @@ class EtudiantController extends Controller
                                 ->latest()->paginate(10);
                         break;
                         case 'Z à A':
-                            $students = Etudiant::orderBy('nom', 'desc')
+                            $teachers = Enseignant::orderBy('nom', 'desc')
                           -> where(function ($query) use ($search){
                                 $query->where('nom','like','%' .$search. '%')
                                 ->orWhere('prenom','like', '%' . $search . '%')
@@ -99,38 +100,38 @@ class EtudiantController extends Controller
                         break;
 
              }
-       
+
 
                             }
 
-            $total = $students->count();
+            $total = $teachers->count();
             $search=$request?->search;
 
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
-        return view('admin.students', compact('students','total','search','niveaux','filieres'));
+        return view('admin.teachers', compact('teachers','total','search','niveaux','filieres'));
      }
 
-     public function studentsByFiliere(Filiere $filiere)
+     public function teachersByFiliere(Filiere $filiere)
      {
 
-         $students = Etudiant::where('idFiliere', $filiere->id)->latest()->paginate(15);
+         $teachers = Enseignant::where('idFiliere', $filiere->id)->latest()->paginate(15);
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
 
-         $total = $students->count();
-         return view('admin.students',compact('students','total','niveaux','filieres'));
+         $total = $teachers->count();
+         return view('admin.teachers',compact('teachers','total','niveaux','filieres'));
         }
 
 
 
-     public function studentsByNiveau(Niveau $niveau)
+     public function teachersByNiveau(Niveau $niveau)
      {
-         $students = Etudiant::where('idNiveau', $niveau->id)->latest()->paginate(15);
+         $teachers = Enseignant::where('idNiveau', $niveau->id)->latest()->paginate(15);
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
 
-         $total = $students->count();
-         return view('admin.students',compact('students','total','niveaux','filieres'));
+         $total = $teachers->count();
+         return view('admin.teachers',compact('teachers','total','niveaux','filieres'));
         }
 }
