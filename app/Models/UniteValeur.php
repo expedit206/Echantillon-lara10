@@ -11,6 +11,7 @@ class UniteValeur extends Model
 {
     use HasFactory;
 
+    protected $table = 'unite_de_valeurs';
 
     public function niveau(): BelongsTo
     {

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\EtudiantController;
+use App\Http\Controllers\Auth\Etudiant\EtudiantController;
 use App\Http\Controllers\Auth\Enseignant\EnseignantController;
 
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -28,31 +28,26 @@ Route::prefix('admin')->middleware(['monAuth:admin'])->group(function () {
     Route::get('home',[RegisteredUserController::class, 'home'])->middleware(['monAuth:admin'])->name('admin.home');//verified
 });
 
-Route::get('students', [EtudiantController::class, 'index'])->name('students');
+Route::get('students', [App\Http\Controllers\EtudiantController::class, 'index'])->name('students');
+Route::get('students/{student}', [EtudiantController::class, 'show'])->name('student.show');
+Route::get('students/edit/{student}', [EtudiantController::class, 'edit'])->name('student.edit');
 
-Route::get('students/filiere/{filiere}', [EtudiantController::class, 'studentsByFiliere'])->name('studentsByFiliere');
-Route::get('students/niveau/{niveau}', [EtudiantController::class, 'studentsByNiveau'])->name('studentsByNiveau');
+Route::get('students/filiere/{filiere}', [App\Http\Controllers\EtudiantController::class, 'studentsByFiliere'])->name('studentsByFiliere');
+Route::get('students/niveau/{niveau}', [App\Http\Controllers\EtudiantController::class, 'studentsByNiveau'])->name('studentsByNiveau');
 Route::get('teachers', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers');
-
-// Route::prefix('admin')->middleware('monGuest:admin')->group(function () {
-
-//     Route::get('register', [EnseignantController::class, 'showRegister'])->name('admin.register');
-//     Route::post('register', [EnseignantController::class, 'register'])->name('admin.register');
-
-//     Route::get('login', [EnseignantController::class, 'showLogin'])->name('admin.login');
-//     Route::post('login', [EnseignantController::class, 'login']);
-// });
-// Route::get('admin/home', [EnseignantController::class, 'home'])->name('admin.home')->middleware('monAuth:admin');
+// Afficher les détails d'un enseignant
+Route::get('enseignant/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'show'])->name('teacher.show');
+Route::get('enseignant/edit/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'edit'])->name('teacher.edit');
 
 
 //Route pour l'enseignant
 Route::prefix('enseignant')->middleware('monGuest:enseignant')->group(function () {
 
     Route::get('register', [EnseignantController::class, 'showRegister'])->name('enseignant.register');
-    Route::post('register', [EnseignantController::class, 'register'])->name('enseignant.register');
+    Route::post('register', [App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'register'])->name('enseignant.register');
 
     Route::get('login', [EnseignantController::class, 'showLogin'])->name('enseignant.login');
-    Route::post('login', [EnseignantController::class, 'login']);
+    // Route::post('login', [EnseignantController::class, 'login']);
 });
 Route::get('enseignant/home', [EnseignantController::class, 'home'])->name('enseignant.home')->middleware('monAuth:enseignant');;
 

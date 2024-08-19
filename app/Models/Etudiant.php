@@ -13,6 +13,13 @@ class Etudiant extends Authenticatable
 {
     use HasFactory;
 
+    protected $casts = [
+        'dateNaissance' => 'datetime',
+        'lieuNaissance' => 'datetime',
+        'email_verified_at' => 'datetime',
+
+        // Ajoutez les autres champs qui doivent être des dates
+    ];
     protected $fillable = [
         'nom',
         'prenom',
@@ -22,18 +29,14 @@ class Etudiant extends Authenticatable
         'idFiliere',
         'idNiveau',
         'sexe',
-        'code'
+        'code', 
+        'photo'
     ];
 
 
     protected $hidden = [
         'code'
     ];
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
 
     public function filiere(): BelongsTo
     {

@@ -4,91 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Inscription Étudiant</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-
+    @vite('resources/css/app.css')
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
+    <div class="max-w-3xl mx-auto p-6 bg-slate-500 rounded-lg shadow-md mt-10">
+        <h1 class="text-2xl font-bold mb-6">Inscription Étudiant</h1>
 
-    <x-validation-errors class="mb-4" />
+        <form method="POST" action="{{ route('etudiant.register') }}" enctype="multipart/form-data" class="">
+            @csrf
+            <div class="mb-4">
+                <x-label for="nom" value="{{ __('Nom') }}" />
+                <x-input id="nom" name='nom' class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text"  :value="old('nom')"  autofocus autocomplete="nom" />
+            </div>
 
-    <form method="POST" action="{{ route('etudiant.register') }}">
-        @csrf
-        <input type="text" name="code" class="hidden" value="0000">
+            <div class="mb-4">
+                <x-label for="prenom" value="{{ __('Prénom') }}" />
+                <x-input id="prenom" name="prenom" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text" :value="old('prenom')"  autocomplete="prenom" />
+            </div>
 
-        <div>
-            <x-label for="nom" value="{{ __('Nom') }}" />
+            <div class="mb-4">
+                <x-label for="dateNaissance" value="{{ __('Date de naissance') }}" />
+                <x-input id="dateNaissance" name="dateNaissance" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="date" :value="old('dateNaissance')"  autocomplete="bday" />
+            </div>
 
-            <x-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('nom')" required autofocus autocomplete="nom" />
-        </div>
+            <div class="mb-4">
+                <x-label for="email" value="{{ __('Email') }}" />
+                <x-input id="email" name="email" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="email" :value="old('email')"  autocomplete="username" />
+            </div>
 
-        <div>
-            <x-label for="prenom" value="{{ __('Prenom') }}" />
-            <x-input id="prenom" class="block mt-1 w-full" type="text" name="prenom" :value="old('prenom')" required autofocus autocomplete="prenom" />
-        </div>
-        
-        <div>
+            <div class="mb-4">
+                <x-label for="photo" value="{{ __('Photo') }}" />
+                <input id="photo" name="photo" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="file" accept="image/*" />
+            </div>
 
-            <x-label for="homme" value="{{ __('Homme') }}" />
-            <input id="homme" type="radio" name="sexe" :value="old('sexe')" required >
+            <div class="mb-4">
+                <x-label for="telephone" value="{{ __('Téléphone') }}" />
+                <x-input id="telephone" name="telephone" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="number" :value="old('telephone')"  />
+            </div>
 
-            <x-label for="femme" value="{{ __('Femme') }}" />
-            <input id="femme" type="radio" name="sexe" required :value="old('sexe')">
-        </div>
-        
-        <div>
-            <x-label for="DateNaissance" value="{{ __('Date de naissance') }}" />
-            <input id="DateNaissance" type="date" name="dateNaissance" :value="old('dateNaissance')" required >
-        </div>
+            <div class="mb-4">
+                <x-label for="sexe" value="{{ __('Sexe') }}" />
+                <select id="sexe" name="sexe" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <option value="Masculin">Masculin</option>
+                    <option value="Féminin">Féminin</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
 
-        <div class="mt-4">
-            <x-label for="email" value="{{ __('Email') }}" />
-            <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required  />
-        </div>
+            <div class="mb-4">
+                <x-label for="niveaux" value="{{ __('Niveaux') }}" />
+                <input type="text" list="niveaux" name="idNiveau" required autocomplete='on' class="block mt-1 border border-gray-300 rounded-md p-2 w-full" value="{{ old('niveau') }}">
+                <datalist id="niveaux">
+                    @foreach ($niveaux as $niveau)
+                        <option value="{{ $niveau->nom }}">{{ $niveau->id }}</option>
+                    @endforeach
+                </datalist>
+            </div>
 
-        <div class="mt-4">
-            <x-label for="telephone" value="{{ __('Telephone') }}" />
-            <x-input id="telephone" class="block mt-1 w-full" type="number" name="telephone" :value="old('telephone')" required  />
-        </div>
+            <div class="mb-4">
+                <x-label for="filieres" value="{{ __('Filieres') }}" />
+                <input type="text" list="filieres" name="idFiliere" required autocomplete='on' class="block mt-1 border border-gray-300 rounded-md p-2 w-full" value="{{ old('filiere') }}">
+                <datalist id="filieres">
+                    @foreach ($filieres as $filiere)
+                        <option value="{{ $filiere->nom }}">{{ $filiere->id }}</option>
+                    @endforeach
+                </datalist>
+            </div>
 
-        <div>
-            <x-label for="niveaux" value="{{ __('Niveaux') }}" />
-            <input type="text" list="niveaux" name="idNiveau" required autocomplete='on' class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm w-full" value="{{ old('niveau') }}">
+            <div class="flex items-center justify-end mt-4">
+                <a class="underline text-sm text-gray-800 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('enseignant.login') }}">
+                    {{ __('Already registered?') }}
+                </a>
 
-            <datalist id="niveaux">
-                @foreach ($niveaux as $niveau )
-
-                <option value="{{ $niveau->nom }}">{{ $niveau->id }}</option>
-                @endforeach
-            </datalist>
-        </div>
-
-        <div>
-            <x-label for="filieres" value="{{ __('Filieres') }}" />
-            <input type="text" list="filieres" name="idFiliere" required autocomplete='on' class="block mt-1 border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm w-full" value="{{ old('filiere') }}"">
-
-            <datalist id="filieres">
-                @foreach ($filieres as $filiere )
-
-                <option value="{{ $filiere->nom }}">{{ $filiere->id }}</option>
-                @endforeach
-            </datalist>
-        </div>
-
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('enseignant.login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-
-            <button type="submit" class="ms-4 inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 transition ease-in-out duration-150">
-                {{ __('Register') }}
-            </button>
-        </div>
-    </form>
-
+                <button type="submit" class="ms-4 inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out">
+                    {{ __('Register') }}
+                </button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

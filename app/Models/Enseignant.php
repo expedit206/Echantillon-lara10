@@ -15,12 +15,35 @@ class Enseignant extends Authenticatable
 {
     use HasFactory;
 
+    protected $casts = [
+        'dateNaiss' => 'datetime',
+        'debutContrat' => 'datetime',
+        'finContrat' => 'datetime',
+        'email_verified_at' => 'datetime',
+
+        // Ajoutez les autres champs qui doivent être des dates
+    ];
     protected $fillable = [
         'nom',
         'prenom',
         'uniteValeur',
         'email',
         'password',
+        'prenom',
+         'photo',
+        'sexe',
+        'dateNaiss',
+        'lieuNaiss',
+        'nationalite',
+        'mobile',
+        'profession',
+        'diplome',
+        'salaire',
+        'typeContrat',
+        'debutContrat',
+        'finContrat',
+        'uniteValeur',
+        'email',
     ];
 
 
@@ -28,9 +51,7 @@ class Enseignant extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+
 
 
     public function filieres(): BelongsToMany

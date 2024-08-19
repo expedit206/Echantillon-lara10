@@ -23,16 +23,36 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     showNavbar('header-toggle','nav-bar','body-pd','header')
     
+    /*===== LINK ACTIVE =====*/
+    const linkColor = document.querySelectorAll('.nav_link')
+    
+    // function colorLink(){
+    // if(linkColor){
+    // linkColor.forEach(l=> l.classList.remove('active'))
+    // this.classList.add('active')
+    // }
+    // }
+    // linkColor.forEach(l=> l.addEventListener('click', colorLink))
+    document.getElementById('etudiants').classList.add('active');
+    
+    function colorLink(){
+        if(linkColor){
+            linkColor.forEach(l=> l.classList.remove('active'));
+            this.classList.add('active');
+            localStorage.setItem('activeLink', this.id);
+        }
+    }   
+    
+    linkColor.forEach(l=> l.addEventListener('click', colorLink));
+    
+    // Récupérer le lien actif après le rechargement
+    const activeLinkId = localStorage.getItem('activeLink');
+    if (activeLinkId) {
+            linkColor.forEach(l=> l.classList.remove('active'));
+
+        document.getElementById(activeLinkId).classList.add('active');
+    }
+    
      // Your code to run since DOM is loaded and ready
     });
-     /*===== LINK ACTIVE =====*/
-     const linkColor = document.querySelectorAll('.nav_link')
     
-     function colorLink(){
-     if(linkColor){
-     linkColor.forEach(l=> l.classList.remove('active'))
-     this.classList.add('active')
-     }
-     }
-     linkColor.forEach(l=> l.addEventListener('click', colorLink))
-     

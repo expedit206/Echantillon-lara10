@@ -111,6 +111,14 @@ class EtudiantController extends Controller
         return view('admin.students', compact('students','total','search','niveaux','filieres'));
      }
 
+     public function show(Etudiant $student)
+     {
+         // Récupération de l'enseignant avec ses relations
+         $student = Etudiant::findOrFail($student->id);
+ 
+         return view('etudiant.show', compact('student'));
+     }
+
      public function studentsByFiliere(Filiere $filiere)
      {
 

@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
 use App\Models\User;
+use App\Models\Admin;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\EnseignantSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder
             NiveauSeeder::class,
             UniteDeValeursSeeder::class,
             EtudiantsSeeder::class,
+            EnseignantSeeder::class,
         ]);
         User::factory()->create([
             'name' => 'Test User',
