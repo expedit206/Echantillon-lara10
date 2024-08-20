@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notes', function (Blueprint $table) {
-            $table->id(); // id
-            $table->float('valeur'); // float valeur
-            $table->date('date'); // Date date
-            $table->foreignId('idEtudiant')->constrained('etudiants')->onUpdate('cascade'); // String idEtudiant
+            $table->id();
+            $table->foreignId('etudiant_id')->constrained('etudiants')->onDelete('cascade');
+            // $table->foreignId('unite_de_valeur_id')->constrained('unite_de_valeurs')->onDelete('cascade');
             $table->string('uniteValeur'); // idUniteValeur doit être du même type que la clé primaire dans niveaux
             $table->foreign('uniteValeur')->references('nom')->on('unite_de_valeurs')->onUpdate('cascade');
-          
-            $table->timestamps(); // created_at et updated_at
+
+            $table->decimal('note', 5, 2); // Exemple : note avec 2 décimales
+            $table->timestamps();
         });
     }
 

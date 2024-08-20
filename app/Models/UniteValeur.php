@@ -22,4 +22,8 @@ class UniteValeur extends Model
     {
         return $this->belongsTo(Filiere::class, 'foreign_key', 'other_key');
     }
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
 }

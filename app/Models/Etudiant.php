@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Note;
+use App\Models\Annee;
 use App\Models\Niveau;
 use App\Models\Filiere;
 use Illuminate\Database\Eloquent\Model;
@@ -25,15 +27,23 @@ class Etudiant extends Authenticatable
         'prenom',
         'email',
         'dateNaissance',
+        'lieuNaiss',
         'telephone',
         'idFiliere',
         'idNiveau',
         'sexe',
-        'code', 
-        'photo'
+        'code',
+        'photo',
+        'annee_id'
     ];
 
+    protected $with=[
+        'niveau',
+        'filiere',
+        'niveau',
+        'annee'
 
+    ];
     protected $hidden = [
         'code'
     ];
@@ -48,4 +58,16 @@ class Etudiant extends Authenticatable
     {
         return $this->belongsTo(Niveau::class, 'idNiveau', 'id');
     }
+
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    public function annee()
+    {
+        return $this->belongsTo(Annee::class);
+    }
+
 }

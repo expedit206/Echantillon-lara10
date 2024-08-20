@@ -4,11 +4,13 @@
     @section('content')
     <x-header />
     <x-menu />
-
-    <div class="max-w-4xl mx-auto p-8 bg-slate-300 rounded-lg shadow-lg mt-10">
+    <div class="max-w-5xl mx-auto p-8 bg-slate-300 rounded-lg shadow-lg mt-10">
         <div class="flex items-center space-x-4 mb-6">
             <img src="{{ $student->photo ? asset('storage/' . $student->photo) : 'https://via.placeholder.com/150' }}" alt="Photo de l'étudiant" class="w-32 h-32 object-cover rounded-full">
             <div>
+                <p class="text-blue-600 underline ">
+                    #{{ $student->code }}
+                    </p>
                 <h1 class="text-3xl font-bold mb-2">{{ $student->nom }} {{ $student->prenom }}</h1>
                 <p class="text-gray-600 mb-4">{{ $student->filiere->nom }}</p>
             </div>

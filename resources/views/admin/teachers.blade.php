@@ -34,12 +34,12 @@
 
             <!-- Tri par Ancienneté -->
             <article class="flex flex-col w-full">
-                <label for="anciennete">Trier par</label>
+                <label for="anciennete">Unite de valeur</label>
                 <select id="anciennete" name="anciennete" class="text-black rounded-md w-full" onchange="submit()">
                     <option value=""></option>
-                    <!-- Ajoutez ici les options de tri disponibles -->
-                    <option value="asc" {{ request('anciennete') === 'asc' ? 'selected' : '' }}>Ancienneté Croissante</option>
-                    <option value="desc" {{ request('anciennete') === 'desc' ? 'selected' : '' }}>Ancienneté Décroissante</option>
+                    @foreach ($uniteValeurs as $uniteValeur)
+                    <option value="{{ $uniteValeur->nom }}" {{ request('uniteValeur') === $uniteValeur->nom ? 'selected' : '' }}>{{ $uniteValeur->nom }}</option>
+                @endforeach
                 </select>
             </article>
         </form>
@@ -60,6 +60,9 @@
                     <th scope="col">Nom</th>
                     <th scope="col">Prénom</th>
                     <th scope="col">Sexe</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Type de contrat</th>
+                    <th scope="col">Diplome</th>
                     <th scope="col">Niveau</th>
                     <th scope="col">Filière</th>
                     <th scope="col" class="text-center" colspan="2">Action</th>
@@ -74,6 +77,11 @@
                         <td>{{ $teacher->sexe }}</td>
                         {{-- <td>{{ $teacher->niveau->nom }}</td> --}}
                         {{-- <td>{{ $teacher->filiere->nom }}</td> --}}
+                
+                        
+                        <td>{{ $teacher->mobile }}</td>
+                        <td>{{ $teacher->typeContrat }}</td>
+                        <td>{{ $teacher->diplome }}</td>
                         <td class="text-center">
                             <a href="{{ route('teacher.show', $teacher) }}" class="text-blue-600 hover:text-blue-900">Voir</a>
                         </td>

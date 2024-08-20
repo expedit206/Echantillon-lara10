@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AnneeController;
 use App\Http\Controllers\Auth\Etudiant\EtudiantController;
 use App\Http\Controllers\Auth\Enseignant\EnseignantController;
 
@@ -29,7 +30,7 @@ Route::prefix('admin')->middleware(['monAuth:admin'])->group(function () {
 });
 
 Route::get('students', [App\Http\Controllers\EtudiantController::class, 'index'])->name('students');
-Route::get('students/{student}', [EtudiantController::class, 'show'])->name('student.show');
+Route::get('students/{student}', [App\Http\Controllers\EtudiantController::class, 'show'])->name('student.show');
 Route::get('students/edit/{student}', [EtudiantController::class, 'edit'])->name('student.edit');
 
 Route::get('students/filiere/{filiere}', [App\Http\Controllers\EtudiantController::class, 'studentsByFiliere'])->name('studentsByFiliere');
@@ -87,3 +88,6 @@ Route::get('etudiant/home', [EtudiantController::class, 'home'])->name('etudiant
 // });
 
 // require __DIR__.'/auth.php';
+
+
+Route::post('annee/set-active',[AnneeController::class, 'setActive'])->name('annee.setActive');

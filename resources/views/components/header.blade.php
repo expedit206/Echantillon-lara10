@@ -5,20 +5,23 @@
 
     <form method='get' action="{{ route('students') }}"
     class="flex items-center justify-center gap-2 border-black border-2 rounded-[1rem]">
+@if (empty(request('student')))
 
-    <input name="search" id="searchHead" value="{{request('search')}}" class="focus:outline-none focus:border-transparent border-none bg-transparent" placeholder="Rechercher"  oninput=" this.value=this.value
+<input name="search" id="searchHead" value="{{request('search')}}" class="focus:outline-none focus:border-transparent border-none bg-transparent" placeholder="Rechercher"  oninput=" this.value=this.value
 
     document.querySelector('#niveauHead').value=document.querySelector('#niveau').value
     document.querySelector('#filiereHead').value=document.querySelector('#filiere').value
     document.querySelector('#ancienneteHead').value=document.querySelector('#anciennete').value
+    document.querySelector('#anneeHead').value=document.querySelector('#annee').value
 
-    console.log(document.querySelector('#niveau').value)
+    // console.log(document.querySelector('#niveau').value)
     // submit()
     " >
 
                 <input type="text" name="filiere" id="filiereHead" hidden>
                 <input type="text" name="niveau" id="niveauHead" hidden>
                 <input type="text" name="anciennete" id="ancienneteHead" hidden>
+                <input type="text" name="annee" id="anneeHead" hidden>
 
     <button class="" type="submit">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -31,6 +34,8 @@
             </path>
         </svg>
     </button>
+@endif
+
 </form>
 
     <div class="flex items-center justify-center gap-2">

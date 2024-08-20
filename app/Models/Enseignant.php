@@ -15,6 +15,7 @@ class Enseignant extends Authenticatable
 {
     use HasFactory;
 
+
     protected $casts = [
         'dateNaiss' => 'datetime',
         'debutContrat' => 'datetime',

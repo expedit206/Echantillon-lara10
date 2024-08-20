@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Admin;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\NoteSeeder;
 use Database\Seeders\EnseignantSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,12 +18,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call([
-            AdminSeeder::class, 
+            AnneesSeeder::class,
+            AdminSeeder::class,
             FiliereSeeder::class,
             NiveauSeeder::class,
             UniteDeValeursSeeder::class,
             EtudiantsSeeder::class,
             EnseignantSeeder::class,
+            NoteSeeder::class
         ]);
         User::factory()->create([
             'name' => 'Test User',

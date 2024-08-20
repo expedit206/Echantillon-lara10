@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Niveau;
 use App\Models\Filiere;
 use App\Models\Enseignant;
+use App\Models\UniteValeur;
 use Illuminate\Http\Request;
 
 class EnseignantController extends Controller
@@ -15,7 +16,7 @@ class EnseignantController extends Controller
         $teachers =Enseignant::latest()->paginate(15);
         // dd($teachers);
         $total=$teachers->total();
-        // if($request['search'] || $request['niveau'] || $request['filiere'] || $request['anciennete']){
+        // if($request['search'] || $request['niveau'] || $request['filie   re'] || $request['anciennete']){
         //     $search=$request['search'];
         //     // dd($request);
         //     $filiere= Filiere::where('nom',$request['filiere'])->first()??  "";
@@ -108,7 +109,8 @@ class EnseignantController extends Controller
 
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
-        return view('admin.teachers', compact('teachers','total','niveaux','filieres'));
+        $uniteValeurs = UniteValeur::orderBy('created_at', 'desc')->get();
+        return view('admin.teachers', compact('teachers','total','niveaux','filieres','uniteValeurs'));
      }
 
      public function teachersByFiliere(Filiere $filiere)

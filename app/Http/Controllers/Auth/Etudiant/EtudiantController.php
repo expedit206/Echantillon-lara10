@@ -44,6 +44,7 @@ class EtudiantController extends Controller
                 'telephone' => ['required', 'numeric','min:8', 'unique:etudiants'],
                 'idNiveau' => ['required', 'string'],
                 'idFiliere' => ['required', 'string', 'max:255'],
+                'annee_id' => 'required|exists:annees,id',
             ]);
 
             $existFiliere= DB::table('filieres')->where('nom', $request->idFiliere)->first();
@@ -107,7 +108,7 @@ class EtudiantController extends Controller
 
          public function login(Request $request)
          {
-           
+
             $credentials=$request->validate([
                 'code' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'max:255']
