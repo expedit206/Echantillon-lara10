@@ -15,12 +15,12 @@ class UniteValeur extends Model
 
     public function niveau(): BelongsTo
     {
-        return $this->belongsTo(Niveau::class, 'foreign_key', 'other_key');
+        return $this->belongsTo(Niveau::class);
     }
 
     public function filiere(): BelongsTo
     {
-        return $this->belongsTo(Filiere::class, 'foreign_key', 'other_key');
+        return $this->belongsTo(Filiere::class);
     }
     public function notes()
     {

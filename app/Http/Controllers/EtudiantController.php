@@ -19,15 +19,14 @@ class EtudiantController extends Controller
         if($request['search'] || $request['niveau'] || $request['filiere'] || $request['anciennete']){
             $search=$request['search'];
             $annee_id=\DB::table('annees')->where('is_active', true)->first()->id;
-            
-            
+
+
             // dd($annee_id);
             $filiere= Filiere::where('nom',$request['filiere'])->first()??  "";
             $niveau=Niveau::where('nom', $request['niveau'])->first()?? "";
 
             // dd($filiere );
             $anciennete=$request['anciennete'];
-// dd($filiere->nom);
             switch($anciennete){
                 case 'Plus recent':
                     // dd($annee_id );
@@ -41,11 +40,11 @@ class EtudiantController extends Controller
                          })
                           ->when($niveau, function($query) use ($niveau){
 
-                            return $query->where('idNiveau', $niveau->id);
+                            return $query->where('niveau_id', $niveau->id);
                         })
                         ->when($filiere, function($query) use ($filiere){
 
-                            return $query->where('idFiliere', $filiere->id);
+                            return $query->where('filiere_id', $filiere->id);
                         })
 
 
@@ -63,11 +62,11 @@ class EtudiantController extends Controller
                          })
                          ->when($niveau, function($query) use ($niveau){
 
-                            return $query->where('idNiveau', $niveau->id);
+                            return $query->where('niveau_id', $niveau->id);
                         })
                         ->when($filiere, function($query) use ($filiere){
 
-                            return $query->where('idFiliere', $filiere->id);
+                            return $query->where('filiere_id', $filiere->id);
                         })
 
 
@@ -85,11 +84,11 @@ class EtudiantController extends Controller
                                  })
                                  ->when($niveau, function($query) use ($niveau){
 
-                                    return $query->where('idNiveau', $niveau->id);
+                                    return $query->where('niveau_id', $niveau->id);
                                 })
                                 ->when($filiere, function($query) use ($filiere){
 
-                                    return $query->where('idFiliere', $filiere->id);
+                                    return $query->where('filiere_id', $filiere->id);
                                 })
                                 ->latest()->paginate(10);
                         break;
@@ -104,11 +103,11 @@ class EtudiantController extends Controller
                                  })
                                  ->when($niveau, function($query) use ($niveau){
 
-                                    return $query->where('idNiveau', $niveau->id);
+                                    return $query->where('niveau_id', $niveau->id);
                                 })
                                 ->when($filiere, function($query) use ($filiere){
 
-                                    return $query->where('idFiliere', $filiere->id);
+                                    return $query->where('filiere_id', $filiere->id);
                                 })
                                 ->latest()->paginate(10);
                         break;
@@ -124,9 +123,14 @@ class EtudiantController extends Controller
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
         $annees = Annee::all();
+        // dd($students->niveau);
         return view('admin.students', compact('students','total','search','niveaux','filieres','annees'));
      }
 
+     public function home()
+    {
+   return view('etudiant.home');
+    }
      public function show(Etudiant $student)
      {
          // Récupération de l'enseignant avec ses relations
@@ -135,10 +139,11 @@ class EtudiantController extends Controller
          return view('etudiant.show', compact('student'));
      }
 
+
      public function studentsByFiliere(Filiere $filiere)
      {
 
-         $students = Etudiant::where('idFiliere', $filiere->id)->latest()->paginate(15);
+         $students = Etudiant::where('filiere_id', $filiere->id)->latest()->paginate(15);
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
 
@@ -150,7 +155,7 @@ class EtudiantController extends Controller
 
      public function studentsByNiveau(Niveau $niveau)
      {
-         $students = Etudiant::where('idNiveau', $niveau->id)->latest()->paginate(15);
+         $students = Etudiant::where('niveau_id', $niveau->id)->latest()->paginate(15);
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
 

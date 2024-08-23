@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\Etudiant;
 
 use App\Mail\CodeMail;
 use App\Models\Etudiant;
+use App\Models\Annee;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,8 @@ class EtudiantController extends Controller
         {
                $filieres = DB::table('filieres')->get();
                $niveaux = DB::table('niveaux')->get();
-            return view('auth.etudiant.register',compact('filieres', 'niveaux'));
+               $annees=Annee::all();
+            return view('auth.etudiant.register',compact('filieres', 'niveaux','annees'));
         }
 
         public function register(Request $request)
@@ -40,37 +42,15 @@ class EtudiantController extends Controller
                 'prenom' => ['required', 'string', 'max:255'],
                 'sexe' => ['required', 'string'],
                 'dateNaissance' => ['required', 'date'],
+                'lieuNaiss' => ['required', 'string'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:etudiants'],
                 'telephone' => ['required', 'numeric','min:8', 'unique:etudiants'],
-                'idNiveau' => ['required', 'string'],
-                'idFiliere' => ['required', 'string', 'max:255'],
-                'annee_id' => 'required|exists:annees,id',
+                'niveau_id' => ['required', 'string'],
+                'filiere_id' => ['required', 'string', 'max:255'],
+                // 'annee_id' => 'required|exists:annees,id',
             ]);
 
-            $existFiliere= DB::table('filieres')->where('nom', $request->idFiliere)->first();
-            $existNiveau= DB::table('niveaux')->where('nom', $request->idNiveau)->first();
-            $idfiliere=$existFiliere?->id;
-            $idniveau=$existNiveau?->id;
-            // dd($idfiliere);
-            if(!$existFiliere){
-               $idfiliere= DB::table('filieres')->insertGEtId([
-                    "nom"=>$request->idFiliere,
-                    "created_at"=>now(),
-                    "updated_at"=>now(),
-                ]);
-
-            }
-            $this->data['idFiliere']=$idfiliere;
-
-            if(!$existNiveau){
-               $idniveau= DB::table('Niveaux')->insertGEtId([
-                    "nom"=>$request->idNiveau,
-                    "created_at"=>now(),
-                    "updated_at"=>now(),
-                ]);
-
-            }
-            $this->data['idNiveau']=$idniveau;
+            $this->data['annee_id']=Annee::where('is_active', true)->first()->id;
 
 
             $this->data['code']=$this->genearateCode();
@@ -92,7 +72,7 @@ class EtudiantController extends Controller
         public function genearateCode()
         {
             do{
-                $code = Str::upper(Str::random(4));
+                $code = Str::upper(Str::random(4)); 
 
             }while(Etudiant::where('code', $this->data['code'])->exists() );
             return $code;
@@ -113,11 +93,7 @@ class EtudiantController extends Controller
                 'code' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'max:255']
             ]);
-            // dd($credentials);
-// $existEtudiant= Etudiant::where('email','mciani@gmail.com')->where('code','COQV')->first();
-$existEtudiant= Etudiant::where('email',$credentials['email'])->where('code',$credentials['code'])->first();
-        // Authentifier avec le guard 'etudiant'
-        // if (Auth::guard('etudiant')->attempt($credentials)) {
+        $existEtudiant= Etudiant::where('email',$credentials['email'])->where('code',$credentials['code'])->first();
             if($existEtudiant){
                 Auth::guard('etudiant')->login($existEtudiant);
             return redirect()->intended('etudiant/home');
@@ -128,8 +104,18 @@ $existEtudiant= Etudiant::where('email',$credentials['email'])->where('code',$cr
         ]);
 }
 
-public function home()
-    {
-   return view('etudiant.home');
-    }
+public function edit(Etudiant $student)
+{
+    $annees=Annee::all();
+    $filieres = DB::table('filieres')->get();
+    $niveaux = DB::table('niveaux')->get();
+    // dd($student->id);
+   return view('etudiant.edit', compact('annees','filieres','niveaux','student'));
+}
+public function logout()
+{
+    Auth::guard('etudiant')->logout();
+    return redirect()->back();
+}
+
 }

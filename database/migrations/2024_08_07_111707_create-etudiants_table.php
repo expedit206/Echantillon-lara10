@@ -22,8 +22,8 @@ return new class extends Migration
                 $table->string('photo')->nullable(); // Chemin de la photo (nullable si facultatif)
                 $table->string('numeroTelephone'); // String numeroTelephone
                 $table->string('sexe'); // String sexe
-                $table->foreignId('idNiveau')->constrained('niveaux')->onUpdate('cascade'); // int idNiveau
-                $table->foreignId('idFiliere')->constrained('filieres')->onUpdate('cascade'); // int idFiliere
+                $table->foreignId('niveau_id')->constrained('niveaux')->onUpdate('cascade'); // int niveau_id
+                $table->foreignId('filiere_id')->constrained('filieres')->onUpdate('cascade'); // int filiere_id
                 $table->foreignId('annee_id')->constrained('annees');
                 $table->timestamps(); // created_at et updated_at
             });

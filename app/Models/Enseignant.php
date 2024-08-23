@@ -8,8 +8,10 @@ use App\Models\Filiere;
 use App\Models\UniteValeur;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Enseignant extends Authenticatable
 {
@@ -43,7 +45,6 @@ class Enseignant extends Authenticatable
         'typeContrat',
         'debutContrat',
         'finContrat',
-        'uniteValeur',
         'email',
     ];
 
@@ -51,24 +52,29 @@ class Enseignant extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    protected $with= [
+    // 'niveaux',
+    // 'filieres',
+    // 'uniteValeurs'
+    ];
 
 
 
 
     public function filieres(): BelongsToMany
     {
-        return $this->belongsToMany(Filiere::class, 'role_user_table', 'user_id', 'role_id');
+        return $this->belongsToMany(Filiere::class, 'enseignant_filiere', 'enseignant_id', 'filiere_id');
     }
 
     public function uniteValeurs(): HasMany
     {
-        return $this->hasMany(UniteValeur::class, 'foreign_key', 'local_key');
+        return $this->hasMany(UniteValeur::class);
     }
 
 
     public function niveaux(): BelongsToMany
     {
-        return $this->belongsToMany(Niveau::class, 'role_user_table', 'user_id', 'role_id');
+        return $this->belongsToMany(Niveau::class);
     }
 
 

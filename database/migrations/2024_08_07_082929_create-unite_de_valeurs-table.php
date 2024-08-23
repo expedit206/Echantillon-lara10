@@ -12,11 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('unite_de_valeurs', function (Blueprint $table) {
-            
-            $table->string('nom'); // String nom
+
+            $table->id(); // String nom
+
+            $table->string('nom')->unique(); // String nom, unique
             $table->string('description'); // String description
             $table->integer('credit'); // int credit
-            $table->primary('nom'); // String nom
+            $table->foreignId('enseignant_id')->contrained(); // String nom, unique
+            $table->foreignId('filiere_id')->contrained(); // String nom, unique
             $table->timestamps(); // created_at et updated_at
         });
 

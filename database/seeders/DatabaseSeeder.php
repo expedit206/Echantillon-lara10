@@ -20,12 +20,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AnneesSeeder::class,
             AdminSeeder::class,
-            FiliereSeeder::class,
-            NiveauSeeder::class,
-            UniteDeValeursSeeder::class,
-            EtudiantsSeeder::class,
+            // FiliereSeeder::class,
+            // NiveauSeeder::class,
             EnseignantSeeder::class,
-            NoteSeeder::class
+            // UniteDeValeursSeeder::class,
+            EtudiantsSeeder::class,
+            NoteSeeder::class,
         ]);
         User::factory()->create([
             'name' => 'Test User',

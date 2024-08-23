@@ -42,17 +42,19 @@
             <x-input hidden name='code' type="text" value="a"/>
             <div class="mb-4">
                 <x-label for="nom" value="{{ __('Nom') }}" />
-                <x-input id="nom" name='nom' class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text"  :value="old('nom')"  autofocus autocomplete="nom" />
+                <x-input id="nom" name='nom' class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text"  :value="$student->nom ?? old('nom')"  autofocus autocomplete="nom" />
             </div>
 
             <div class="mb-4">
                 <x-label for="prenom" value="{{ __('Prénom') }}" />
-                <x-input id="prenom" name="prenom" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text" :value="old('prenom')"  autocomplete="prenom" />
+                <x-input id="prenom" name="prenom" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text" :value="$student->prenom ?? old('prenom')"  autocomplete="prenom" />
             </div>
 
             <div class="mb-4">
                 <x-label for="dateNaissance" value="{{ __('Date de naissance') }}" />
-                <x-input id="dateNaissance" name="dateNaissance" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="date" :value="old('dateNaissance')"  autocomplete="bday" />
+                <x-input id="dateNaissance" name="dateNaissance" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="date" :value="$student->dateNaissance ? $student->dateNaissance->format('d/m/Y') : old('dateNaissance')"  autocomplete="dateNaissance" />
+                    {{-- @dd($student) --}}
+                    @dd($student->dateNaissance->format('d/m/Y'))
             </div>
 
             <div class="mb-4">

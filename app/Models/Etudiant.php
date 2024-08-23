@@ -29,8 +29,8 @@ class Etudiant extends Authenticatable
         'dateNaissance',
         'lieuNaiss',
         'telephone',
-        'idFiliere',
-        'idNiveau',
+        'filiere_id',
+        'niveau_id',
         'sexe',
         'code',
         'photo',
@@ -50,13 +50,13 @@ class Etudiant extends Authenticatable
 
     public function filiere(): BelongsTo
     {
-        return $this->belongsTo(Filiere::class, 'idFiliere', 'id');
+        return $this->belongsTo(Filiere::class);
     }
 
 
     public function niveau(): BelongsTo
     {
-        return $this->belongsTo(Niveau::class, 'idNiveau', 'id');
+        return $this->belongsTo(Niveau::class);
     }
 
 

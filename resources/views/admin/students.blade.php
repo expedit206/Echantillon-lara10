@@ -119,6 +119,7 @@
                         <th scope="row">{{ $student['sexe'] }}</th>
                         <th scope="row">{{ $student['numeroTelephone'] }}</th>
                         <th scope="row">
+                            {{-- @dd($student->niveau) --}}
                             <a href="{{ route('studentsByNiveau',['niveau'=>$student->niveau]) }}">
                             {{ $student->niveau->nom }}
                             </a>

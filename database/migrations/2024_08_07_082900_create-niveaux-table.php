@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('enseignant-filiere', function (Blueprint $table) {
-            $table->foreignId('idEnseignant')->constrained('enseignants')->onUpdate('cascade'); // int idenseignant
-            $table->foreignId('idFiliere')->constrained('filieres')->onUpdate('cascade'); // int idFiliere
+        Schema::create('niveaux', function (Blueprint $table) {
+            $table->id(); // id
+            $table->string('nom')->unique(); // String nom
             $table->timestamps(); // created_at et updated_at
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('enseignant_filiere');
+        Schema::dropIfExists('niveaux');
     }
 };

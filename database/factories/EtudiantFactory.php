@@ -30,9 +30,10 @@ class EtudiantFactory extends Factory
             'lieuNaiss' => $this->faker->firstName, // Prénom
             'email' => $this->faker->unique()->safeEmail, // Email unique
             'numeroTelephone' => $this->faker->phoneNumber, // Numéro de téléphone
+
             'sexe' => $this->faker->randomElement(['Homme', 'Femme']), // Sexe aléatoire
-            'idNiveau' => $niveaux->random()->id, // Référence à un niveau existant ou généré
-            'idFiliere' => $filieres->random()->id, // Référence à une filière existante ou générée
+            'niveau_id' => $niveaux->random()->id, // Référence à un niveau existant ou généré
+            'filiere_id' => $filieres->random()->id, // Référence à une filière existante ou générée
             'annee_id' => $annees->random()->id, // Référence à une filière existante ou générée
             'created_at'=>now(),
             'updated_at'=>NULL

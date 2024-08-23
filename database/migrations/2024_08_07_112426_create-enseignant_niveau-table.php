@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('enseignant_niveau', function (Blueprint $table) {
-            $table->foreignId('idEnseignant')->constrained('enseignants')->onUpdate('cascade'); // int idenseignant
-            $table->foreignId('idNiveau')->constrained('niveaux')->onUpdate('cascade'); // int idNiveau
+            $table->foreignId('enseignant_id')->constrained('enseignants')->onUpdate('cascade'); // int idenseignant
+            $table->foreignId('niveau_id')->constrained('niveaux')->onUpdate('cascade'); // int idNiveau
             $table->timestamps(); // created_at et updated_at
         });
     }

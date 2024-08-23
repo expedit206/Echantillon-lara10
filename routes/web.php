@@ -62,7 +62,8 @@ Route::prefix('etudiant')->middleware('monGuest:etudiant')->group(function () {
     Route::get('login/{email?}/{code?}', [EtudiantController::class, 'showLogin'])->name('etudiant.login');
     Route::post('login', [EtudiantController::class, 'login']);
 });
-Route::get('etudiant/home', [EtudiantController::class, 'home'])->name('etudiant.home')->middleware('monAuth:etudiant');
+Route::get('etudian/logout', [EtudiantController::class, 'logout'])->name('etudiant.logout')->middleware('monAuth:etudiant');
+Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'home'])->name('etudiant.home')->middleware('monAuth:etudiant');
 
 
 

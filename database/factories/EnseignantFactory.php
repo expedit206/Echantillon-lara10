@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Annee;
 use App\Models\Enseignant;
 use App\Models\UniteValeur;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EnseignantFactory extends Factory
 {
@@ -20,6 +22,7 @@ class EnseignantFactory extends Factory
     {
         // Récupérer un nom d'unité de valeur aléatoire pour la clé étrangère
         $uniteValeur = UniteValeur::inRandomOrder()->first();
+        $annees = Annee::all();
 
         return [
             'nom' => $this->faker->lastName,
@@ -27,7 +30,6 @@ class EnseignantFactory extends Factory
             'sexe' => $this->faker->randomElement(['Masculin', 'Féminin', 'Autre']),
             'email' => $this->faker->unique()->safeEmail,
             'password' => bcrypt('password'), // Vous pouvez utiliser Hash::make('password') aussi
-            'uniteValeur' => $uniteValeur ? $uniteValeur->nom : 'Inconnu',
             'dateNaiss' => $this->faker->date(),
             'lieuNaiss' => $this->faker->city,
             'nationalite' => $this->faker->country,
@@ -35,6 +37,8 @@ class EnseignantFactory extends Factory
             'photo' => $this->faker->imageUrl(),
             'profession' => $this->faker->jobTitle,
             'diplome' => $this->faker->word,
+            'annee_id' => $annees->random()->id, // Référence à une filière existante ou générée
+
             'salaire' => $this->faker->randomFloat(2, 2000, 10000),
             'typeContrat' => $this->faker->randomElement(['CDI', 'CDD', 'Intérim', 'Stage', 'Autre']),
             'debutContrat' => $this->faker->date(),

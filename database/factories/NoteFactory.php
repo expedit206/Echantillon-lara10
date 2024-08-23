@@ -23,7 +23,7 @@ class NoteFactory extends Factory
 
         return [
             'etudiant_id' =>  $etudiants->random()->id, // Génère un nombre entre 1 et 100 pour l'ID de l'étudiant
-            'uniteValeur' => $uniteValeur ? $uniteValeur->nom : 'Inconnu', // Génère un nombre entre 1 et 100 pour l'ID du cours
+            'unite_de_valeur_id' => $uniteValeur ? $uniteValeur->id : '', // Génère un nombre entre 1 et 100 pour l'ID du cours
             'note' => $this->faker->numberBetween(0, 20) . '.' . $this->faker->numberBetween(0, 99), // Génère une note entre 0.00 et 20.99
         ];
     }

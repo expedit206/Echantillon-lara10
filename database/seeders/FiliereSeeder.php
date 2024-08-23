@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Niveau;
 use App\Models\Filiere;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -16,11 +17,16 @@ class FiliereSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('filieres')->insert([
-            ['nom'=>'Genie logiciel','created_at'=>now()],
-            ['nom'=>'Kinesitherapie','created_at'=>now()],
-            ['nom'=>'Soins infirmier','created_at'=>now()],
-            ['nom'=>'Agiculture-elevage','created_at'=>now()],
-    ]);
+        $niveaux=Niveau::all();
+       $filieres=[
+            ['nom'=>'Genie logiciel','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
+            ['nom'=>'Kinesitherapie','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
+            ['nom'=>'Soins infirmier','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
+            ['nom'=>'Agiculture-elevage','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
+    ];
+
+
+    DB::table('filieres')->insert($filieres);
+
     }
 }

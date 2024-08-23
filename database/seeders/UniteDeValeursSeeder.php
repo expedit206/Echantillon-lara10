@@ -3,9 +3,11 @@
 namespace Database\Seeders;
 
 use Carbon\Carbon;
+use App\Models\Enseignant;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Filiere;
 
 class UniteDeValeursSeeder extends Seeder
 {
@@ -14,6 +16,9 @@ class UniteDeValeursSeeder extends Seeder
      */
     public function run(): void
     {
+        $enseignants = Enseignant::all();
+        $filieres = Filiere::all();
+
         $unites = [
             ['nom' => 'Mathematiques', 'description' => 'Cours de base en mathématiques', 'credit' => 5, 'created_at' => now(),],
             ['nom' => 'Informatique', 'description' => 'Introduction à la programmation et aux systèmes informatiques', 'credit' => 6, 'created_at' => now(),],
@@ -27,6 +32,11 @@ class UniteDeValeursSeeder extends Seeder
             ['nom' => 'Économie', 'description' => 'Introduction aux principes économiques', 'credit' => 4, 'created_at' => now(),],
         ];
 
+         // Associe un enseignant aléatoire à chaque unité
+         foreach ($unites as &$unite) {
+            $unite['enseignant_id'] = $enseignants->random()->id;
+            $unite['filiere_id'] = $filieres->random()->id;
+        }
         DB::table('unite_de_valeurs')->insert($unites);
     }
 }
