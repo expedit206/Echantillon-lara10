@@ -22,6 +22,8 @@ class UniteValeur extends Model
     {
         return $this->belongsTo(Filiere::class);
     }
+
+   
     public function notes()
     {
         return $this->hasMany(Note::class);

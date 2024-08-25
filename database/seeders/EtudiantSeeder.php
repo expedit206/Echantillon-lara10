@@ -6,7 +6,7 @@ use App\Models\Etudiant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class EtudiantsSeeder extends Seeder
+class EtudiantSeeder extends Seeder
 {
     /**
      * Run the database seeds.

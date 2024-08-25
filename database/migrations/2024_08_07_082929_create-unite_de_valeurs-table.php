@@ -15,11 +15,13 @@ return new class extends Migration
 
             $table->id(); // String nom
 
-            $table->string('nom')->unique(); // String nom, unique
+            $table->string('nom'); // String nom, unique
             $table->string('description'); // String description
             $table->integer('credit'); // int credit
             $table->foreignId('enseignant_id')->contrained(); // String nom, unique
             $table->foreignId('filiere_id')->contrained(); // String nom, unique
+            $table->foreignId('specialite_id')->contrained(); // String nom, unique
+            $table->foreignId('niveau_id')->contrained(); // String nom, unique
             $table->timestamps(); // created_at et updated_at
         });
 

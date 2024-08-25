@@ -18,5 +18,10 @@ class Niveau extends Model
     {
         return $this->hasMany(Filiere::class);
      }
+
+    public function uniteValeurs():HasMany
+    {
+        return $this->hasMany(UniteValeur::class);
+     }
     use HasFactory;
 }

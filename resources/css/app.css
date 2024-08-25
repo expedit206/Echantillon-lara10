@@ -8,15 +8,23 @@
 
 @media screen and (min-width: 768px) {
     .show {
-        width: calc(var(--nav-width) + 200px);
+        width: calc(var(--nav-width) + 180px);
     }
 
     .body-pd {
-        padding-left: calc(var(--nav-width) + 220px);
+        padding-left: calc(var(--nav-width) + 195px);
     }
 
 }
 
 .dropdown-toggle::after {
 display: none;
+}
+.active::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    width: 2px;
+    height: 32px;
+    background-color: var(--white-color);
 }

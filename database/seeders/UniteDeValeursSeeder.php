@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Carbon\Carbon;
 use App\Models\Enseignant;
+use App\Models\Niveau;
+use App\Models\Specialite;
+use App\Models\UniteValeur;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,6 +21,8 @@ class UniteDeValeursSeeder extends Seeder
     {
         $enseignants = Enseignant::all();
         $filieres = Filiere::all();
+        $specialites = Specialite::all();
+        $niveau = Niveau::all();
 
         $unites = [
             ['nom' => 'Mathematiques', 'description' => 'Cours de base en mathématiques', 'credit' => 5, 'created_at' => now(),],
@@ -36,6 +41,8 @@ class UniteDeValeursSeeder extends Seeder
          foreach ($unites as &$unite) {
             $unite['enseignant_id'] = $enseignants->random()->id;
             $unite['filiere_id'] = $filieres->random()->id;
+            $unite['specialite_id'] = $specialites->random()->id;
+            $unite['niveau_id'] = $niveau->random()->id;
         }
         DB::table('unite_de_valeurs')->insert($unites);
     }

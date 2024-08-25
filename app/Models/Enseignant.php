@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Niveau;
 use App\Models\Filiere;
+use App\Models\Specialite;
 
 use App\Models\UniteValeur;
 use Illuminate\Database\Eloquent\Model;
@@ -53,9 +54,9 @@ class Enseignant extends Authenticatable
         'password', 'remember_token',
     ];
     protected $with= [
-    // 'niveaux',
-    // 'filieres',
-    // 'uniteValeurs'
+    'niveaux',
+    'filieres',
+    'uniteValeurs'
     ];
 
 
@@ -69,6 +70,11 @@ class Enseignant extends Authenticatable
     public function uniteValeurs(): HasMany
     {
         return $this->hasMany(UniteValeur::class);
+    }
+
+    public function specialites(): BelongsToMany
+    {
+        return $this->belongsToMany(Specialite::class);
     }
 
 

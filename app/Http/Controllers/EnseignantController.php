@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Annee;
 use App\Models\Niveau;
+use App\Models\Specialite;
 use App\Models\Filiere;
 use App\Models\Enseignant;
 use App\Models\UniteValeur;
@@ -21,10 +22,10 @@ class EnseignantController extends Controller
 
         //     // dd($request);
             $filiere= Filiere::where('id',$request['filiere'])->first()??  "";
-            $niveau=Niveau::where('id', $request['niveau'])->first()?? "";
-            $uniteValeur=UniteValeur::where('id', $request['uniteValeur'])->first()?? "";
+            $specialite=Specialite::where('id', $request['specialite'])->first()?? "";
+            $uniteValeur=UniteValeur::where('nom', $request['uniteValeur'])->first()?? "";
         // dd($uniteValeur);
-        //     // dd($filiere );
+            // dd($filiere->id);
 // die('n,;');
         $teachers = Enseignant::orderBy('created_at', 'desc')
         ->where('annee_id', $annee_id)
@@ -33,25 +34,27 @@ class EnseignantController extends Controller
               ->orWhere('prenom','like', '%' . $search . '%')
               ->orWhere('id', 'like', '%' . $search . '%');
                })
-                ->when($niveau, function($query) use ($niveau){
-
-                  return $query->whereRelation('niveaux','niveau_id', $niveau->id);
-              })
-              ->when($filiere, function($query) use ($filiere){
+                ->when($specialite, function($query) use ($specialite){
+// dd($specialite->id);
+                    return $query->whereRelation('specialites','specialite_id', $specialite->id);
+                })
+                ->when($filiere, function($query) use ($filiere){
+                //   dd($filiere->id);
                   return $query->whereRelation('filieres', 'filiere_id', $filiere->id);
-              })
+                })
               ->when($uniteValeur, function($query) use ($uniteValeur){
                   return $query->whereRelation('uniteValeurs', 'id', $uniteValeur->id);
               })
 
               ->latest()->paginate(10);
+            //   dd($teachers);
         $total = $teachers->count();
             $search=$request?->search;
         $filieres = Filiere::with('uniteValeurs')->orderBy('created_at', 'desc')->get();
-        $niveaux = Niveau::orderBy('created_at', 'desc')->get();
+        $specialites = Specialite::orderBy('created_at', 'desc')->get();
     $annees = Annee::orderBy('created_at', 'desc')->get();
         $uniteValeurs = UniteValeur::orderBy('created_at', 'desc')->get();
-        return view('admin.teachers', compact('teachers','total','niveaux','filieres','uniteValeurs','annees'));
+        return view('admin.teachers', compact('teachers','total','specialites','filieres','uniteValeurs','annees'));
     }
      public function teachersByFiliere(Filiere $filiere)
      {

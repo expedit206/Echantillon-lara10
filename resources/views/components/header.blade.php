@@ -3,24 +3,24 @@
 <header class="header border-b-2  border-black relative px-0 body-pd" id="header">
     <div class="header_toggle"> <i class='bx bx-menu bx-x' id="header-toggle"></i> STUDAMIN</div>
 
-    <form method='get' action="{{ route('students') }}"
-    class="flex items-center justify-center gap-2 border-black border-2 rounded-[1rem]">
+    <form method='get' action="{{ route(Route::currentRouteName()) }}"
+    class="flex items-center justify-center gap-2 border-black border-2 rounded-[1rem]"
+    onsubmit="
+    document.querySelector('#specialiteHead').value=document.querySelector('#specialite').value
+    document.querySelector('#filiereHead').value=document.querySelector('#filiere').value
+    document.querySelector('#anneeHead').value=document.querySelector('#annee').value
+    document.querySelector('#uniteValeurHead').value=document.querySelector('#uniteValeur').value
+"
+    >
 @if (empty(request('student')))
 
 <input name="search" id="searchHead" value="{{request('search')}}" class="focus:outline-none focus:border-transparent border-none bg-transparent" placeholder="Rechercher"  oninput=" this.value=this.value
 
-    document.querySelector('#niveauHead').value=document.querySelector('#niveau').value
-    document.querySelector('#filiereHead').value=document.querySelector('#filiere').value
-    document.querySelector('#ancienneteHead').value=document.querySelector('#anciennete').value
-    document.querySelector('#anneeHead').value=document.querySelector('#annee').value
-
-    // console.log(document.querySelector('#niveau').value)
-    // submit()
     " >
 
                 <input type="text" name="filiere" id="filiereHead" hidden>
-                <input type="text" name="niveau" id="niveauHead" hidden>
-                <input type="text" name="anciennete" id="ancienneteHead" hidden>
+                <input type="text" name="specialite" id="specialiteHead" hidden>
+                <input type="text" name="uniteValeur" id="uniteValeurHead" hidden>
                 <input type="text" name="annee" id="anneeHead" hidden>
 
     <button class="" type="submit">

@@ -19,10 +19,12 @@ class FiliereSeeder extends Seeder
     {
         $niveaux=Niveau::all();
        $filieres=[
-            ['nom'=>'Genie logiciel','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
-            ['nom'=>'Kinesitherapie','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
-            ['nom'=>'Soins infirmier','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
-            ['nom'=>'Agiculture-elevage','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
+            ['nom'=>'Agriculture et elevage','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
+            ['nom'=>'Genie informatique','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
+            ['nom'=>'Economie sociale et familiale','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
+            ['nom'=>'Sante','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
+            ['nom'=>'Gestion','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
+            ['nom'=>'Genie civil','created_at'=>now(),'niveau_id'=>$niveaux->random()->id],
     ];
 
 

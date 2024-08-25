@@ -7,6 +7,7 @@ use App\Models\Admin;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\NoteSeeder;
+use Database\Seeders\specialiteSeeder;
 use Database\Seeders\EnseignantSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,7 +25,7 @@ class DatabaseSeeder extends Seeder
             // NiveauSeeder::class,
             EnseignantSeeder::class,
             // UniteDeValeursSeeder::class,
-            EtudiantsSeeder::class,
+            EtudiantSeeder::class,
             NoteSeeder::class,
         ]);
         User::factory()->create([
