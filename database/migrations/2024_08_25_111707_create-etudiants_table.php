@@ -23,7 +23,9 @@ return new class extends Migration
                 $table->string('numeroTelephone'); // String numeroTelephone
                 $table->string('sexe'); // String sexe
                 $table->foreignId('niveau_id')->constrained('niveaux')->onUpdate('cascade'); // int niveau_id
-                $table->foreignId('filiere_id')->constrained('filieres')->onUpdate('cascade'); // int filiere_id
+                $table->foreignId('filiere_id')->constrained('filieres')->onUpdate('cascade');
+                $table->foreignId('specialite_id')->constrained('specialites')->onUpdate('cascade');
+                 // int filiere_id
                 $table->foreignId('annee_id')->constrained('annees');
                 $table->timestamps(); // created_at et updated_at
             });

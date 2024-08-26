@@ -6,6 +6,7 @@ use App\Models\Note;
 use App\Models\Annee;
 use App\Models\Niveau;
 use App\Models\Filiere;
+use App\Models\Specialite;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +29,7 @@ class Etudiant extends Authenticatable
         'email',
         'dateNaissance',
         'lieuNaiss',
-        'telephone',
+        'numeroTelephone',
         'filiere_id',
         'niveau_id',
         'sexe',
@@ -68,6 +69,10 @@ class Etudiant extends Authenticatable
     public function annee()
     {
         return $this->belongsTo(Annee::class);
+    }
+    public function specialite()
+    {
+        return $this->belongsTo(Specialite::class);
     }
 
 }

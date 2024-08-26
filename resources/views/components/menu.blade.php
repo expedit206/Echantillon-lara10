@@ -14,8 +14,8 @@
                             class="nav_name">
                         Enseignants</span>
                     </a>
-                    <a href="#" class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i> <span
-                            class="nav_name">Messages</span>
+                    <a href="{{ route('uniteValeurs') }}" class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i> <span
+                            class="nav_name">Unités de valeur</span>
                     </a>
                     <a href="{{ route('teachers') }}" class="nav_link" id='etudiants'> <i class='bx bx-bookmark nav_icon'></i> <span
                             class="nav_name">Bookmark</span>

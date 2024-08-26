@@ -45,9 +45,9 @@
                 this.value=this.value
                 console.log(document.querySelector('#filiereHead').value)
                 submit()
-                " 
+                "
                 oninput="
-                
+
                 "
                 >
                         <option value=""></option>
@@ -100,6 +100,8 @@
         </div>
 
         <div class="table mt-3">
+        <p class="font-bold text-1xl italic">Total : {{$total}}</p>
+
             <table class="table table-striped"
                 style="
                 border:1px black solid !important;

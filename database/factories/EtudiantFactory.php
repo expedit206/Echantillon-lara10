@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Annee;
 use App\Models\Niveau;
 use App\Models\Filiere;
+use App\Models\Specialite;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class EtudiantFactory extends Factory
         $niveaux = Niveau::all();
         $filieres = Filiere::all();
         $annees = Annee::all();
+        $specialites = Specialite::all();
         return [
             'code' => $this->faker->unique()->bothify('####'), // Code unique au format ETU###
             'nom' => $this->faker->lastName, // Nom de famille
@@ -35,6 +37,7 @@ class EtudiantFactory extends Factory
             'niveau_id' => $niveaux->random()->id, // Référence à un niveau existant ou généré
             'filiere_id' => $filieres->random()->id, // Référence à une filière existante ou générée
             'annee_id' => $annees->random()->id, // Référence à une filière existante ou générée
+            'specialite_id' => $specialites->random()->id, // Référence à une filière existante ou générée
             'created_at'=>now(),
             'updated_at'=>NULL
         ];

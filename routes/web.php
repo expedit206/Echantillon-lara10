@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnneeController;
+use App\Http\Controllers\UniteValeurController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+
 use App\Http\Controllers\Auth\Etudiant\EtudiantController;
 use App\Http\Controllers\Auth\Enseignant\EnseignantController;
-
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\Admin\AuthenticatedSessionController;
 
 Route::get('/', function () {
@@ -32,6 +33,7 @@ Route::prefix('admin')->middleware(['monAuth:admin'])->group(function () {
 Route::get('students', [App\Http\Controllers\EtudiantController::class, 'index'])->name('students');
 Route::get('students/{student}', [App\Http\Controllers\EtudiantController::class, 'show'])->name('student.show');
 Route::get('students/edit/{student}', [EtudiantController::class, 'edit'])->name('student.edit');
+Route::post('students/update/{student}', [EtudiantController::class, 'update'])->name('student.update');
 
 Route::get('students/filiere/{filiere}', [App\Http\Controllers\EtudiantController::class, 'studentsByFiliere'])->name('studentsByFiliere');
 Route::get('students/niveau/{niveau}', [App\Http\Controllers\EtudiantController::class, 'studentsByNiveau'])->name('studentsByNiveau');
@@ -64,6 +66,19 @@ Route::prefix('etudiant')->middleware('monGuest:etudiant')->group(function () {
 });
 Route::get('etudian/logout', [EtudiantController::class, 'logout'])->name('etudiant.logout')->middleware('monAuth:etudiant');
 Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'home'])->name('etudiant.home')->middleware('monAuth:etudiant');
+
+// route pour uniteValeur
+Route::get('uniteValeurs', [UniteValeurController::class, 'index'])->name('uniteValeurs');
+
+Route::prefix('uniteValeur')->group(function () {
+    Route::get('create', [UniteDeValeurController::class, 'create'])->name('uniteValeur.create');
+    Route::get('/{uniteDeValeur}', [uniteValeurController::class, 'show'])->name('uniteValeur.show');
+    Route::get('/{uniteDeValeur}/edit', [uniteValeurController::class, 'edit'])->name('uniteValeur.edit');
+    Route::put('/{uniteDeValeur}', [uniteValeurController::class, 'update'])->name('uniteValeur.update');
+    Route::delete('/{uniteDeValeur}', [uniteValeurController::class, 'destroy'])->name('uniteValeur.destroy');
+
+
+});
 
 
 

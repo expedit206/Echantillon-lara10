@@ -109,9 +109,56 @@ public function edit(Etudiant $student)
     $annees=Annee::all();
     $filieres = DB::table('filieres')->get();
     $niveaux = DB::table('niveaux')->get();
+    $specialites = DB::table('specialites')->get();
     // dd($student->id);
-   return view('etudiant.edit', compact('annees','filieres','niveaux','student'));
+   return view('etudiant.edit', compact('annees','filieres','niveaux','student','specialites'));
 }
+
+public function update(Request $request, $student)
+{
+    // Validation des données du formulaire
+    $request->validate([
+        'nom' => 'required|string|max:255',
+        'prenom' => 'required|string|max:255',
+        'dateNaissance' => 'required|date',
+        'lieuNaiss' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'telephone' => 'required|string|max:15',
+        'sexe' => 'required|string',
+        'niveau_id' => 'required|integer|exists:niveaux,id',
+        'filiere_id' => 'required|integer|exists:filieres,id',
+        'specialite_id' => 'required|integer|exists:specialites,id',
+        'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    // Récupérer l'étudiant existant
+    $student = Etudiant::findOrFail($student);
+
+    // Mise à jour des informations de l'étudiant
+    $student->nom = $request->nom;
+    $student->prenom = $request->prenom;
+    $student->dateNaissance = $request->dateNaissance;
+    $student->lieuNaiss = $request->lieuNaiss;
+    $student->email = $request->email;
+    $student->numeroTelephone = $request->telephone;
+    $student->sexe = $request->sexe;
+    $student->niveau_id = $request->niveau_id;
+    $student->filiere_id = $request->filiere_id;
+    $student->specialite_id = $request->specialite_id;
+
+    // Gestion de la photo si elle est présente
+    if ($request->hasFile('photo')) {
+        $filePath = $request->file('photo')->store('photos', 'public');
+        $student->photo = $filePath;
+    }
+
+    // Sauvegarde des changements
+    $student->save();
+
+    // Redirection avec un message de succès
+    return redirect()->route('student.show', $student->id)->with('success', 'Les informations de l\'étudiant ont été mises à jour avec succès.');
+}
+
 public function logout()
 {
     Auth::guard('etudiant')->logout();

@@ -21,19 +21,19 @@
                 <h2 class="text-xl font-semibold mb-2 text-indigo-600">Informations Personnelles</h2>
                 <div class="grid grid-cols-2 gap-4">
                     <p><strong>Date de naissance :</strong> {{ $student->dateNaissance->format('d/m/Y') }}</p>
-                    <p><strong>Lieu de naissance :</strong> {{ $student->lieuNaissance }}</p>
-                    <p><strong>Nationalité :</strong> {{ $student->nationalite }}</p>
+                    <p><strong>Lieu de naissance :</strong> {{ $student->lieuNaiss }}</p>
                     <p><strong>Sexe :</strong> {{ ucfirst($student->sexe) }}</p>
-                    <p><strong>Mobile :</strong> {{ $student->telephone }}</p>
+                    <p><strong>Mobile :</strong> {{ $student->numeroTelephone }}</p>
                     <p><strong>Email :</strong> {{ $student->email }}</p>
                 </div>
             </div>
 
             <div>
                 <h2 class="text-xl font-semibold mb-2 text-indigo-600">Informations Académiques</h2>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-3 gap-4">
                     <p><strong>Niveau :</strong> {{ $student->niveau->nom }}</p>
                     <p><strong>Filière :</strong> {{ $student->filiere->nom }}</p>
+                    <p><strong>Spécialité :</strong> {{ $student->specialite->nom }}</p>
                 </div>
             </div>
 

@@ -2,17 +2,18 @@
 
 <header class="header border-b-2  border-black relative px-0 body-pd" id="header">
     <div class="header_toggle"> <i class='bx bx-menu bx-x' id="header-toggle"></i> STUDAMIN</div>
-
+    
+    @if (empty(request('student')))
     <form method='get' action="{{ route(Route::currentRouteName()) }}"
     class="flex items-center justify-center gap-2 border-black border-2 rounded-[1rem]"
     onsubmit="
     document.querySelector('#specialiteHead').value=document.querySelector('#specialite').value
     document.querySelector('#filiereHead').value=document.querySelector('#filiere').value
     document.querySelector('#anneeHead').value=document.querySelector('#annee').value
+    document.querySelector('#niveauHead').value=document.querySelector('#niveau').value
     document.querySelector('#uniteValeurHead').value=document.querySelector('#uniteValeur').value
 "
     >
-@if (empty(request('student')))
 
 <input name="search" id="searchHead" value="{{request('search')}}" class="focus:outline-none focus:border-transparent border-none bg-transparent" placeholder="Rechercher"  oninput=" this.value=this.value
 
@@ -21,6 +22,7 @@
                 <input type="text" name="filiere" id="filiereHead" hidden>
                 <input type="text" name="specialite" id="specialiteHead" hidden>
                 <input type="text" name="uniteValeur" id="uniteValeurHead" hidden>
+                <input type="text" name="niveau" id="niveauHead" hidden>
                 <input type="text" name="annee" id="anneeHead" hidden>
 
     <button class="" type="submit">
@@ -34,9 +36,9 @@
             </path>
         </svg>
     </button>
-@endif
-
+    
 </form>
+@endif
 
     <div class="flex items-center justify-center gap-2">
         <span>Mon compte</span>

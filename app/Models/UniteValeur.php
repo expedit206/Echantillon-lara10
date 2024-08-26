@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Niveau;
 use App\Models\Filiere;
+use App\Models\Specialite;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,6 +22,11 @@ class UniteValeur extends Model
     public function filiere(): BelongsTo
     {
         return $this->belongsTo(Filiere::class);
+    }
+
+    public function specialite(): BelongsTo
+    {
+        return $this->belongsTo(Specialite::class);
     }
 
    

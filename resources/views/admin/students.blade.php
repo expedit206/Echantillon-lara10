@@ -17,10 +17,10 @@
 <form method='post' action="{{route('annee.setActive')}}" id="formAnnee">
     @csrf
             <label for="annee">Année Académique</label>
-            <select name="annee" id="annee" class="border-none outline-none focus:border-none cursor-pointer" onchange="submit()" 
+            <select name="annee" id="annee" class="border-none outline-none focus:border-none cursor-pointer" onchange="submit()"
             >
                 @foreach($annees as $annee)
-                <option value="{{ $annee->id }}" class="cursor-pointer border-b-4 border-double border-black" 
+                <option value="{{ $annee->id }}" class="cursor-pointer border-b-4 border-double border-black"
                     {{ $annee->is_active==true? 'selected':''}}
                     >{{ $annee->nom }}</option>
                 @endforeach
@@ -28,7 +28,7 @@
         </form>
         </div>
         </div>
-        <form method="get" action="{{ route('students') }}" id="form" class="px-3 text-white  grid-cols-4 content flex gap-5 items-center justify-around bg-orange-400 py-2">
+        <form method="get" action="{{ route('students') }}" id="form" class="px-3 text-white  grid-cols-5 content flex gap-3 items-center justify-around bg-orange-400 py-2">
             @csrf
             <h3>Filtrer par:</h3>
             {{-- <input type="text" name="annee" id="anneeForm"> --}}
@@ -37,10 +37,8 @@
 
                 <select type="text" id="niveau" list="listNiveau"  name="niveau" class="text-black rounded-md w-full"  onchange="
                 document.querySelector('#search').value=document.querySelector('#searchHead').value
-                submit()
-                " placeholder="----------------------------"
-                oninput=" this.value=this.value"
-                >
+                this.value=this.value
+                submit()"                >
 
                 <option value=""></option>
                 @foreach ($niveaux as  $niveau)
@@ -55,13 +53,32 @@
                 <input type="text" id="search" name="search" class="hidden">
                 <select type="text" id="filiere" name="filiere" class="w-full text-black rounded-md" placeholder="----------------------------" onchange="
                 document.querySelector('#search').value=document.querySelector('#searchHead').value
-                submit();
+                console.log(document.querySelector('#search').value)
+            this.value=this.value
+
+                submit()
                 ">
 
                 <option value=""></option>
                 @foreach ($filieres as  $filiere)
 
                 <option value="{{ $filiere->nom }}" {{ request('filiere')===$filiere->nom ? 'selected':"" }}>{{ $filiere->nom }}</option>
+                @endforeach
+                  </select>
+            </article>
+
+            <article class="flex flex-col w-full">
+                <label for="specialite">specialite</label>
+                <input type="text" id="search" name="search" class="hidden">
+                <select type="text" id="specialite" name="specialite" class="w-full text-black rounded-md" placeholder="----------------------------" onchange="
+                document.querySelector('#search').value=document.querySelector('#searchHead').value
+                submit();
+                ">
+
+                <option value=""></option>
+                @foreach ($specialites as  $specialite)
+
+                <option value="{{ $specialite->id }}" {{ request('specialite')==$specialite->id ? 'selected':"" }}>{{ $specialite->nom }}</option>
                 @endforeach
                   </select>
             </article>
@@ -87,6 +104,7 @@
         </div>
 
         <div class="table mt-3 ">
+        <p class="font-bold text-1xl italic">Total : {{$total}}</p>
         <table class="table table-striped overflow-scroll"
             style="
 
@@ -104,33 +122,35 @@
                     <th scope="col">Nom</th>
                     <th scope="col">Prenom</th>
                     <th scope="col">Sexe</th>
-                    <th scope="col">Mobile</th>
                     <th scope="col">Niveau</th>
                     <th scope="col">Filiere</th>
+                    <th scope="col">Spécialité</th>
                     <th scope="col" class="text-center" colspan="2">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($students as $student)
                     <tr>
-                        <th scope="row">{{ $student['code'] }}</th>
-                        <th scope="row">{{ $student['nom'] }}</th>
-                        <th scope="row">{{ $student['prenom'] }}</th>
-                        <th scope="row">{{ $student['sexe'] }}</th>
-                        <th scope="row">{{ $student['numeroTelephone'] }}</th>
-                        <th scope="row">
+                        <td scope="row">{{ $student['code'] }}</td>
+                        <td scope="row">{{ $student['nom'] }}</td>
+                        <td scope="row">{{ $student['prenom'] }}</td>
+                        <td scope="row">{{ $student['sexe'] }}</td>
+                        <td scope="row">
                             {{-- @dd($student->niveau) --}}
                             <a href="{{ route('studentsByNiveau',['niveau'=>$student->niveau]) }}">
                             {{ $student->niveau->nom }}
                             </a>
-                        </th>
-                        <th scope="row">
+                        </td>
+                        <td scope="row">
                             <a href="{{ route('studentsByFiliere',['filiere'=>$student->filiere]) }}">
                                 {{ $student->filiere->nom }}
                             </a>
-                        </th>
-                        <th scope="row"> <a href="{{ route('student.show', ['student'=>$student]) }}">Voir</a> </th>
-                        <th scope="row"> <a href="{{ route('student.edit', ['student'=>$student]) }}">Editer</a> </th>
+                        </td>
+                        <td scope="row">{{ $student['specialite']->nom }}</td>
+
+                        <td scope="row"> <a href="{{ route('student.show', ['student'=>$student]) }}" class="text-blue-600 hover:text-blue-900">Voir</a> </td>
+                        <td scope="row"> <a href="{{ route('student.edit', ['student'=>$student]) }}" class="text-green-600 hover:text-green-900">Editer</a> </td>
+
 
                     </tr>
                     @empty
@@ -160,7 +180,7 @@
         document.querySelector('#search').value=document.querySelector('#searchHead').value
         anneeForm.value=annee.value;
         console.log(anneeForm)
-        
+
     }
 
 

@@ -7,8 +7,15 @@ use App\Models\Admin;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\NoteSeeder;
-use Database\Seeders\specialiteSeeder;
+use Database\Seeders\AdminSeeder;
+use Database\Seeders\AnneesSeeder;
+use Database\Seeders\NiveauSeeder;
+use Database\Seeders\FiliereSeeder;
+use Database\Seeders\EtudiantSeeder;
+use Database\Seeders\SemestreSeeder;
 use Database\Seeders\EnseignantSeeder;
+use Database\Seeders\specialiteSeeder;
+use Database\Seeders\UniteDeValeursSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,6 +34,7 @@ class DatabaseSeeder extends Seeder
             // UniteDeValeursSeeder::class,
             EtudiantSeeder::class,
             NoteSeeder::class,
+            SemestreSeeder::class,
         ]);
         User::factory()->create([
             'name' => 'Test User',

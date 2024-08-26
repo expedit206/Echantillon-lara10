@@ -6,7 +6,9 @@ use App\Models\Annee;
 use App\Models\Niveau;
 use App\Models\Filiere;
 use App\Models\Etudiant;
+use App\Models\Specialite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class EtudiantController extends Controller
@@ -14,14 +16,20 @@ class EtudiantController extends Controller
     public function index(Request $request)
     {
         $annee_id=Annee::where('is_active',true)->first()->id;
-        $students = Etudiant::where('annee_id',$annee_id)->latest()->paginate(15);
-// dd($request);
+        $students = Etudiant::where('annee_id',$annee_id)->latest();
+        // dd($request);
+        $total = $students->count();
+        $students = Etudiant::where('annee_id',$annee_id)->latest()->paginate(10);
+
+
         if($request['search'] || $request['niveau'] || $request['filiere'] || $request['anciennete']){
+            
             $search=$request['search'];
             $annee_id=\DB::table('annees')->where('is_active', true)->first()->id;
-
-
-            // dd($annee_id);
+            
+            
+            $specialite=Specialite::where('id', $request['specialite'])->first()?? "";
+            // dd($request['specialite']);
             $filiere= Filiere::where('nom',$request['filiere'])->first()??  "";
             $niveau=Niveau::where('nom', $request['niveau'])->first()?? "";
 
@@ -46,6 +54,10 @@ class EtudiantController extends Controller
 
                             return $query->where('filiere_id', $filiere->id);
                         })
+                        ->when($specialite, function($query) use ($specialite){
+                            dd($specialite->id);
+                                                return $query->where('specialite_id', $specialite->id);
+                                            })
 
 
                         ->latest()->paginate(10);
@@ -68,6 +80,10 @@ class EtudiantController extends Controller
 
                             return $query->where('filiere_id', $filiere->id);
                         })
+                        ->when($specialite, function($query) use ($specialite){
+                            // dd($specialite->id);
+                                                return $query->where('specialite_id', $specialite->id);
+                                            })
 
 
                         ->latest()->paginate(10);
@@ -90,6 +106,10 @@ class EtudiantController extends Controller
 
                                     return $query->where('filiere_id', $filiere->id);
                                 })
+                                ->when($specialite, function($query) use ($specialite){
+                                    // dd($specialite->id);
+                                                        return $query->where('specialite_id', $specialite->id);
+                                                    })
                                 ->latest()->paginate(10);
                         break;
                      case 'Z à A':
@@ -109,6 +129,10 @@ class EtudiantController extends Controller
 
                                     return $query->where('filiere_id', $filiere->id);
                                 })
+                                ->when($specialite, function($query) use ($specialite){
+                                    // dd($specialite->id);
+                                                        return $query->where('specialite_id', $specialite->id);
+                                                    })
                                 ->latest()->paginate(10);
                         break;
 
@@ -117,15 +141,16 @@ class EtudiantController extends Controller
 
                             }
 
-            $total = $students->count();
             $search=$request?->search;
 
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
+        $specialites = Specialite::orderBy('created_at', 'desc')->get();
+
         $annees = Annee::all();
         // dd($students->niveau);
-        return view('admin.students', compact('students','total','search','niveaux','filieres','annees'));
-     }
+        return view('admin.students', compact('students','total','search','niveaux','filieres','annees','specialites'));
+    }
 
      public function home()
     {
