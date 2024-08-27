@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('semestres', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
+            $table->string('cc');
+            $table->string('normal');
             $table->date('debut');  // Date de début du semestre
             $table->date('fin');    // Date de fin du semestre
             $table->boolean('is_active')->default(false);  // Indique si le semestre est actif
