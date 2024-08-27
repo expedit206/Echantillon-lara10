@@ -68,17 +68,8 @@ Route::get('etudian/logout', [EtudiantController::class, 'logout'])->name('etudi
 Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'home'])->name('etudiant.home')->middleware('monAuth:etudiant');
 
 // route pour uniteValeur
-Route::get('uniteValeurs', [UniteValeurController::class, 'index'])->name('uniteValeurs');
+Route::resource('uniteValeur', UniteValeurController::class);
 
-Route::prefix('uniteValeur')->group(function () {
-    Route::get('create', [UniteDeValeurController::class, 'create'])->name('uniteValeur.create');
-    Route::get('/{uniteDeValeur}', [uniteValeurController::class, 'show'])->name('uniteValeur.show');
-    Route::get('/{uniteDeValeur}/edit', [uniteValeurController::class, 'edit'])->name('uniteValeur.edit');
-    Route::put('/{uniteDeValeur}', [uniteValeurController::class, 'update'])->name('uniteValeur.update');
-    Route::delete('/{uniteDeValeur}', [uniteValeurController::class, 'destroy'])->name('uniteValeur.destroy');
-
-
-});
 
 
 

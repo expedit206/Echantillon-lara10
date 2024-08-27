@@ -30,11 +30,11 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             // FiliereSeeder::class,
             // NiveauSeeder::class,
+            SemestreSeeder::class,
             EnseignantSeeder::class,
             // UniteDeValeursSeeder::class,
             EtudiantSeeder::class,
             NoteSeeder::class,
-            SemestreSeeder::class,
         ]);
         User::factory()->create([
             'name' => 'Test User',

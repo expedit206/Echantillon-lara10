@@ -31,5 +31,6 @@ class SemestreSeeder extends Seeder
             ],
             // Ajoute plus de semestres si nécessaire
         ]);
+
     }
 }

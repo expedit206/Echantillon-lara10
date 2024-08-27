@@ -2,8 +2,8 @@
 
 <header class="header border-b-2  border-black relative px-0 body-pd" id="header">
     <div class="header_toggle"> <i class='bx bx-menu bx-x' id="header-toggle"></i> STUDAMIN</div>
-    
-    @if (empty(request('student')))
+
+    @if (request('student'))
     <form method='get' action="{{ route(Route::currentRouteName()) }}"
     class="flex items-center justify-center gap-2 border-black border-2 rounded-[1rem]"
     onsubmit="
@@ -36,7 +36,7 @@
             </path>
         </svg>
     </button>
-    
+
 </form>
 @endif
 

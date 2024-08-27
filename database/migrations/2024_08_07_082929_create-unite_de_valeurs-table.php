@@ -15,6 +15,7 @@ return new class extends Migration
 
             $table->id(); // String nom
 
+            $table->string('code');
             $table->string('nom'); // String nom, unique
             $table->string('description'); // String description
             $table->integer('credit'); // int credit
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->foreignId('filiere_id')->contrained(); // String nom, unique
             $table->foreignId('specialite_id')->contrained(); // String nom, unique
             $table->foreignId('niveau_id')->contrained(); // String nom, unique
+            $table->foreignId('semestre_id')->contrained(); // String nom, unique
             $table->timestamps(); // created_at et updated_at
         });
 

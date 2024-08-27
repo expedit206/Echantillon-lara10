@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UniteValeur;
 use App\Models\Niveau;
 use App\Models\Filiere;
+use App\Models\UniteValeur;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class UniteValeurController extends Controller
 {
@@ -28,9 +29,10 @@ class UniteValeurController extends Controller
         $unitevaleurs = $query->paginate(10);
         $niveaux = Niveau::all();
         $filieres = Filiere::all();
+        $uniteValeursAll = UniteValeur::all();
         $total = $query->count();
 
-        return view('unitevaleur.index', compact('unitevaleurs', 'niveaux', 'filieres', 'total'));
+        return view('unitevaleur.index', compact('unitevaleurs','uniteValeursAll', 'niveaux', 'filieres', 'total'));
     }
 
     public function create()
@@ -54,16 +56,16 @@ class UniteValeurController extends Controller
         return redirect()->route('uniteValeur.index')->with('success', 'Unité de valeur créée avec succès.');
     }
 
-    public function show(UniteValeur $unitevaleur)
+    public function show(UniteValeur $uniteValeur)
     {
-        return view('unitevaleur.show', compact('unitevaleur'));
+        return view('unitevaleur.show', compact('uniteValeur'));
     }
 
-    public function edit(UniteValeur $unitevaleur)
+    public function edit(UniteValeur $uniteValeur)
     {
         $niveaux = Niveau::all();
         $filieres = Filiere::all();
-        return view('unitevaleur.edit', compact('unitevaleur', 'niveaux', 'filieres'));
+        return view('unitevaleur.edit', compact('uniteValeur', 'niveaux', 'filieres'));
     }
 
     public function update(Request $request, UniteValeur $unitevaleur)
@@ -80,9 +82,9 @@ class UniteValeurController extends Controller
         return redirect()->route('uniteValeur.index')->with('success', 'Unité de valeur mise à jour avec succès.');
     }
 
-    public function destroy(UniteValeur $unitevaleur)
+    public function destroy(UniteValeur $uniteValeur)
     {
-        $unitevaleur->delete();
+        $uniteValeur->delete();
 
         return redirect()->route('uniteValeur.index')->with('success', 'Unité de valeur supprimée avec succès.');
     }
