@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Etudiant;
+use App\Models\UniteValeur;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,9 +16,9 @@ class Note extends Model
         return $this->belongsTo(Etudiant::class);
     }
 
-    public function cours()
+    public function unite_valeur()
     {
-        return $this->belongsTo(Cours::class);
+        return $this->belongsTo(UniteValeur::class);
     }
 
     public function annee()

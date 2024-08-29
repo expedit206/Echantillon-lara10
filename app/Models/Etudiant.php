@@ -6,7 +6,9 @@ use App\Models\Note;
 use App\Models\Annee;
 use App\Models\Niveau;
 use App\Models\Filiere;
+use App\Models\Semestre;
 use App\Models\Specialite;
+use App\Models\UniteValeur;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,17 +50,17 @@ class Etudiant extends Authenticatable
     protected $hidden = [
         'code'
     ];
-    
+
         public function filiere(): BelongsTo
         {
             return $this->belongsTo(Filiere::class);
         }
-    
+
         public function semestres(): BelongsTo
         {
             return $this->belongsTo(Semestre::class);
         }
-    
+
 
     public function niveau(): BelongsTo
     {
@@ -80,4 +82,8 @@ class Etudiant extends Authenticatable
         return $this->belongsTo(Specialite::class);
     }
 
+    public function uniteValeurs()
+{
+    return $this->belongsToMany(UniteValeur::class, 'etudiant_unite_valeur');
+}
 }

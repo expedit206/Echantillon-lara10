@@ -16,6 +16,7 @@ use Database\Seeders\SemestreSeeder;
 use Database\Seeders\EnseignantSeeder;
 use Database\Seeders\specialiteSeeder;
 use Database\Seeders\UniteDeValeursSeeder;
+use Database\Seeders\EtudiantUniteValeurSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,6 +35,7 @@ class DatabaseSeeder extends Seeder
             EnseignantSeeder::class,
             // UniteDeValeursSeeder::class,
             EtudiantSeeder::class,
+            EtudiantUniteValeurSeeder::class,
             NoteSeeder::class,
         ]);
         User::factory()->create([

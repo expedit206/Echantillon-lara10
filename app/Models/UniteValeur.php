@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Note;
 use App\Models\Niveau;
 use App\Models\Filiere;
+use App\Models\Etudiant;
 use App\Models\Enseignant;
 use App\Models\Specialite;
 use Illuminate\Database\Eloquent\Model;
@@ -52,4 +53,9 @@ class UniteValeur extends Model
     {
         return $this->hasMany(Note::class);
     }
+
+    public function etudiants()
+{
+    return $this->belongsToMany(Etudiant::class, 'etudiant_unite_valeur');
+}
 }

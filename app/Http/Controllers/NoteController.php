@@ -17,27 +17,26 @@ class NoteController extends Controller
     {
         $semestre_id = $request->semestre;
         $specialite_id = $request->specialite;
-        $unite_de_valeur_id = $request->unite_de_valeur;
+        $unite_de_valeur_id = $request->matieres;
         $niveau_id = $request->niveau;
         $annee_id = $request->annee;
         // Filtrer les étudiants avec les critères spécifiques
         $students = Etudiant::where('annee_id', $annee_id)
-        ->whereRelation('notes', 'unite_valeur_id', 3)
-        // ->where('niveau_id',$niveau_id)
-        // ->where('specialite_id', $specialite_id)
-        // ->where('annee_id', $annee_id)
-        // $students = Etudiant::with(['notes' => function($query) use ($semestre_id, $specialite_id, $unite_de_valeur_id, $niveau_id) {
-        //     $query->whereRelation('uniteValeur', function($q) use ($semestre_id, $specialite_id, $niveau_id) {
-        //         $q->where('semestre_id', $semestre_id)
-        //           ->where('specialite_id', $specialite_id)
-        //           ->where('niveau_id', $niveau_id);
-        //     })->where('unite_valeur_id', $unite_de_valeur_id);
+        ->where('specialite_id',$specialite_id)
+        ->whereRelation('uniteValeurs','unite_valeur_id', $unite_de_valeur_id)
+        ->whereRelation('notes.uniteValeur', 'niveau_id', $niveau_id)
+        ->whereRelation('notes.uniteValeur', 'id', $unite_de_valeur_id)
+        ->whereRelation('notes.uniteValeur', 'semestre_id', $semestre_id)
+        ->whereRelation('notes.uniteValeur', 'specialite_id', $specialite_id)
+
          ->paginate(30);
-        dd($students);
+        // foreach ($students as $student ) {
+        //     echo('<br>'.$student->id);
+        // }
         $semestre = Semestre::find($semestre_id);
         $annee_academique = $semestre->annee->nom ?? 'Année académique non spécifiée';
-    
+
         return view('note.index', compact('students', 'semestre', 'annee_academique'));
     }
-    
+
 }
