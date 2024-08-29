@@ -17,8 +17,8 @@
                     <a href="{{ route('uniteValeur.index') }}" class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i> <span
                             class="nav_name">Unités de valeur</span>
                     </a>
-                    <a href="{{ route('teachers') }}" class="nav_link" id='etudiants'> <i class='bx bx-bookmark nav_icon'></i> <span
-                            class="nav_name">Bookmark</span>
+                    <a href="{{ route('teachers') }}" class="open-modal nav_link" id='etudiants'> <i class='bx bx-bookmark nav_icon open-modal'  ></i> <span
+                            class="nav_name open-modal">Notes</span>
                     </a>
                     <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span
                             class="nav_name">Files</span>
@@ -33,3 +33,6 @@
             </a>
         </nav>
     </div>
+{{-- @dd($teachers) --}}
+
+   

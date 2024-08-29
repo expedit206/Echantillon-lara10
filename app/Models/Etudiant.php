@@ -48,12 +48,17 @@ class Etudiant extends Authenticatable
     protected $hidden = [
         'code'
     ];
-
-    public function filiere(): BelongsTo
-    {
-        return $this->belongsTo(Filiere::class);
-    }
-
+    
+        public function filiere(): BelongsTo
+        {
+            return $this->belongsTo(Filiere::class);
+        }
+    
+        public function semestres(): BelongsTo
+        {
+            return $this->belongsTo(Semestre::class);
+        }
+    
 
     public function niveau(): BelongsTo
     {

@@ -1,0 +1,21 @@
+#notes-modal {
+    visibility: hidden;
+    /* display: none; */
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    z-index: 50; /* Assure que le modal est au-dessus des autres contenus */
+    justify-content: center;
+    align-items: center;
+}
+
+#notes-modal.showModal {
+
+    visibility: visible !important;
+    display: flex !important; /* Affiche le modal en superposition */
+}
+
+/* Styles pour rendre le reste de la page inactif */
+body.modal-open {
+    overflow: hidden; /* Empêche le défilement de la page lorsque le modal est ouvert */
+}

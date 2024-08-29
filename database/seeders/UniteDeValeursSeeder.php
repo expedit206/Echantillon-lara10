@@ -57,7 +57,6 @@ class UniteDeValeursSeeder extends Seeder
                 ->toArray();
 
                 $all=DB::table('unite_de_valeurs')->get();
-dump($all);
             // Initialisation du compteur pour cette combinaison unique
             $counter = 1;
             $code = $codePrefix . str_pad($counter, 3, '0', STR_PAD_LEFT);

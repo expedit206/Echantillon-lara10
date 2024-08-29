@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Etudiant;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Note extends Model
 {
@@ -22,5 +23,10 @@ class Note extends Model
     public function annee()
     {
         return $this->belongsTo(Annee::class);
+    }
+
+    public function uniteValeur()
+    {
+        return $this->belongsTo(UniteValeur::class);
     }
 }

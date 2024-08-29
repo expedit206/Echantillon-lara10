@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class SemestreSeeder extends Seeder
 {
@@ -15,17 +16,19 @@ class SemestreSeeder extends Seeder
         \DB::table('semestres')->insert([
             [
                 'nom' => 'Semestre 1',
-                'debut' => '2024-09-01', // Ajuste les dates selon ton calendrier académique
+                'annee_id' => 1, // Assumes that the année with id 1 exists
+                'debut' => '2024-09-01',
                 'fin' => '2025-01-31',
-                'is_active' => true,  // Marquer comme actif
+                'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'nom' => 'Semestre 2',
+                'annee_id' => 1, // Assumes that the année with id 1 exists
                 'debut' => '2025-02-01',
                 'fin' => '2025-06-30',
-                'is_active' => false,  // Marquer comme inactif
+                'is_active' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

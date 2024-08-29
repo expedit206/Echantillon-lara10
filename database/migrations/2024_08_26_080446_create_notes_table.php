@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('etudiant_id')->constrained()->onDelete('cascade');
-            $table->foreignId('unite_valeur_id')->constrained()->onDelete('cascade');
+            $table->foreignId('unite_valeur_id')->constrained('unite_de_valeurs')->onDelete('cascade');
             $table->decimal('note', 5, 2); // Stocke la note avec 2 décimales, par exemple, 95.50
             $table->enum('type', ['Controle continu', 'Normale','Rattrapage'])->default('Controle continu');
             $table->foreignId('enseignant_id')->nullable()->constrained()->onDelete('set null');

@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Annee;
 use App\Models\Niveau;
-use App\Models\Specialite;
 use App\Models\Filiere;
+use App\Models\Semestre;
 use App\Models\Enseignant;
+use App\Models\Specialite;
 use App\Models\UniteValeur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class EnseignantController extends Controller
 {
     public function index(Request $request)
     {
+
+
         $teachers =Enseignant:: latest()->paginate(15);
         // dd($teachers);
         $total=$teachers->total();
@@ -54,7 +59,12 @@ class EnseignantController extends Controller
         $specialites = Specialite::orderBy('created_at', 'desc')->get();
     $annees = Annee::orderBy('created_at', 'desc')->get();
         $uniteValeurs = UniteValeur::orderBy('created_at', 'desc')->get();
-        return view('admin.teachers', compact('teachers','total','specialites','filieres','uniteValeurs','annees'));
+        $annees = Annee::all();
+        $semestres = Semestre::all();
+        $specialites = Specialite::all();
+        $niveaux = Niveau::all();
+// dd($annees);
+        return view('admin.teachers', compact('teachers','total','specialites','filieres','uniteValeurs','annees','semestres','niveaux'));
     }
      public function teachersByFiliere(Filiere $filiere)
      {
@@ -70,6 +80,7 @@ class EnseignantController extends Controller
 
      public function teachersByNiveau(Niveau $niveau)
      {
+
          $teachers = Enseignant::where('niveau_id', $niveau->id)->latest()->paginate(15);
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
         $filieres = Filiere::orderBy('created_at', 'desc')->get();

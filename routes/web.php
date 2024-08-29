@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\Etudiant\EtudiantController;
 use App\Http\Controllers\Auth\Enseignant\EnseignantController;
 use App\Http\Controllers\Auth\Admin\AuthenticatedSessionController;
+use App\Http\Controllers\NoteController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -70,6 +71,10 @@ Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'ho
 // route pour uniteValeur
 Route::resource('uniteValeur', UniteValeurController::class);
 
+// route pour uniteValeur
+
+Route::get('/notes/show', [NoteController::class, 'index'])->name('notes.index');
+Route::get('/notes/create', [NoteController::class, 'create'])->name('notes.create');
 
 
 
