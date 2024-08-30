@@ -33,6 +33,7 @@
             </a>
         </nav>
     </div>
+
 {{-- @dd($teachers) --}}
 
-   
+

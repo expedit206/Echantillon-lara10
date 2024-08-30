@@ -10,14 +10,23 @@ use App\Models\Enseignant;
 use App\Models\Specialite;
 use App\Models\UniteValeur;
 use Illuminate\Http\Request;
+use App\Services\DataService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class EnseignantController extends Controller
 {
+    protected $dataService;
+
+    public function __construct(DataService $dataService)
+    {
+        $this->dataService = $dataService;
+    }
+
     public function index(Request $request)
     {
 
+        $data = $this->dataService->getAllData();
 
         $teachers =Enseignant:: latest()->paginate(15);
         // dd($teachers);
@@ -31,7 +40,6 @@ class EnseignantController extends Controller
             $uniteValeur=UniteValeur::where('nom', $request['uniteValeur'])->first()?? "";
         // dd($uniteValeur);
             // dd($filiere->id);
-// die('n,;');
         $teachers = Enseignant::orderBy('created_at', 'desc')
         ->where('annee_id', $annee_id)
         -> where(function ($query) use ($search){
@@ -40,7 +48,6 @@ class EnseignantController extends Controller
               ->orWhere('id', 'like', '%' . $search . '%');
                })
                 ->when($specialite, function($query) use ($specialite){
-// dd($specialite->id);
                     return $query->whereRelation('specialites','specialite_id', $specialite->id);
                 })
                 ->when($filiere, function($query) use ($filiere){
@@ -57,43 +64,65 @@ class EnseignantController extends Controller
             $search=$request?->search;
         $filieres = Filiere::with('uniteValeurs')->orderBy('created_at', 'desc')->get();
         $specialites = Specialite::orderBy('created_at', 'desc')->get();
-    $annees = Annee::orderBy('created_at', 'desc')->get();
+        $annees = Annee::orderBy('created_at', 'desc')->get();
         $uniteValeurs = UniteValeur::orderBy('created_at', 'desc')->get();
-        $annees = Annee::all();
-        $semestres = Semestre::all();
-        $specialites = Specialite::all();
-        $niveaux = Niveau::all();
-// dd($annees);
-        return view('admin.teachers', compact('teachers','total','specialites','filieres','uniteValeurs','annees','semestres','niveaux'));
+ 
+        // dd($annees);
+        return view('admin.teachers', array_merge([
+            'teachers' => $teachers,
+            'total' => $total,
+                'search' => $search,
+        ], $data));
     }
      public function teachersByFiliere(Filiere $filiere)
      {
+        $data = $this->dataService->getAllData();
+
          $teachers = Enseignant::where('filiere_id', $filiere->id)->latest()->paginate(15);
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
 
          $total = $teachers->count();
-         return view('admin.teachers',compact('teachers','total','niveaux','filieres'));
+         return view('admin.teachers',
+         array_merge([
+            'teachers' => $teachers,
+            'total' => $total,
+        ], $data));
         }
 
 
-
+        // array_merge([
+        //     'search' => $search,
+        //     'total' => $total,
+        //     'students' => $students,
+        //     'filieres' => $filieres,
+        // ], $data));
      public function teachersByNiveau(Niveau $niveau)
      {
+
+        $data = $this->dataService->getAllData();
 
          $teachers = Enseignant::where('niveau_id', $niveau->id)->latest()->paginate(15);
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
 
          $total = $teachers->count();
-         return view('admin.teachers',compact('teachers','total','niveaux','filieres'));
+         return view('admin.teachers',array_merge([
+            'teachers' => $teachers,
+            'total' => $total,
+        ], $data));
         }
 
         public function show(Enseignant $enseignant)
         {
-            $enseignant = Enseignant::find($enseignant->id );
-            // die;
-            return view('enseignant.show', compact('enseignant'));
+
+        $data = $this->dataService->getAllData();
+        $enseignant = Enseignant::find($enseignant->id );
+        // die;
+        return view('enseignant.show',
+        array_merge([
+            'enseignant' => $enseignant
+        ], $data)); 
         }
 
         public function edit(Enseignant $enseignant)

@@ -103,3 +103,16 @@ Route::get('/notes/create', [NoteController::class, 'create'])->name('notes.crea
 
 
 Route::post('annee/set-active',[AnneeController::class, 'setActive'])->name('annee.setActive');
+
+
+// Route pour obtenir les semestres en fonction de l'année
+Route::get('/semestres/{annee}', [NoteController::class, 'getSemestres'])->name('getSemestres');
+
+// Route pour obtenir les spécialités en fonction du niveau
+Route::get('/specialites/{niveau}', [NoteController::class, 'getSpecialites'])->name('getSpecialites');
+
+Route::get('/matieres/{specialite}', [NoteController::class, 'getMatieresBySpecialite']);
+
+
+Route::get('/releve/{etudiant}/annee/{annee}', [NoteController::class, 'afficherReleve'])
+    ->name('releve.afficher');

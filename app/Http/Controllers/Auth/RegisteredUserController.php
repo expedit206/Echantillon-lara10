@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Admin;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Services\DataService;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -13,9 +14,17 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
 class RegisteredUserController extends Controller
 {
+    protected $dataService;
+
+    public function __construct(DataService $dataService)
+    {
+        $this->dataService = $dataService;
+    }
+
     /**
      * Display the registration view.
      */
@@ -56,6 +65,8 @@ class RegisteredUserController extends Controller
 
     public function home()
     {
-        return view('admin.home');
+        $data = $this->dataService->getAllData();
+
+        return view('admin.home',   array_merge([], $data));
      }
 }

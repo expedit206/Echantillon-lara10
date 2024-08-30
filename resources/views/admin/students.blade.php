@@ -105,19 +105,9 @@
 
         <div class="table mt-3 ">
         <p class="font-bold text-1xl italic">Total : {{$total}}</p>
-        <table class="table table-striped overflow-scroll"
-            style="
-
-                border:1px black solid !important;
-                --bs-table-color: #161313;
-                --bs-table-bg: white;
-                --bs-table-border-color: #4d5154;
-                --bs-table-striped-bg: #2c303426;
-                --bs-table-striped-color: #0f0e0e ;
-            "
-            >
-            <thead>
-                <tr>
+        <table class="overflow-scroll table-custom">
+            <thead class="table-head-custom">
+                <tr class="bg-transparent">
                     <th scope="col">#</th>
                     <th scope="col">Nom</th>
                     <th scope="col">Prenom</th>
@@ -170,6 +160,7 @@
 
         {{ $students->appends(request()->input())->links() }}
     </div>
+    <x-modal-form :annees="$annees" :semestres="$semestres" :niveaux="$niveaux" :specialites="$specialites" :matieres="$uniteValeurs" />
 @endsection
 
 </x-layout>

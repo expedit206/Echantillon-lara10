@@ -102,16 +102,8 @@
         <div class="table mt-3">
         <p class="font-bold text-1xl italic">Total : {{$total}}</p>
 
-            <table class="table table-striped"
-                style="
-                border:1px black solid !important;
-                --bs-table-color: #161313;
-                --bs-table-bg: white;
-                --bs-table-border-color: #4d5154;
-                --bs-table-striped-bg: #2c303426;
-                --bs-table-striped-color: #0f0e0e;
-            ">
-                <thead>
+            <table class="table-custom">
+                <thead class="table-head-custom">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nom</th>

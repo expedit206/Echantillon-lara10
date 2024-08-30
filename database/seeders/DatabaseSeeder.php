@@ -11,6 +11,7 @@ use Database\Seeders\AdminSeeder;
 use Database\Seeders\AnneesSeeder;
 use Database\Seeders\NiveauSeeder;
 use Database\Seeders\FiliereSeeder;
+use Database\Seeders\CategorySeeder;
 use Database\Seeders\EtudiantSeeder;
 use Database\Seeders\SemestreSeeder;
 use Database\Seeders\EnseignantSeeder;
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AnneesSeeder::class,
             AdminSeeder::class,
+            CategorySeeder::class,
             // FiliereSeeder::class,
             // NiveauSeeder::class,
             SemestreSeeder::class,

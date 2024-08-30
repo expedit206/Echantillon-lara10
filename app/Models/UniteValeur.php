@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Note;
 use App\Models\Niveau;
 use App\Models\Filiere;
+use App\Models\Category;
 use App\Models\Etudiant;
 use App\Models\Enseignant;
 use App\Models\Specialite;
@@ -24,6 +25,7 @@ class UniteValeur extends Model
         'enseignant_id',
         'filiere_id',
         'specialite_id',
+        'category_id',
         'niveau_id',
     ];
     protected $table = 'unite_de_valeurs';
@@ -57,5 +59,11 @@ class UniteValeur extends Model
     public function etudiants()
 {
     return $this->belongsToMany(Etudiant::class, 'etudiant_unite_valeur');
+}
+
+
+public function category()
+{
+    return $this->belongsTo(Category::class);
 }
 }

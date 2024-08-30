@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('specialite_id')->contrained(); // String nom, unique
             $table->foreignId('niveau_id')->contrained(); // String nom, unique
             $table->foreignId('semestre_id')->contrained(); // String nom, unique
+            $table->foreignId('category_id')->contrained(); // String nom, unique
             $table->timestamps(); // created_at et updated_at
         });
 

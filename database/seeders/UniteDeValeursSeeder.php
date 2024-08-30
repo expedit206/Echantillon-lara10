@@ -2,13 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Enseignant;
 use App\Models\Niveau;
+use App\Models\Filiere;
+use App\Models\Category;
+use App\Models\Enseignant;
 use App\Models\Specialite;
 use App\Models\UniteValeur;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\Filiere;
 use Illuminate\Support\Facades\Log;
 
 class UniteDeValeursSeeder extends Seeder
@@ -23,6 +24,7 @@ class UniteDeValeursSeeder extends Seeder
         $specialites = Specialite::all();
         $semestre =\DB::table('semestres')->get();
         $niveaux = Niveau::all();
+        $categories = Category::all();
 
         $unites = [
             ['nom' => 'Mathematiques', 'description' => 'Cours de base en mathématiques', 'credit' => 5, 'created_at' => now()],
@@ -43,7 +45,8 @@ class UniteDeValeursSeeder extends Seeder
             $unite['specialite_id'] = $specialites->random()->id;
             $unite['niveau_id'] = $niveaux->random()->id;
             $unite['semestre_id'] = $semestre->random()->id;
-
+            $unite['category_id'] = $categories->random()->id;
+            
             $specialite = Specialite::find($unite['specialite_id']);
             $filiere = Filiere::find($unite['filiere_id']);
 

@@ -8,13 +8,20 @@ use App\Models\Filiere;
 use App\Models\Etudiant;
 use App\Models\Specialite;
 use Illuminate\Http\Request;
+use App\Services\DataService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class EtudiantController extends Controller
 {
+    public function __construct(DataService $dataService)
+    {
+        $this->dataService = $dataService;
+    }
     public function index(Request $request)
     {
+        $data = $this->dataService->getAllData();
+
         $annee_id=Annee::where('is_active',true)->first()->id;
         $students = Etudiant::where('annee_id',$annee_id)->latest();
         // dd($request);
@@ -23,11 +30,11 @@ class EtudiantController extends Controller
 
 
         if($request['search'] || $request['niveau'] || $request['filiere'] || $request['anciennete']){
-            
+
             $search=$request['search'];
             $annee_id=\DB::table('annees')->where('is_active', true)->first()->id;
-            
-            
+
+
             $specialite=Specialite::where('id', $request['specialite'])->first()?? "";
             // dd($request['specialite']);
             $filiere= Filiere::where('nom',$request['filiere'])->first()??  "";
@@ -149,32 +156,50 @@ class EtudiantController extends Controller
 
         $annees = Annee::all();
         // dd($students->niveau);
-        return view('admin.students', compact('students','total','search','niveaux','filieres','annees','specialites'));
+        return view('admin.students',
+        array_merge([
+            'search' => $search,
+            'total' => $total,
+            'students' => $students,
+            'filieres' => $filieres,
+        ], $data));
     }
 
      public function home()
     {
-   return view('etudiant.home');
+        $data = $this->dataService->getAllData();
+
+   return view('etudiant.home', $data);
     }
      public function show(Etudiant $student)
      {
+        $data = $this->dataService->getAllData();
+
          // Récupération de l'enseignant avec ses relations
          $student = Etudiant::findOrFail($student->id);
 
-         return view('etudiant.show', compact('student'));
+         return view('etudiant.show',  array_merge([
+            'student' => $student,
+        ], $data));
      }
 
 
      public function studentsByFiliere(Filiere $filiere)
      {
+        $data = $this->dataService->getAllData();
+
 
          $students = Etudiant::where('filiere_id', $filiere->id)->latest()->paginate(15);
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
 
          $total = $students->count();
-         return view('admin.students',compact('students','total','niveaux','filieres'));
-        }
+         return view('admin.students',    array_merge([
+            'total' => $total,
+            'students' => $students,
+            'filieres' => $filieres,
+        ], $data));
+    }
 
 
 
@@ -185,6 +210,10 @@ class EtudiantController extends Controller
         $filieres = Filiere::orderBy('created_at', 'desc')->get();
 
          $total = $students->count();
-         return view('admin.students',compact('students','total','niveaux','filieres'));
+         return view('admin.students',     array_merge([
+            'total' => $total,
+            'students' => $students,
+            'filieres' => $filieres,
+        ], $data));
         }
 }
