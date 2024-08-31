@@ -72,14 +72,13 @@ public function getMatieresBySpecialite($semestre,$specialite)
 
     $matieres = UniteValeur::
     where('specialite_id', $specialite)
-    ->where('semestre_id', 2)
+    ->where('semestre_id', $semestre)
     ->get();
     return response()->json($matieres);
 }
 
 public function getMatieresBySemestre($specialite,$semestre)
 {
-    die;
     $matieres = UniteValeur::
     where('semestre_id', $semestre)
     ->where('specialite_id',$specialite)
@@ -120,15 +119,15 @@ private function getNotesForSemestre($etudiant, $semestreNom)
         ->where('type', 'Controle continu')
         ->first();
         // dump($matiere);
-        
+
         $sessionNormaleNote = $notesSemestre->where('unite_valeur_id', $matiere->id)
         ->where('type', 'Normale')
         ->first();
-        
+
         $rattrapageNote = $notesSemestre->where('unite_valeur_id', $matiere->id)
         ->where('type', 'Rattrapage')
         ->first();
-        
+
         $isRattrapage = (bool) $rattrapageNote;
         $noteFinale = $rattrapageNote ? (
             $rattrapageNote->note * 0.7  +

@@ -74,9 +74,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Fonction pour mettre à jour les matières
         function updateMatieresBySpecialite(semestreId,specialiteId) {
-            fetch(`/matieres/${semestreId}/${specialiteId}`)
-                .then(response => response.json())
+            fetch(`/matieresBySpecialite/${semestreId}/${specialiteId}`)
+                .then(
+                    response => response.json()
+                )
                 .then(data => {
+                    console.log(data);
+
                     matiereSelect.innerHTML = ""; // Clear previous options
                     data.forEach(matiere => {
                         let option = document.createElement("option");
@@ -89,9 +93,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         // Fonction pour mettre à jour les matières
         function updateMatieresBySemestre(specialiteId, semestreId) {
-            fetch(`/matieres/${specialiteId}/${semestreId}`)
+
+            fetch(`/matieresBySemestre/${specialiteId}/${semestreId}`)
                 .then(response => response.json())
                 .then(data => {
+
+                    console.log( specialiteId);
+                    console.log( semestreId);
+                    console.log(data);
                     matiereSelect.innerHTML = ""; // Clear previous options
                     data.forEach(matiere => {
                         let option = document.createElement("option");
@@ -101,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 })
                 .catch(error => console.error("Error fetching matières:", error));
+                // console.log(specialiteId);
         }
 
         // Mise à jour des sélecteurs lors du chargement de la page
@@ -111,10 +121,10 @@ document.addEventListener("DOMContentLoaded", function () {
             updateSpecialites(niveauSelect.value);
         }
         if (specialiteSelect.value) {
-            updateMatieresBySpecialite(specialiteSelect.value);
+            updateMatieresBySpecialite(semestreSelect.value,specialiteSelect.value);
         }
         if (semestreSelect.value) {
-            updateMatieresBySemestre(specialiteSelect.value);
+            updateMatieresBySemestre(specialiteSelect.value,specialiteSelect.value);
         }
 
         // Ajouter les event listeners pour les changements dynamiques après sélection
