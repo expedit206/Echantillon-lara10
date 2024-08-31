@@ -46,7 +46,7 @@ class UniteDeValeursSeeder extends Seeder
             $unite['niveau_id'] = $niveaux->random()->id;
             $unite['semestre_id'] = $semestre->random()->id;
             $unite['category_id'] = $categories->random()->id;
-            
+
             $specialite = Specialite::find($unite['specialite_id']);
             $filiere = Filiere::find($unite['filiere_id']);
 

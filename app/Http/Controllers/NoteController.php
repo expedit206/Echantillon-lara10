@@ -99,7 +99,7 @@ public function showReleveDeNotes($etudiantId, $anneeAcademique)
         'semestre1' => $this->getNotesForSemestre($etudiant, 'Semestre 1'),
         'semestre2' => $this->getNotesForSemestre($etudiant, 'Semestre 2'),
     ];
-
+    $anneeAcademique=Annee::find($anneeAcademique)->nom;
     return view('note.releve', compact('etudiant', 'notes', 'anneeAcademique', 'matieres'));
 }
 
@@ -145,6 +145,7 @@ private function getNotesForSemestre($etudiant, $semestreNom)
             'credit' => $matiere->credit,
             'appreciation' => $this->getAppreciation($noteFinale),
             'session' => $this->getSessionDate($semestreNom,$isRattrapage),
+            'semestre' =>Semestre::where('nom', $semestreNom)->first()->id
         ];
     }
     // die;
