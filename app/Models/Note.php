@@ -16,10 +16,7 @@ class Note extends Model
         return $this->belongsTo(Etudiant::class);
     }
 
-    public function unite_valeur()
-    {
-        return $this->belongsTo(UniteValeur::class);
-    }
+
 
     public function annee()
     {
@@ -30,4 +27,8 @@ class Note extends Model
     {
         return $this->belongsTo(UniteValeur::class);
     }
+    public function semestre()
+{
+    return $this->uniteValeur->semestre;
+}
 }

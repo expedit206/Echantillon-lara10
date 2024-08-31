@@ -10,14 +10,6 @@
                     <option value="{{ $annee->id }}">{{ $annee->nom }}</option>
                 @endforeach
             </select>
-
-            <label for="semestreModal" class="block mb-3 font-medium text-gray-700">Semestre</label>
-            <select id="semestreModal" name="semestre" class="block w-full mb-4 border bg-gray-400 border-gray-300 rounded-lg p-3 cursor-pointer" required>
-                @foreach ($semestres as $semestre)
-                    <option value="{{ $semestre->id }}">{{ $semestre->nom }}</option>
-                @endforeach
-            </select>
-
             <!-- Nouveau champ pour le niveau -->
             <label for="niveauModal" class="block mb-3 font-medium text-gray-700">Niveau</label>
             <select id="niveauModal" name="niveau" class="block w-full mb-4 bg-gray-400 border border-gray-300 rounded-lg p-3 cursor-pointer" required>
@@ -25,13 +17,21 @@
                     <option value="{{ $niveau->id }}">{{ $niveau->nom }}</option>
                 @endforeach
             </select>
-
+            
+            
             <label for="specialiteModal" class="block mb-3 font-medium text-gray-700">Spécialité</label>
             <select id="specialiteModal" name="specialite" class="block w-full mb-4 bg-gray-400 border border-gray-300 rounded-lg p-3 cursor-pointer" required>
                 @foreach ($specialites as $specialite)
                     <option value="{{ $specialite->id }}">{{ $specialite->nom }}</option>
                 @endforeach
             </select>
+            
+                        <label for="semestreModal" class="block mb-3 font-medium text-gray-700">Semestre</label>
+                        <select id="semestreModal" name="semestre" class="block w-full mb-4 border bg-gray-400 border-gray-300 rounded-lg p-3 cursor-pointer" required>
+                            @foreach ($semestres as $semestre)
+                                <option value="{{ $semestre->id }}">{{ $semestre->nom }}</option>
+                            @endforeach
+                        </select>
 
             <label for="matiereModal" class="block mb-3 font-medium text-gray-700">Matière</label>
             <select id="matiereModal" name="matieres" class="block w-full mb-6 border bg-gray-400 border-gray-300 rounded-lg p-3 cursor-pointer" required>

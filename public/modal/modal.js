@@ -73,8 +73,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Fonction pour mettre à jour les matières
-        function updateMatieres(specialiteId) {
-            fetch(`/matieres/${specialiteId}`)
+        function updateMatieresBySpecialite(semestreId,specialiteId) {
+            fetch(`/matieres/${semestreId}/${specialiteId}`)
+                .then(response => response.json())
+                .then(data => {
+                    matiereSelect.innerHTML = ""; // Clear previous options
+                    data.forEach(matiere => {
+                        let option = document.createElement("option");
+                        option.value = matiere.id;
+                        option.textContent = matiere.nom;
+                        matiereSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error fetching matières:", error));
+        }
+        // Fonction pour mettre à jour les matières
+        function updateMatieresBySemestre(specialiteId, semestreId) {
+            fetch(`/matieres/${specialiteId}/${semestreId}`)
                 .then(response => response.json())
                 .then(data => {
                     matiereSelect.innerHTML = ""; // Clear previous options
@@ -96,7 +111,10 @@ document.addEventListener("DOMContentLoaded", function () {
             updateSpecialites(niveauSelect.value);
         }
         if (specialiteSelect.value) {
-            updateMatieres(specialiteSelect.value);
+            updateMatieresBySpecialite(specialiteSelect.value);
+        }
+        if (semestreSelect.value) {
+            updateMatieresBySemestre(specialiteSelect.value);
         }
 
         // Ajouter les event listeners pour les changements dynamiques après sélection
@@ -105,13 +123,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         niveauSelect.addEventListener("input", function () {
-            console.log('vbnkl');
 
             updateSpecialites(this.value);
         });
 
         specialiteSelect.addEventListener("input", function () {
-            updateMatieres(this.value);
+            updateMatieresBySpecialite(semestreSelect.value,this.value);
         });
 
+        semestreSelect.addEventListener("input", function () {
+            updateMatieresBySemestre(specialiteSelect.value, this.value);
+        });
 });

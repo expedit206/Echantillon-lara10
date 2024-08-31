@@ -63,7 +63,7 @@
                         <td>{{ $sessionNormaleNote->note ?? 'N/A' }}</td> <!-- Note pour la session normale -->
                         <td>{{ $rattrapageNote->note ?? 'N/A' }}</td> <!-- Note pour le rattrapage -->
                         <td class="">
-                          <a href="{{ route('releve.afficher',['etudiant'=>$student->id, 'annee'=>request('annee') ]) }}" class="flex justify-center">
+                          <a href="{{ route('releve.show',['etudiant'=>$student->id, 'annee'=>request('annee') ]) }}" class="flex justify-center">
                             <svg width="50" height="25" viewBox="0 0 100 50"  xmlns="http://www.w3.org/2000/svg">
                                 <!-- Contour de l'œil -->
                                 <ellipse cx="50" cy="25" rx="45" ry="20" fill="none" stroke="#000" stroke-width="2"/>

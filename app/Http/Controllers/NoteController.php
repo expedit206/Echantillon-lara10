@@ -41,6 +41,7 @@ class NoteController extends Controller
         ->whereRelation('notes.uniteValeur', 'specialite_id', $specialite_id)
 
          ->paginate(30);
+
         // foreach ($students as $student ) {
         //     echo('<br>'.$student->id);
         // }
@@ -66,73 +67,111 @@ public function getSpecialites($niveau)
     return response()->json($specialites);
 }
 
-public function getMatieresBySpecialite($specialite)
+public function getMatieresBySpecialite($semestre,$specialite)
 {
-    $matieres = UniteValeur::where('specialite_id', $specialite)->get();
+
+    $matieres = UniteValeur::
+    where('specialite_id', $specialite)
+    ->where('semestre_id', 2)
+    ->get();
+    return response()->json($matieres);
+}
+
+public function getMatieresBySemestre($specialite,$semestre)
+{
+    die;
+    $matieres = UniteValeur::
+    where('semestre_id', $semestre)
+    ->where('specialite_id',$specialite)
+    ->get();
     return response()->json($matieres);
 }
 
 
-public function afficherReleve($etudiantId, $anneeId)
-{
-    $etudiant = Etudiant::findOrFail($etudiantId);
-    $semestres = Semestre::where('annee_id', $anneeId)->get();
-    
-    $releve = [];
 
-    foreach ($semestres as $semestre) {
-        $matieres = UniteValeur::where('semestre_id', $semestre->id)->get();
-        
-        foreach ($matieres as $matiere) {
-            $noteFinale = $this->calculerNoteFinale($etudiantId, $matiere->id, $semestre->id);
-            $releve[$semestre->nom][$matiere->nom] = $noteFinale;
-        }
-    }
-    
-    return view('note.releve', compact('etudiant', 'releve'));
+public function showReleveDeNotes($etudiantId, $anneeAcademique)
+{
+    $etudiant = Etudiant::with('filiere', 'specialite', 'niveau', 'specialite.uniteValeurs')
+        ->findOrFail($etudiantId);
+
+    $matieres = $etudiant->specialite->matieres;
+
+    $notes = [
+        'semestre1' => $this->getNotesForSemestre($etudiant, 'Semestre 1'),
+        'semestre2' => $this->getNotesForSemestre($etudiant, 'Semestre 2'),
+    ];
+
+    return view('note.releve', compact('etudiant', 'notes', 'anneeAcademique', 'matieres'));
 }
 
-public function telechargerRelevePDF($etudiantId, $anneeId)
+private function getNotesForSemestre($etudiant, $semestreNom)
 {
-    $etudiant = Etudiant::findOrFail($etudiantId);
-    $semestres = Semestre::where('annee_id', $anneeId)->get();
-    // dd($semestres);
-    $releve = [];
+    $notesSemestre = $etudiant->notes->filter(function ($note) use ($semestreNom) {
+        return $note->uniteValeur->semestre->nom == $semestreNom;
+    });
+    $notesByUV = [];
 
-    foreach ($semestres as $semestre) {
-        $matieres = UniteValeur::where('semestre_id', $semestre->id)->get();
+    $uniteValeursSemestre = $etudiant->specialite->uniteValeurs->filter(function($uv) use ($semestreNom) {
+        return $uv->semestre->nom == $semestreNom;
+    });
+
+    foreach ($uniteValeursSemestre as $matiere) {
+        $controleContinuNote = $notesSemestre->where('unite_valeur_id', $matiere->id)
+        ->where('type', 'Controle continu')
+        ->first();
+        // dump($matiere);
         
-        foreach ($matieres as $matiere) {
-            $noteFinale = $this->calculerNoteFinale($etudiantId, $matiere->id, $semestre->id);
-            $releve[$semestre->nom][$matiere->nom] = $noteFinale;
-        }
-    }
+        $sessionNormaleNote = $notesSemestre->where('unite_valeur_id', $matiere->id)
+        ->where('type', 'Normale')
+        ->first();
+        
+        $rattrapageNote = $notesSemestre->where('unite_valeur_id', $matiere->id)
+        ->where('type', 'Rattrapage')
+        ->first();
+        
+        $isRattrapage = (bool) $rattrapageNote;
+        $noteFinale = $rattrapageNote ? (
+            $rattrapageNote->note * 0.7  +
+            ($controleContinuNote ? $controleContinuNote->note * 0.3 : 0)
+        ) : (
+            ($controleContinuNote ? $controleContinuNote->note * 0.3 : 0) +
+            ($sessionNormaleNote ? $sessionNormaleNote->note * 0.7 : 0)
+        );
+        // dd($noteFinale);
 
-    $pdf = Pdf::loadView('releve_pdf', compact('etudiant', 'releve'));
-    return $pdf->download('releve_notes.pdf');
+        $notesByUV[] = [
+            'code' => $matiere->code,
+            'nom' => $matiere->nom,
+            'note' => $noteFinale,
+            'credit' => $matiere->credit,
+            'appreciation' => $this->getAppreciation($noteFinale),
+            'session' => $this->getSessionDate($semestreNom,$isRattrapage),
+        ];
+    }
+    // die;
+    return $notesByUV;
 }
 
-private function calculerNoteFinale($etudiantId, $matiereId, $semestreId)
-{
-    $controleContinu = Note::where('etudiant_id', $etudiantId)
-                            ->where('unite_valeur_id', $matiereId)
-                            ->whereRelation('unite_valeur', 'semestre_id', $semestreId)
-                            ->where('type', 'controle_continu')
-                            ->value('note');
-                            
-    $sessionNormale = Note::where('etudiant_id', $etudiantId)
-                            ->where('unite_valeur_id', $matiereId)
-                            ->whereRelation('unite_valeur','semestre_id', $semestreId)
-                            ->where('type', 'session_normale')
-                            ->value('note');
 
-    if ($controleContinu === null || $sessionNormale === null) {
-        return null; // Ou une autre valeur par défaut
+private function getAppreciation($note)
+{
+    if ($note >= 16) return 'Très bien';
+    if ($note >= 14) return 'Bien';
+    if ($note >= 12) return 'Assez bien';
+    if ($note >= 10) return 'Passable';
+    return 'Insuffisant';
+}
+
+private function getSessionDate($semestreNom, $rattrapage)
+{
+    $session = $semestreNom === 'Semestre 1' ? 'Mars-' : 'Juil-';
+    $session .= date('Y');
+
+    if ($rattrapage) {
+        $session = '<strong>R/</strong>' . $session;
     }
 
-    $noteFinale = ($controleContinu * 0.3) + ($sessionNormale * 0.7);
-    
-    return $noteFinale;
+    return $session;
 }
 
 

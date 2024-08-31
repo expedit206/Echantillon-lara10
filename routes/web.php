@@ -111,8 +111,9 @@ Route::get('/semestres/{annee}', [NoteController::class, 'getSemestres'])->name(
 // Route pour obtenir les spécialités en fonction du niveau
 Route::get('/specialites/{niveau}', [NoteController::class, 'getSpecialites'])->name('getSpecialites');
 
-Route::get('/matieres/{specialite}', [NoteController::class, 'getMatieresBySpecialite']);
+Route::get('/matieres/{semestre}/{specialite}', [NoteController::class, 'getMatieresBySpecialite'])->name('getMatieresBySpecialite');
+
+Route::get('/matieres/{specialite}/{semestre}', [NoteController::class, 'getMatieresBySemestre'])->name('getMatieresBySemestre');
 
 
-Route::get('/releve/{etudiant}/annee/{annee}', [NoteController::class, 'afficherReleve'])
-    ->name('releve.afficher');
+Route::get('/releve/{etudiant}/{annee}', [NoteController::class, 'showReleveDeNotes'])->name('releve.show');
