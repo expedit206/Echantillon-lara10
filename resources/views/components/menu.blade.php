@@ -1,7 +1,7 @@
 <div class="l-navbar show " id="nav-bar">
         <nav class="nav">
             <div>
-                <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i>
+                <a href="{{ route('dashboard') }}" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i>
                     <span class="nav_logo-name">Dashboard</span> </a>
                 <div class="nav_list">
                     <a href="{{ route('students') }}" class="nav_link " id='etudiants'>
@@ -20,8 +20,8 @@
                     <a href="{{ route('teachers') }}" class="open-modal nav_link" id='etudiants'> <i class='bx bx-bookmark nav_icon open-modal'  ></i> <span
                             class="nav_name open-modal">Notes</span>
                     </a>
-                    <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span
-                            class="nav_name">Files</span>
+                    <a href="{{ route('notes.create') }}" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span
+                            class="nav_name">Attribuer une note</span>
                     </a>
                     <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span
                             class="nav_name">Stats</span>

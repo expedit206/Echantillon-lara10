@@ -1,19 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AppController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnneeController;
+
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UniteValeurController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-
 use App\Http\Controllers\Auth\Etudiant\EtudiantController;
 use App\Http\Controllers\Auth\Enseignant\EnseignantController;
 use App\Http\Controllers\Auth\Admin\AuthenticatedSessionController;
-use App\Http\Controllers\NoteController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('dashboard', [AppController::class, 'dashboard'])->name('dashboard');
 
 //route pour l'admin
 Route::prefix('admin')->middleware('monGuest:admin')->group(function () {
@@ -71,11 +75,15 @@ Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'ho
 // route pour uniteValeur
 Route::resource('uniteValeur', UniteValeurController::class);
 
-// route pour uniteValeur
+// route pour note
 
 Route::get('/notes/show', [NoteController::class, 'index'])->name('notes.index');
 Route::get('/notes/create', [NoteController::class, 'create'])->name('notes.create');
+// Affiche le formulaire d'attribution des notes
+Route::get('/notes/assign', [NoteController::class, 'create'])->name('notes.create');
 
+// Traite la soumission du formulaire d'attribution des notes
+Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
 
 
 //breeze

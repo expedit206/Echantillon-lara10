@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="/menuVertical/css/style.css">
     <link rel="stylesheet" href="/menuHorizontal/css/style.css">
 
-    @vite('resources/css/app.css')
+    @vite('resources/css/app.css')  
 </head>
 
 <body id="body-pd" class="body-pd">
@@ -28,6 +28,9 @@
 
     <script src="/menuVertical/js/script.js"></script>
     <script src="/menuHorizontal/js/script.js"></script>
+    
+    <x-modal-form :annees="$annees" :semestres="$semestres" :niveaux="$niveaux" :specialites="$specialites" :matieres="$uniteValeurs" />
+
 <script src="/modal/modal.js"></script>
 
 </body>

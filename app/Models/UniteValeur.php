@@ -25,8 +25,9 @@ class UniteValeur extends Model
         'credit',
         'code',
         'enseignant_id',
-        'filiere_id',
+        'filiere_id',   
         'specialite_id',
+        'semestre_id',
         'category_id',
         'niveau_id',
     ];

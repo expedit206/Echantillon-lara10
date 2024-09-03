@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+
     // const openModalBtn = document.getElementById('open-modal');
     const openModalBtn = document.querySelectorAll(".open-modal");
 
@@ -29,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /****************************************************** */
-
-        const anneeSelect = document.getElementById("anneeModal");
+    // console.log(anneeSelect);
+    const anneeSelect = document.getElementById("anneeModal");
         const semestreSelect = document.getElementById("semestreModal");
         const niveauSelect = document.getElementById("niveauModal");
         const specialiteSelect = document.getElementById("specialiteModal");
@@ -56,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Fonction pour mettre à jour les spécialités
         function updateSpecialites(niveauId) {
+
             fetch(`/specialites/${niveauId}`)
                 .then(response => response.json())
                 .then(data => {
@@ -145,3 +147,4 @@ document.addEventListener("DOMContentLoaded", function () {
             updateMatieresBySemestre(specialiteSelect.value, this.value);
         });
 });
+console.log(specialiteSelect);

@@ -17,13 +17,15 @@ class NoteController extends Controller
 
     protected $dataService;
 
+
+
+
     public function __construct(DataService $dataService)
     {
         $this->dataService = $dataService;
     }
     public function index(Request $request)
     {
-
 
         $data = $this->dataService->getAllData();
         $semestre_id = $request->semestre;
@@ -165,13 +167,46 @@ private function getAppreciation($note)
 private function getSessionDate($semestreNom, $rattrapage)
 {
     $session = $semestreNom === 'Semestre 1' ? 'Mars-' : 'Juil-';
-    $session .= date('Y');
+    $session .= date('y');
 
     if ($rattrapage) {
         $session = '<strong>R/</strong>' . $session;
     }
 
     return $session;
+}
+
+public function create()
+{
+    // Récupérez les données nécessaires pour les sélecteurs
+    $annees = Annee::all();
+    $semestres = Semestre::all();
+    $matieres = UniteValeur::all();
+    $etudiants = Etudiant::all(); // ou filtrez selon les critères
+
+    return view('note.assign', compact('annees', 'semestres', 'matieres', 'etudiants'));
+}
+
+
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'annee' => 'required|exists:annees,id',
+        'semestre' => 'required|exists:semestres,id',
+        'matiere' => 'required|exists:matieres,id',
+        'notes' => 'required|array',
+        'notes.*' => 'numeric|min:0|max:20',
+    ]);
+
+    // Enregistrez les notes
+    foreach ($validated['notes'] as $etudiantId => $note) {
+        Note::updateOrCreate(
+            ['etudiant_id' => $etudiantId, 'matiere_id' => $validated['matiere']],
+            ['note' => $note]
+        );
+    }
+
+    return redirect()->route('notes.create')->with('success', 'Notes attribuées avec succès.');
 }
 
 

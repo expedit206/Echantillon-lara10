@@ -244,7 +244,6 @@
 
             // })
         </script>
-<x-modal-form :annees="$annees" :semestres="$semestres" :niveaux="$niveaux" :specialites="$specialites" :matieres="$uniteValeurs" />
 
     @endsection
 </x-layout>

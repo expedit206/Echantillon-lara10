@@ -93,6 +93,5 @@
         </table>
         {{ $students->appends(request()->input())->links() }}
     </div>
-    <x-modal-form :annees="$annees" :semestres="$semestres" :niveaux="$niveaux" :specialites="$specialites" :matieres="$uniteValeurs" />
     @endsection
 </x-layout>
