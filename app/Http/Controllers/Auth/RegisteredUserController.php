@@ -63,10 +63,5 @@ class RegisteredUserController extends Controller
         return redirect()->route('admin.home');
     }
 
-    public function home()
-    {
-        $data = $this->dataService->getAllData();
-
-        return view('admin.home',   array_merge([], $data));
-     }
+ 
 }

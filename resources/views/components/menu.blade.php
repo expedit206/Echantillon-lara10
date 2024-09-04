@@ -2,7 +2,7 @@
         <nav class="nav">
             <div>
                 <a href="{{ route('dashboard') }}" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i>
-                    <span class="nav_logo-name">Dashboard</span> </a>
+                    <span class="nav_logo-name">Tableau de bord</span> </a>
                 <div class="nav_list">
                     <a href="{{ route('students') }}" class="nav_link " id='etudiants'>
                         <i class='bx bx-grid-alt nav_icon'></i>

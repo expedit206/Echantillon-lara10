@@ -35,7 +35,7 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 });
 
 Route::prefix('admin')->middleware(['monAuth:admin'])->group(function () {
-    Route::get('home',[RegisteredUserController::class, 'home'])->middleware(['monAuth:admin'])->name('admin.home');//verified
+    // Route::get('home',[RegisteredUserController::class, 'home'])->middleware(['monAuth:admin'])->name('admin.home');//verified
 });
 
 Route::get('students', [App\Http\Controllers\EtudiantController::class, 'index'])->name('students');

@@ -18,6 +18,10 @@ class MonGuest
     {
 // dd($guard);
         if(Auth::guard($guard)->check()){
+            if($guard=='admin'){
+
+            return redirect()->route('dashboard');
+            }
             return redirect()->route($guard.'.home');
         }
         return $next($request);
