@@ -25,8 +25,8 @@ return new class extends Migration
                 $table->foreignId('niveau_id')->constrained('niveaux')->onUpdate('cascade'); // int niveau_id
                 $table->foreignId('filiere_id')->constrained('filieres')->onUpdate('cascade');
                 $table->foreignId('specialite_id')->constrained('specialites')->onUpdate('cascade');
+                $table->foreignId('annee_id')->constrained('annees')->onUpdate('cascade');
                  // int filiere_id
-                $table->foreignId('annee_id')->constrained('annees');
                 $table->timestamps(); // created_at et updated_at
             });
     }

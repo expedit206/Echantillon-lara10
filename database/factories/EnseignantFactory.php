@@ -38,7 +38,6 @@ class EnseignantFactory extends Factory
             'profession' => $this->faker->jobTitle,
             'diplome' => $this->faker->word,
             'annee_id' => $annees->random()->id, // Référence à une filière existante ou générée
-
             'salaire' => $this->faker->randomFloat(2, 2000, 10000),
             'typeContrat' => $this->faker->randomElement(['CDI', 'CDD', 'Intérim', 'Stage', 'Autre']),
             'debutContrat' => $this->faker->date(),

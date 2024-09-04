@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnneeController;
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\GraphiqueController;
 use App\Http\Controllers\UniteValeurController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\Etudiant\EtudiantController;
@@ -17,7 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('dashboard', [AppController::class, 'dashboard'])->name('dashboard');
+Route::get('board', [AppController::class, 'dashboard'])->name('dashboard');
+Route::get('graphique', [GraphiqueController::class, 'index'])->name('graphique');
+Route::get('NoteGraphique/{annee_id}', [GraphiqueController::class, 'note'])->name('NoteGraphique');
 
 //route pour l'admin
 Route::prefix('admin')->middleware('monGuest:admin')->group(function () {
