@@ -10,6 +10,9 @@
         
             <canvas id="evolutionChart" width="400" height="200"></canvas>
         
+            <!-- Ajouter le script du plugin Data Labels -->
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
             <script>
                 var ctx = document.getElementById('evolutionChart').getContext('2d');
                 
@@ -42,16 +45,33 @@
                         ]
                     },
                     options: {
+                        plugins: {
+                            datalabels: {
+                                color: '#000',
+                                anchor: 'end',
+                                align: 'start',
+                                formatter: function(value, context) {
+                                    return value.toFixed(2) + '%'; // Affiche le taux en pourcentage avec deux décimales
+                                }
+                            }
+                        },
                         scales: {
                             y: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%'; // Affiche le pourcentage sur l'axe Y
+                                    }
+                                }
                             }
                         }
                     }
                 });
             </script>
         </div>
-    
+        <div class='flex justify-end mt-3'>
+
+            <a href="{{ route('dashboard') }}" class="bg-red-500 p-2 rounded-lg justify-center flex items-center w-24 text-white font-bold">Retour</a>
+        </div>
     @endsection
 </x-layout>
- 

@@ -19,15 +19,16 @@
     <link rel="stylesheet" href="/menuVertical/css/style.css">
     <link rel="stylesheet" href="/menuHorizontal/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    
     @vite('resources/css/app.css')
 </head>
 
 <body id="body-pd" class="body-pd">
 
-   @yield('content')
-
-
+    @yield('content')
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <script src="/menuVertical/js/script.js"></script>
     <script src="/menuHorizontal/js/script.js"></script>
 

@@ -13,7 +13,11 @@ class GraphiqueController extends Controller
     public function index()
     {
         $annees = Annee::withCount(['etudiants', 'enseignants', 'uniteValeurs'])->get();
-    
+        $totalEtudiants = $annees->sum('etudiants_count');
+        $totalEnseignants = $annees->sum('enseignants_count');
+        $totalUnites = $annees->sum('unite_valeurs_count');
+
+
         $data = [
             'labels' => $annees->pluck('nom'),
             'etudiants' => $annees->pluck('etudiants_count'),
