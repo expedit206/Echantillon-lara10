@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     @vite('resources/css/app.css')
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-gray-300 text-gray-900">
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -18,11 +18,26 @@
         </ul>
     </div>
 @endif
+
     <div class="max-w-3xl mx-auto p-6 bg-slate-500 rounded-lg shadow-md mt-10">
-        <h1 class="text-2xl font-bold mb-6">Inscription Enseignant</h1>
 
+        <div class="flex font-bold justify-between">
+            <h1 class="text-2xl font-bold mb-6">Inscription Enseignant</h1>
+                <form method='post' action="{{route('annee.setActive')}}" id="formAnnee">
+                    @csrf
+                            <label for="annee">Année Académique</label>
+                            <select name="annee" id="annee" class="bg-slate-400 rounded-full  border-none outline-none focus:border-none cursor-pointer" onchange="submit()"
+                            >
+                                @foreach($annees as $annee)
+                                <option value="{{ $annee->id }}" class="cursor-pointer border-b-4 border-double border-black"
+                                    {{ $annee->is_active==true? 'selected':''}}
+                                    >{{ $annee->nom }}</option>
+                                @endforeach
+                            </select>
+                        </form>
+        </div>
 
-        <form method="POST" action="{{ route('enseignant.register') }}" enctype="multipart/form-data" class="">
+        <form method="POST" action="{{ route('enseignants.store') }}" enctype="multipart/form-data" class="">
             @csrf
 
             <div class="mb-4">
@@ -36,7 +51,7 @@
                 <x-label for="prenom" value="{{ __('Prénom') }}" />
                 <x-input id="prenom" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text" name="prenom" :value="old('prenom')"  autocomplete="prenom" />
             </div>
-            
+
             <div class="mb-4">
                 <x-label for="email" value="{{ __('Email') }}" />
                 <x-input id="email" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="email" name="email" :value="old('email')"  autocomplete="username" />
@@ -110,15 +125,7 @@
                 <x-input id="finContrat" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="date" name="finContrat" :value="old('finContrat')" />
             </div>
 
-            <div class="mb-4">
-                <x-label for="uniteValeur" value="{{ __('Unité de valeur') }}" />
-                <input type="text" list="unitedevaleur" name="uniteValeur"  autocomplete="on" class="block mt-1 border border-gray-300 rounded-md p-2 w-full">
-                <datalist id="unitedevaleur">
-                    @foreach ($unite_de_valeurs as $unite_de_valeur)
-                        <option value="{{ $unite_de_valeur->nom }}"></option>
-                    @endforeach
-                </datalist>
-            </div>
+                <input type="text" hidden>
 
             <div class="mb-4">
                 <x-label for="password" value="{{ __('Password') }}" />

@@ -62,7 +62,8 @@ class EtudiantController extends Controller
                 'title'=>"Bienvenue ". $this->data['nom'] ." ".  $this->data['prenom'],
                 'message'=>"Connecter vous au site avec votre code",
                 'code'=>$this->data['code'],
-                'email'=>$this->data['email']
+                'email'=>$this->data['email'],
+                'route'=>$this->data['route'],
             ];
 
             Mail::to($this->data['email'])->send(new CodeMail('reucperation du code', $dataMail, 'Admin@gmail.com', 'Administrateur'));

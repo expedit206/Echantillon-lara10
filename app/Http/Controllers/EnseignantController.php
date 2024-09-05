@@ -66,7 +66,7 @@ class EnseignantController extends Controller
         $specialites = Specialite::orderBy('created_at', 'desc')->get();
         $annees = Annee::orderBy('created_at', 'desc')->get();
         $uniteValeurs = UniteValeur::orderBy('created_at', 'desc')->get();
- 
+
         // dd($annees);
         return view('admin.teachers', array_merge([
             'teachers' => $teachers,
@@ -74,6 +74,12 @@ class EnseignantController extends Controller
                 'search' => $search,
         ], $data));
     }
+
+    public function dashboard()
+    {
+        return view('enseignant.dashbord');
+    }
+
      public function teachersByFiliere(Filiere $filiere)
      {
         $data = $this->dataService->getAllData();
@@ -90,13 +96,6 @@ class EnseignantController extends Controller
         ], $data));
         }
 
-
-        // array_merge([
-        //     'search' => $search,
-        //     'total' => $total,
-        //     'students' => $students,
-        //     'filieres' => $filieres,
-        // ], $data));
      public function teachersByNiveau(Niveau $niveau)
      {
 
@@ -122,7 +121,7 @@ class EnseignantController extends Controller
         return view('enseignant.show',
         array_merge([
             'enseignant' => $enseignant
-        ], $data)); 
+        ], $data));
         }
 
         public function edit(Enseignant $enseignant)

@@ -205,6 +205,8 @@ class EtudiantController extends Controller
 
      public function studentsByNiveau(Niveau $niveau)
      {
+        $data = $this->dataService->getAllData();
+
          $students = Etudiant::where('niveau_id', $niveau->id)->latest()->paginate(15);
         $niveaux = Niveau::orderBy('created_at', 'desc')->get();
         $filieres = Filiere::orderBy('created_at', 'desc')->get();

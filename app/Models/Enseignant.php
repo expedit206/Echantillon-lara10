@@ -38,6 +38,7 @@ class Enseignant extends Authenticatable
         'sexe',
         'dateNaiss',
         'lieuNaiss',
+        'annee_id',
         'nationalite',
         'mobile',
         'profession',

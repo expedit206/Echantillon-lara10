@@ -7,13 +7,13 @@
 
     <div class="mb-10 bg-slate-300">
         <h2 class="text-3xl font-bold mb-6 ">Statistiques de reussite de l'année : {{ $annee }}</h2>
-    
+
         <canvas id="evolutionChart" width="400" height="200"></canvas>
        {{-- @dd($reussiteGarcons) --}}
-        
+
         <script>
             var ctx = document.getElementById('evolutionChart').getContext('2d');
-            
+
             var evolutionChart = new Chart(ctx, {
                 type: 'bar', // Utiliser 'bar' pour les pourcentages par genre et 'line' pour les globales
                 data: {
@@ -73,7 +73,7 @@
 <script>
             // Ajouter un graphique pour le taux de réussite global par année
             var ctxGlobal = document.getElementById('globalChart').getContext('2d');
-            
+
             var globalChart = new Chart(ctxGlobal, {
                 type: 'bar',
                 data: {

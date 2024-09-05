@@ -13,7 +13,7 @@
 
 </head>
 <body class="max-h-[100vh] light-mode " data-bs-theme="light" >
-    
+
 <main class="" style="
   display: grid;
   grid-template-rows: 12% 89%;
@@ -54,7 +54,7 @@
                 </summary>
                 <div class="btn-inscription flex flex-col gap-2 mt-1 absolute bg-blue-500 w-full">
                     <form method="get"
-                    action="{{ route('enseignant.register') }}"
+                    action="{{ route('enseignants.create') }}"
                     >
                         <button class="btn bg-slate-200" >Enseignant</button>
                     </form>
@@ -124,7 +124,7 @@
 
     <div class="second   w-full flex justify-center h-1/2  lg:h-full lg:w-1/2 items-center">
         <img src="build/assets/img/bdhero.jpeg" alt="" class="lg:w-[90%] lg:h-[80%]  w-[90%] h-[90%] rounded-[1rem] lg:rounded-s-[0rem] lg:rounded-e-[4rem] shadow-2xl " style="
-            box-shadow: 0 5px 7px 0px blue; 
+            box-shadow: 0 5px 7px 0px blue;
             ">
     </div>
   </section>

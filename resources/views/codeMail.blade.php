@@ -12,13 +12,24 @@
     </h1>
     <p>
     </p>
-    {{ $data['message'] }} {{ $data['code'] }}
+    {{ $data['message'] }} "{{ $data['code']??$data['password'] }}" 
     ou cliquer simplement sur le lien ci dessous
-
     <p>NB: Vous urliserez ce code pour vos connexions futurs</p>
-    <a href="{{ route('etudiant.login', [
+@if ($data['route']=='enseignant.login')
+
+
+    <a href="{{ route($data['route'], [
+    'email'=>$data['email'],
+     'password'=>$data['password'],
+    ]) }}">Copier le code</a>
+
+    @else
+
+    <a href="{{ route($data['route'], [
     'email'=>$data['email'],
     'code'=>$data['code'],
     ]) }}">Copier le code</a>
+@endif
+
 </body>
 </html>

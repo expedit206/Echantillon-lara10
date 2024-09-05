@@ -24,20 +24,20 @@ class GraphiqueController extends Controller
             'enseignants' => $annees->pluck('enseignants_count'),
             'uniteValeurs' => $annees->pluck('unite_valeurs_count'),
         ];
-    
+
         return view('graphique', compact('data', 'totalEtudiants', 'totalEnseignants', 'totalUnites'));
     }
-    
 
 
-    
+
+
     public function note($annee_id)
 {
     // Récupérer les taux de réussite par semestre pour les garçons
     $reussiteGarcons = Note::join('etudiants', 'notes.etudiant_id', '=', 'etudiants.id')
         ->join('unite_de_valeurs', 'notes.unite_valeur_id', '=', 'unite_de_valeurs.id')
         ->join('semestres', 'unite_de_valeurs.semestre_id', '=', 'semestres.id')
-        ->where('etudiants.sexe', 'Masculin')
+        ->where('etudiants.sexe', 'Homme')
         ->where('semestres.annee_id', $annee_id)
         ->select('semestres.nom', DB::raw('COUNT(CASE WHEN notes.note >= 10 THEN 1 END) / COUNT(*) * 100 AS taux_reussite'))
         ->groupBy('semestres.nom')
@@ -63,9 +63,9 @@ class GraphiqueController extends Controller
         ->select('semestres.nom', DB::raw('COUNT(CASE WHEN notes.note >= 10 THEN 1 END) / COUNT(*) * 100 AS taux_reussite'))
         ->groupBy('semestres.nom')
         ->pluck('taux_reussite', 'semestres.nom');
-        
+
         // dump($reussiteGlobaleSemestre);
-        // $reussiteGlobaleSemestre = 
+        // $reussiteGlobaleSemestre =
     // Calculer le taux de réussite global pour l'année entière
     $reussiteGlobaleAnnee = [
         'Garçons' => $reussiteGarcons->avg(),
@@ -77,5 +77,5 @@ $annee= Annee::find($annee_id)->nom;
 
     return view('noteGraphique', compact('annee','reussiteGarcons', 'reussiteFilles', 'reussiteGlobaleSemestre', 'reussiteGlobaleAnnee'));
 }
-    
+
 }
