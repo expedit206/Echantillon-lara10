@@ -23,13 +23,14 @@ class EnseignantFactory extends Factory
         // Récupérer un nom d'unité de valeur aléatoire pour la clé étrangère
         $uniteValeur = UniteValeur::inRandomOrder()->first();
         $annees = Annee::all();
-
+$emailExist=Enseignant::where('email','aaa@aaa');
+$mail=$emailExist? $this->faker->unique()->safeEmail: 'aaa@aaa';
         return [
             'nom' => $this->faker->lastName,
             'prenom' => $this->faker->firstName,
             'sexe' => $this->faker->randomElement(['Masculin', 'Féminin', 'Autre']),
-            'email' => $this->faker->unique()->safeEmail,
-            'password' => bcrypt('password'), // Vous pouvez utiliser Hash::make('password') aussi
+            'email' => $mail,
+            'password' => bcrypt('aaaaaaaa'), // Vous pouvez utiliser Hash::make('password') aussi
             'dateNaiss' => $this->faker->date(),
             'lieuNaiss' => $this->faker->city,
             'nationalite' => $this->faker->country,

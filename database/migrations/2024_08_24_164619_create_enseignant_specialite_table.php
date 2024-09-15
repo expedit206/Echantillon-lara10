@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('enseignant_specialite', function (Blueprint $table) {
            
-            $table->foreignId('enseignant_id')->constrained('enseignants')->onUpdate('cascade'); // int idenseignant
-            $table->foreignId('specialite_id')->constrained('specialites')->onUpdate('cascade'); // int idNiveau
+            $table->foreignId('enseignant_id')->constrained('enseignants')->onUpdate('cascade')->onDelete('cascade'); // int idenseignant
+            $table->foreignId('specialite_id')->constrained('specialites')->onUpdate('cascade')->onDelete('cascade'); // int idNiveau
             $table->timestamps();
         });
     }

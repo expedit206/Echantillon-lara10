@@ -10,19 +10,19 @@
 <div class="flex items-center justify-end">
 
     <a href="{{ route('graphique') }}" class="mb-2 px-2 bg-blue-500 rounded-lg flex items-center h-[3rem] text-white">
-    
+
 
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
             <path d="M3 17l6-6 4 4 8-8"></path>
             <path d="M14 7h7v7"></path>
           </svg>
-          
+
         Graphique de synthese</a>
 </div>
         <!-- Statistiques Globales -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
             <!-- Étudiants -->
-            
+
             <div class="bg-blue-600 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
                 <div class="flex justify-center mb-4">
                     <img src="/dashboard/matiere.png" alt="Étudiants" class="w-[60%] h-[60%]">
@@ -67,9 +67,9 @@
                                     <line x1="18" y1="20" x2="18" y2="4"></line>
                                     <line x1="6" y1="20" x2="6" y2="16"></line>
                                   </svg>
-                                  
+
                                 Graphique de reussite</a>
-                            
+
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">

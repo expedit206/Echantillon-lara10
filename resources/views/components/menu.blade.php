@@ -51,7 +51,10 @@
                 </a>
             </div>
         </div>
+
         <div>
+            @if(Auth::guard('admin')->check())
+
             <a href="{{ route('etudiant.register') }}" class="nav_link">
                 <i class='bx bx-plus nav_icon'></i>
                 <span class="nav_name">Ajouter un etudiant</span>
@@ -60,18 +63,31 @@
                 <i class='bx bx-plus nav_icon'></i>
                 <span class="nav_name">Ajouter un enseignant</span>
             </a>
-            {{-- @dd() --}}
-            {{-- @dd(Auth::guard('enseignant')->user()->id) --}}
+            @endif
+            {{-- <form action="
             @if(Auth::guard('enseignant')->check())
-            <form action="{{ route('enseignants.destroy', Auth::guard('enseignant')->user()->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?');">
+            {{ route('enseignants.destroy', Auth::guard('enseignant')->user()->id) }}
+            @elseif(Auth::guard('admin')->check())
+            {{ route('admin.destroy', Auth::guard('admin')->user()->id) }}
+            @endif
+
+            " method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?');">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="nav_link">
+            </form> --}}
+            
+                <a href="
+            @if(Auth::guard('enseignant')->check())
+                {{ route('enseignant.logout') }}
+            @endif
+            @if(Auth::guard('admin')->check())
+                {{ route('admin.logout') }}
+            @endif
+
+                " class="nav_link">
                     <i class='bx bx-log-out nav_icon'></i>
                     <span class="nav_name">SignOut</span>
-                </button>
-            </form>
-        @endif
+                </a>
     </div>
     </nav>
 </div>

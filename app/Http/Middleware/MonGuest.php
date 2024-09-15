@@ -22,7 +22,7 @@ class MonGuest
 
             return redirect()->route('dashboard');
             }
-            return redirect()->route($guard.'.home');
+            return redirect()->route($guard.'.login');
         }
         return $next($request);
     }

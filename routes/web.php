@@ -16,20 +16,23 @@ use App\Http\Controllers\Auth\Admin\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('monGuest:admin');
 
-Route::prefix('admin')->middleware('monAuth:admin','monAuth:enseignant')->group(function () {
-
-Route::get('board', [AppController::class, 'dashboard'])->name('dashboard');
-});
 Route::get('graphique', [GraphiqueController::class, 'index'])->name('graphique');
 Route::get('NoteGraphique/{annee_id}', [GraphiqueController::class, 'note'])->name('NoteGraphique');
 
-//route pour l'admin
-Route::prefix('admin')->middleware('monGuest:admin')->group(function () {
+Route::prefix('admin')->middleware('monAuth:admin')->group(function () {
+Route::get('board', [AppController::class, 'dashboard'])->name('dashboard')->middleware('admin');
+Route::delete('destroy', [AuthenticatedSessionController::class, 'destroy'])
+->name('admin.destroy');
+});
 
-Route::get('login', [AuthenticatedSessionController::class, 'create'])
-->name('admin.login');
+//route pour l'admin
+Route::prefix('admin')->group(function () {
+
+Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('admin.login')->middleware('monGuest:admin','monGuest:enseignant');
+Route::get('logout', [AuthenticatedSessionController::class, 'logout'])
+->name('admin.logout');
 Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
 Route::get('register', [RegisteredUserController::class, 'showRegister'])
@@ -41,7 +44,7 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 //     Route::get('home',[RegisteredUserController::class, 'home'])->middleware(['monAuth:admin'])->name('admin.home');//verified
 // });
 
-Route::get('students', [App\Http\Controllers\EtudiantController::class, 'index'])->name('students');
+Route::get('students', [App\Http\Controllers\EtudiantController::class, 'index'])->name('students')->middleware('monAuth');
 Route::get('students/{student}', [App\Http\Controllers\EtudiantController::class, 'show'])->name('student.show');
 Route::get('students/edit/{student}', [EtudiantController::class, 'edit'])->name('student.edit');
 Route::post('students/update/{student}', [EtudiantController::class, 'update'])->name('student.update');
@@ -55,12 +58,16 @@ Route::get('teachers', [App\Http\Controllers\EnseignantController::class, 'index
 Route::get('enseignant/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'show'])->name('teacher.show');
 Route::get('enseignant/edit/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'edit'])->name('teacher.edit');
 
-Route::get('enseignants/login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'showLogin'])->name('enseignant.login');
-    Route::post('enseignants/login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'login']);
+Route::get('enseignants/login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'showLogin'])->name('enseignant.login')->middleware('monGuest:enseignant','monGuest:admin');
+Route::post('enseignants/login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'login']);
 
-Route::get('enseignants/dashboard', [EnseignantController::class, 'dashborad'])->name('enseignant.dashboard')->middleware('monAuth:enseignant');;
+Route::get('/enseignants/logout', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'logout'])->name('enseignant.logout');
+
+Route::get('enseignants/dashboard', [EnseignantController::class, 'dashboard'])->name('enseignant.dashboard')->middleware('enseignant');
 
 Route::resource('enseignants', \App\Http\Controllers\Auth\Enseignant\EnseignantController::class);
+// routes/web.php
+Route::get('/cours/{uniteValeur}/graphique', [EnseignantController::class, 'graphique'])->name('coursGraphique');
 
 
 

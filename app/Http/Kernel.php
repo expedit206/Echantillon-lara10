@@ -2,9 +2,11 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Admin;
 use App\Http\Middleware\MonAuth;
 use App\Http\Middleware\Etudiant;
 use App\Http\Middleware\MonGuest;
+use App\Http\Middleware\Enseignant;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -33,9 +35,9 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+            \Illuminate\Session\Middleware\StartSession::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -59,6 +61,8 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'monGuest' => MonGuest::class,
         'monAuth' => MonAuth::class,
+        'enseignant' => Enseignant::class,
+        'admin' => Admin::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

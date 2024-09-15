@@ -33,6 +33,7 @@ class Etudiant extends Authenticatable
         'lieuNaiss',
         'numeroTelephone',
         'filiere_id',
+        'specialite_id',
         'niveau_id',
         'sexe',
         'code',
@@ -43,6 +44,7 @@ class Etudiant extends Authenticatable
     protected $with=[
         'niveau',
         'filiere',
+        'specialite',
         'niveau',
         'annee'
 

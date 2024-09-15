@@ -86,7 +86,7 @@ class EnseignantController extends Controller
             'email'=>$data['email'],
             'route'=>'enseignant.login'
         ];
-        
+
         Mail::to($data['email'])->send(new CodeMail('reucperation du code', $dataMail, 'Admin@gmail.com', 'Administrateur'));
         // Rediriger après l'inscription
         return redirect()->route('enseignant.login')->with('success', 'Enseignant ajouté avec succès.');
@@ -114,9 +114,9 @@ class EnseignantController extends Controller
     public function destroy(Enseignant $enseignant)
 {
     // Rechercher l'enseignant par son ID
-     echo $enseignant;
-    $enseignant = Enseignant::find($enseignant);
-dd($enseignant);
+     echo $enseignant->id  ;
+    $enseignant = Enseignant::find($enseignant->id );
+// dd($enseignant);
     // Vérifier si l'enseignant existe
     if (!$enseignant) {
         return redirect()->back()->with('error', 'Enseignant non trouvé.');
@@ -126,8 +126,24 @@ dd($enseignant);
     $enseignant->delete();
 
     // Rediriger avec un message de succès
-    return redirect()->route('enseignant.index')->with('success', 'Enseignant supprimé avec succès.');
+    return redirect()->route('enseignant.login')->with('success', 'Enseignant supprimé avec succès.');
 }
+
+    // Fonction de déconnexion pour l'enseignant
+    public function logout(Request $request)
+    {
+        // Déconnecter l'enseignant
+        Auth::guard('enseignant')->logout();
+
+        // Invalider la session
+        $request->session()->invalidate();
+
+        // Régénérer le token CSRF pour la sécurité
+        $request->session()->regenerateToken();
+
+        // Rediriger vers la page de connexion ou d'accueil après la déconnexion
+        return redirect()->route('enseignant.login')->with('status', 'Vous avez été déconnecté.');
+    }
 
     // Afficher la page d'accueil après connexion
 

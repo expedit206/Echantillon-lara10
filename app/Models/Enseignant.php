@@ -57,7 +57,8 @@ class Enseignant extends Authenticatable
     protected $with= [
     'niveaux',
     'filieres',
-    'uniteValeurs'
+    'uniteValeurs',
+    'specialites'
     ];
 
 
@@ -67,6 +68,7 @@ class Enseignant extends Authenticatable
     {
         return $this->belongsToMany(Filiere::class, 'enseignant_filiere', 'enseignant_id', 'filiere_id');
     }
+
 
     public function uniteValeurs(): HasMany
     {
