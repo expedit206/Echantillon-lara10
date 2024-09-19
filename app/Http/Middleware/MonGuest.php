@@ -16,13 +16,11 @@ class MonGuest
      */
     public function handle(Request $request, Closure $next, $guard=null): Response
     {
-// dd($guard);
         if(Auth::guard($guard)->check()){
             if($guard=='admin'){
-
             return redirect()->route('dashboard');
             }
-            return redirect()->route($guard.'.login');
+            return redirect()->route('login');
         }
         return $next($request);
     }

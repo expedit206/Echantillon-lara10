@@ -80,7 +80,7 @@ class EnseignantController extends Controller
 
 
 
-        public function dashboard()
+            public function dashboard()
         {
             // Obtenir l'enseignant connecté
             $enseignant = Auth::guard('enseignant')->user();

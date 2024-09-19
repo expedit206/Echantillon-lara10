@@ -58,12 +58,12 @@ Route::get('teachers', [App\Http\Controllers\EnseignantController::class, 'index
 Route::get('enseignant/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'show'])->name('teacher.show');
 Route::get('enseignant/edit/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'edit'])->name('teacher.edit');
 
-Route::get('enseignants/login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'showLogin'])->name('enseignant.login')->middleware('monGuest:enseignant','monGuest:admin');
-Route::post('enseignants/login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'login']);
+Route::get('login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'showLogin'])->name('login');
+Route::post('login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'login']);
 
 Route::get('/enseignants/logout', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'logout'])->name('enseignant.logout');
 
-Route::get('enseignants/dashboard', [EnseignantController::class, 'dashboard'])->name('enseignant.dashboard')->middleware('enseignant');
+Route::get('enseignants/dashboard', [EnseignantController::class, 'dashboard'])->name('enseignant.dashboard')->middleware('monAuth');
 
 Route::resource('enseignants', \App\Http\Controllers\Auth\Enseignant\EnseignantController::class);
 // routes/web.php

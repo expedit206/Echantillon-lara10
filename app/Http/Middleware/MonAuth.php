@@ -15,15 +15,14 @@ class MonAuth
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
         */
-        public function handle(Request $request, Closure $next,$guard=null): Response
+        public function handle(Request $request, Closure $next): Response
         {
-        \Log::info('session'.session()->get('last_logged_out_user_type'));
-        $lastLoggedOutUserType = session()->get('last_logged_out_user_type');
+            if(!Auth::guard('enseignant')->check() && !Auth::guard('etudiant')->check()){
 
-        if ($lastLoggedOutUserType==$guard) {
-            session()->forget('last_logged_out_user_type');
-            return redirect()->route($guard.'.login');
-        }
+                return redirect()->route('login');
+
+            }
+           
 
         // return $request->expectsJson() ? null : route($guard.'.login');
 

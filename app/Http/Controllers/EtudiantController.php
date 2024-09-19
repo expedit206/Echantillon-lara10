@@ -36,6 +36,7 @@ class EtudiantController extends Controller
         // Si un administrateur est connecté
         $students = $this->getStudentsForAdmin($annee_id, $request);
         // $total=$students->count();
+
     }
 
     // Récupérer les filtres pour les recherches
@@ -58,7 +59,9 @@ private function getStudentsForEnseignant($enseignant,$annee_id, Request $reques
     $students = collect();
     $page = $request->input('page', 1);
     $perPage = 12;
+    // dd($enseignant->specialites);
     foreach ($enseignant->specialites as $specialite) { 
+
         $query = Etudiant::where('annee_id', $annee_id)
         ->where('specialite_id', $specialite->id) ;
         $query = $query->where('specialite_id', $specialite->id);

@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-header ">{{ __('Connexion') }}</div>
                 <div class="card-body ">
-                    <form method="POST" action="{{ route('enseignant.login') }}">
+                    <form method="POST" action="{{ route('login') }}">
                         @csrf
                         {{ request('email') }}
 

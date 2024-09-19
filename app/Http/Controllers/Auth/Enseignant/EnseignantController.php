@@ -95,7 +95,7 @@ class EnseignantController extends Controller
     // Afficher le formulaire de connexion
     public function showLogin()
     {
-        return view('auth.enseignant.login');
+        return view('auth.login');
     }
 
     // Connexion de l'enseignant
@@ -107,6 +107,7 @@ class EnseignantController extends Controller
             // Auth::guard('enseignant') pour spécifier le guard enseignant
             return redirect()->route('enseignant.dashboard');
         }
+        die;
 
         return redirect()->back()->withErrors(['email' => 'Les informations d\'identification ne correspondent pas.'])->withInput();
     }
@@ -142,7 +143,7 @@ class EnseignantController extends Controller
         $request->session()->regenerateToken();
 
         // Rediriger vers la page de connexion ou d'accueil après la déconnexion
-        return redirect()->route('enseignant.login')->with('status', 'Vous avez été déconnecté.');
+        return redirect()->route('login')->with('status', 'Vous avez été déconnecté.');
     }
 
     // Afficher la page d'accueil après connexion

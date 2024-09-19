@@ -7,10 +7,9 @@
 
     <div class="container mx-auto p-6 bg-slate-400">
         <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">Tableau de Bord Enseignant</h1>
-<select name="" id="">
+        Année :
 
-    <option value="">{{$annee}}</option>
-</select>
+    <span class="mb-2 font-bold"> {{$annee}}</span>
         <!-- Statistiques Globales pour l'enseignant -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
             <!-- Cours enseignés -->
