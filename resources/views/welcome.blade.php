@@ -116,10 +116,8 @@
         ">Bienvenu sur l'appplication qui revolutionne la gestion de vos relevés de notes </p>
         <h3 class="italic font-semibold text-xl">Se connecter en tant que</h3>
         <div class="flex gap-2 text-white">
-            <a href="{{ route('admin.login') }}" class="rounded-md p-2 hover:bg-blue-500 bg-blue-600">Administrateur</a>
-            <a href="{{ route('enseignant.login') }}" class="rounded-md p-2 hover:bg-blue-500 bg-blue-600">Enseignant</a>
-            <a href="{{ route('etudiant.login') }}" class="rounded-md p-2 hover:bg-blue-500 bg-blue-600">Etudiant</a>
-        </div>
+            <a href="{{ route('login') }}" class="rounded-md p-2 hover:bg-blue-500 bg-blue-600">Se connecter</a>
+         </div>
     </div>
 
     <div class="second   w-full flex justify-center h-1/2  lg:h-full lg:w-1/2 items-center">

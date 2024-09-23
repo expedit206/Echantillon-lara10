@@ -75,7 +75,7 @@ class GraphiqueController extends Controller
 $annee= Annee::find($annee_id)->nom;
         // dd($reussiteGlobaleAnnee);
 
-    return view('noteGraphique', compact('annee','reussiteGarcons', 'reussiteFilles', 'reussiteGlobaleSemestre', 'reussiteGlobaleAnnee'));
+    return view('noteGraphique', compact('annee','reus  siteGarcons', 'reussiteFilles', 'reussiteGlobaleSemestre', 'reussiteGlobaleAnnee'));
 }
 
 }

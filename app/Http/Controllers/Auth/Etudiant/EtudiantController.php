@@ -37,7 +37,7 @@ class EtudiantController extends Controller
         {
 
             $this->data=$request->validate([
-                'code'=>['string'],
+                'password'=>['string'],
                 'nom' => ['required', 'string', 'max:255'],
                 'prenom' => ['required', 'string', 'max:255'],
                 'sexe' => ['required', 'string'],
@@ -53,7 +53,7 @@ class EtudiantController extends Controller
             $this->data['annee_id']=Annee::where('is_active', true)->first()->id;
 
 
-            $this->data['code']=$this->genearateCode();
+            $this->data['password']=$this->genearateCode();
 
             etudiant::create($this->data);
 
@@ -61,28 +61,28 @@ class EtudiantController extends Controller
             $dataMail=[
                 'title'=>"Bienvenue ". $this->data['nom'] ." ".  $this->data['prenom'],
                 'message'=>"Connecter vous au site avec votre code",
-                'code'=>$this->data['code'],
+                'password'=>$this->data['password'],
                 'email'=>$this->data['email'],
                 'route'=>$this->data['route'],
             ];
 
-            Mail::to($this->data['email'])->send(new CodeMail('reucperation du code', $dataMail, 'Admin@gmail.com', 'Administrateur'));
-            return redirect()->route('etudiant.login',['code'=>null,'email'=>null])->with('status', 'Inscription reussie !!!');
+            Mail::to($this->data['email'])->send(new CodeMail('reucperation du password', $dataMail, 'Admin@gmail.com', 'Administrateur'));
+            return redirect()->route('etudiant.login',['password'=>null,'email'=>null])->with('status', 'Inscription reussie !!!');
         }
 
         public function genearateCode()
         {
             do{
-                $code = Str::upper(Str::random(4)); 
+                $code = Str::upper(Str::random(4));
 
-            }while(Etudiant::where('code', $this->data['code'])->exists() );
+            }while(Etudiant::where('password', $this->data['password'])->exists() );
             return $code;
          }
 
 
         public function showLogin($email=null, $code=null)
         {
-            return view('auth.etudiant.login',['code'=>$code,'email'=>$email]);
+            return view('auth.login',['password'=>$code,'email'=>$email]);
          }
 
 
@@ -91,10 +91,10 @@ class EtudiantController extends Controller
          {
 
             $credentials=$request->validate([
-                'code' => ['required', 'string', 'max:255'],
+                'password' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'max:255']
             ]);
-        $existEtudiant= Etudiant::where('email',$credentials['email'])->where('code',$credentials['code'])->first();
+        $existEtudiant= Etudiant::where('email',$credentials['email'])->where('password',$credentials['password'])->first();
             if($existEtudiant){
                 Auth::guard('etudiant')->login($existEtudiant);
             return redirect()->intended('etudiant/home');

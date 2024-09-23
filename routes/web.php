@@ -1,18 +1,51 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\AppController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnneeController;
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GraphiqueController;
 use App\Http\Controllers\EnseignantController;
 use App\Http\Controllers\UniteValeurController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\Etudiant\EtudiantController;
 use App\Http\Controllers\Auth\Admin\AuthenticatedSessionController;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,9 +61,9 @@ Route::get('NoteGraphique/{annee_id}', [GraphiqueController::class, 'note'])->na
 //route pour l'admin
 Route::prefix('admin')->middleware('monGuest:admin')->group(function () {
 
-Route::get('login', [AuthenticatedSessionController::class, 'create'])
-->name('admin.login');
-Route::post('login', [AuthenticatedSessionController::class, 'store']);
+// Route::get(' ', [AuthenticatedSessionController::class, 'create'])
+// ->name('admin.login');
+// Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
 Route::get('register', [RegisteredUserController::class, 'showRegister'])
 ->name('admin.register');
@@ -55,8 +88,6 @@ Route::get('teachers', [App\Http\Controllers\EnseignantController::class, 'index
 Route::get('enseignant/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'show'])->name('teacher.show');
 Route::get('enseignant/edit/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'edit'])->name('teacher.edit');
 
-Route::get('enseignants/login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'showLogin'])->name('enseignant.login');
-    Route::post('enseignants/login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'login']);
 
 Route::get('enseignants/dashboard', [EnseignantController::class, 'dashborad'])->name('enseignant.dashboard')->middleware('monAuth:enseignant');;
 
@@ -70,8 +101,8 @@ Route::prefix('etudiant')->middleware('monGuest:etudiant')->group(function () {
     Route::get('register', [EtudiantController::class, 'showRegister'])->name('etudiant.register');
     Route::post('register', [EtudiantController::class, 'register']);
 
-    Route::get('login/{email?}/{code?}', [EtudiantController::class, 'showLogin'])->name('etudiant.login');
-    Route::post('login', [EtudiantController::class, 'login']);
+    Route::get('login/{email?}/{password?}', [EtudiantController::class, 'showLogin'])->name('etudiant.login');
+    Route::post('login', [EtudiantController::class, 'login'])->name('etudiant.loginStore');
 });
 Route::get('etudian/logout', [EtudiantController::class, 'logout'])->name('etudiant.logout')->middleware('monAuth:etudiant');
 Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'home'])->name('etudiant.home')->middleware('monAuth:etudiant');
@@ -90,30 +121,6 @@ Route::get('/notes/assign', [NoteController::class, 'create'])->name('notes.crea
 Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
 
 
-//breeze
-
-
-// use App\Http\Controllers\ProfileController;
-// use Illuminate\Support\Facades\Route;
-
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-// require __DIR__.'/auth.php';
-
-
 Route::post('annee/set-active',[AnneeController::class, 'setActive'])->name('annee.setActive');
 
 
@@ -129,3 +136,5 @@ Route::get('/matieresBySemestre/{specialite}/{semestre}', [NoteController::class
 
 
 Route::get('/releve/{etudiant}/{annee}', [NoteController::class, 'showReleveDeNotes'])->name('releve.show');
+
+require __DIR__.'/auth.php';
