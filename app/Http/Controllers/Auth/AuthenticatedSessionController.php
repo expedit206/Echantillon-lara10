@@ -30,41 +30,49 @@ class AuthenticatedSessionController extends Controller
 
         // student
         if($request->user_type == 'student'){
-            $existEtudiant= Etudiant::where('email',$request['email'])->where('password',$request['password'])->first();
-            if($existEtudiant){
-                Auth::guard('etudiant')->login($existEtudiant);
-            return redirect()->intended('etudiant/home');
+            if (Auth::guard('etudiant')->attempt([
+                    'email' => $request->email, 
+                    'password' => $request->password
+                ])) {
+                // Si la tentative de connexion est réussie
+                return redirect()->intended('etudiant/home');
             }
-
-        return back()->withErrors([ 
-            'email' => 'Les informations de connexion sont incorrectes.',
-        ]);
-            // dd($request->user_type);
+        
+            // Si l'authentification échoue
+            return back()->withErrors([ 
+                'email' => 'Les informations de connexion sont incorrectes.',
+            ]);
         }
-
         // enseignant
         if($request->user_type == 'teacher'){
-            $existEnseignant= Enseignant::where('email',$request['email'])->where('password',$request['password'])->first();
 
-            if($existEnseignant){
 
-            Auth::guard('enseignant')->login($existEnseignant) ;
+            if (Auth::guard('enseignant')->attempt([
+                'email' => $request->email, 
+                'password' => $request->password
+            ])) {
+            // Auth::guard('enseignant') pour spécifier le guard enseignant
+            return redirect()->route('enseignant.dashboard');
+        } else {
+            // Si l'authentification échoue, renvoyer une erreur ou rediriger
+            return redirect()->back()->withErrors(['email' => 'Les informations d\'identification ne correspondent pas.'])->withInput();
+        }
+        }
+        
+        if (Auth::guard('admin')->attempt([
+            'email' => $request->email, 
+            'password' => $request->password
+            ])) {
                 // Auth::guard('enseignant') pour spécifier le guard enseignant
-                return redirect()->route('enseignant.dashboard');
-            
-        }
-    
-    return redirect()->back()->withErrors(['email' => 'Les informations d\'identification ne correspondent pas.'])->withInput();
+                $request->session()->regenerate();
+                return redirect()->intended(route('dashboard'));
+    } else {
+        //  die;
+        // Si l'authentification échoue, renvoyer une erreur ou rediriger
+        return redirect()->back()->withErrors(['email' => 'Les informations d\'identification ne correspondent pas.'])->withInput();
+    }
 
 
-        }
-
-
-        $request->authenticate();
-
-        $request->session()->regenerate();
-
-        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**

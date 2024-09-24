@@ -77,7 +77,7 @@ class EnseignantController extends Controller
 
     public function dashboard()
     {
-        return view('enseignant.dashbord');
+        return view('enseignant.dashboard');
     }
 
      public function teachersByFiliere(Filiere $filiere)

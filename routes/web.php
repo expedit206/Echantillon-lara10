@@ -34,7 +34,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -89,7 +89,7 @@ Route::get('enseignant/{enseignant}', [App\Http\Controllers\EnseignantController
 Route::get('enseignant/edit/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'edit'])->name('teacher.edit');
 
 
-Route::get('enseignants/dashboard', [EnseignantController::class, 'dashborad'])->name('enseignant.dashboard')->middleware('monAuth:enseignant');;
+Route::get('enseignants/dashboard', [App\Http\Controllers\EnseignantController::class, 'dashboard'])->name('enseignant.dashboard')->middleware('monAuth:enseignant');
 
 Route::resource('enseignants', \App\Http\Controllers\Auth\Enseignant\EnseignantController::class);
 

@@ -48,6 +48,41 @@ class EnseignantSeeder extends Seeder
                 $specialites->random(rand(1, 2))->pluck('id')->toArray()
             );
         });
+
+        $dernierEnseignant = Enseignant::create([
+            'nom' => 'AAA',
+            'prenom' => 'AAAA',
+            'sexe' => 'Masculin',
+            'email' => 'aaa@aaa',
+            'password' => \Hash::make('aaaaaaaa'),
+            'dateNaiss' => '1990-01-01',
+            'lieuNaiss' => 'Lieu AAA',
+            'nationalite' => 'Nationalité AAA',
+            'mobile' => '1234567890',
+            'photo' => null,
+            'profession' => 'Prof AAA',
+            'diplome' => 'Diplôme AAA',
+            'annee_id' => 1, // ID d'année à adapter
+            'salaire' => 100000,
+            'typeContrat' => 'CDI',
+            'debutContrat' => '2024-01-01',
+            'finContrat' => null,
+        ]);
+
+        // Attacher des niveaux, filières, et spécialités pour cet enseignant
+        $dernierEnseignant->niveaux()->attach(
+            $niveaux->random(rand(1, 3))->pluck('id')->toArray()
+        );
+
+        $dernierEnseignant->filieres()->attach(
+            $filieres->random(rand(1, 2))->pluck('id')->toArray()
+        );
+
+        $dernierEnseignant->specialites()->attach(
+            $specialites->random(rand(1, 2))->pluck('id')->toArray()
+        );
+
+
         $this->call(UniteDeValeursSeeder::class);
 
 }
