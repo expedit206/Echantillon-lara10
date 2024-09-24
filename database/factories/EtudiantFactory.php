@@ -25,12 +25,14 @@ class EtudiantFactory extends Factory
         $annees = Annee::all();
         $specialites = Specialite::all();
         return [
-            'code' => $this->faker->unique()->bothify('####'), // Code unique au format ETU###
+            'matricule' => $this->faker->unique()->bothify('####'), // Code unique au format ETU###
             'nom' => $this->faker->lastName, // Nom de famille
             'prenom' => $this->faker->firstName, // Prénom
+            'email' => $this->faker->unique()->safeEmail, // Email unique
+            'password' => \Hash::make('aaaaaaaa'),
+
             'dateNaissance' => $this->faker->date, // Date de naissance
             'lieuNaiss' => $this->faker->firstName, // Prénom
-            'email' => $this->faker->unique()->safeEmail, // Email unique
             'numeroTelephone' => $this->faker->phoneNumber, // Numéro de téléphone
 
             'sexe' => $this->faker->randomElement(['Homme', 'Femme']), // Sexe aléatoire

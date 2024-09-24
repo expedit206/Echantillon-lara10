@@ -30,9 +30,10 @@ class AuthenticatedSessionController extends Controller
 
         // student
         if($request->user_type == 'student'){
+            // dd($request);
             if (Auth::guard('etudiant')->attempt([
-                    'email' => $request->email,
-                    'password' => $request->password
+                'email' => $request->email,
+                'password' => $request->password
                 ])) {
                 // Si la tentative de connexion est réussie
                 return redirect()->intended('etudiant/home');
@@ -43,14 +44,14 @@ class AuthenticatedSessionController extends Controller
                 'email' => 'Les informations de connexion sont incorrectes.',
             ]);
         }
+
         // enseignant
         if($request->user_type == 'teacher'){
-
 
             if (Auth::guard('enseignant')->attempt([
                 'email' => $request->email,
                 'password' => $request->password
-            ])) {
+                ])) {
             // Auth::guard('enseignant') pour spécifier le guard enseignant
             return redirect()->route('enseignant.dashboard');
         } else {
@@ -78,9 +79,19 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        if (Auth::guard('admin')->check()){
+        Auth::guard('admin')->logout();
+        }
+
+        if (Auth::guard('enseignant')->check()){
+        Auth::guard('enseignant')->logout();
+        }
+
+        if (Auth::guard('etudiant')->check()){
+        Auth::guard('admin')->logout();
+        }
 
         $request->session()->invalidate();
 

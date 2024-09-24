@@ -5,6 +5,7 @@
     @section('content')
     <x-header />
     <x-menu />
+    {{-- @dd($uniteValeurs) --}}
 
     <div class="filter">
         <div class="flex justify-between flex-col">
@@ -39,10 +40,19 @@
                     </article>
 
                     <article class="flex flex-col w-full">
+                        <label for="filiere">spécialité</label>
+                        <select type="text" id="specialite" name="specialite" class="text-black rounded-md w-full" onchange="submit()">
+                            <option value=""></option>
+                            @foreach ($specialites as $specialite)
+                                <option value="{{ $specialite->nom }}" {{ request('specialite') === $specialite->nom ? 'selected' : '' }}>{{ $specialite->nom }}</option>
+                            @endforeach
+                        </select>
+                    </article>
+                    <article class="flex flex-col w-full">
                         <label for="unitevaleur">Unité de Valeur</label>
                         <select type="text" id="unitevaleur" name="unitevaleur" class="text-black rounded-md w-full" onchange="submit()">
                             <option value=""></option>
-                            @foreach ($uniteValeursAll as $unitevaleur)
+                            @foreach ($uniteValeurs as $unitevaleur)
                                 <option value="{{ $unitevaleur->nom }}" {{ request('unitevaleur') === $unitevaleur->nom ? 'selected' : '' }}>{{ $unitevaleur->nom }}</option>
                             @endforeach
                         </select>
@@ -60,14 +70,14 @@
                         <th scope="col">Code</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Niveau</th>
-                        <th scope="col">Filière</th>
+                        <th scope="col">spécialité</th>
                         <th scope="col">Spécialité</th>
                         <th scope="col">Enseignant</th>
                         <th scope="col" class="text-center" colspan="2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($unitevaleurs as $unitevaleur)
+                    @forelse ($uniteValeurs as $unitevaleur)
                         <tr>
                             <td scope="row">{{ $unitevaleur->id }}</td>
                             <td scope="row">{{ $unitevaleur->code }}</td>
@@ -93,7 +103,7 @@
                 </tbody>
             </table>
 
-            {{ $unitevaleurs->appends(request()->input())->links() }}
+            {{ $uniteValeurs->appends(request()->input())->links() }}
         </div>
     @endsection
 </x-layout>

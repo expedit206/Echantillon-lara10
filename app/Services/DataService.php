@@ -16,15 +16,17 @@ class DataService
     {
         // Récupérer l'utilisateur connecté
 $user=Auth::guard('enseignant')->user();
+// dd($user);
         if ($user) {
             // Si l'utilisateur est un enseignant, récupérer uniquement les données liées à ses unités de valeur
             $unitesValeurs = UniteValeur::whereHas('enseignant', function ($query) use ($user) {
                 $query->where('enseignant_id', $user->id);
-            })->get();
+            })->paginate(20);
+            //  dd( $unitesValeurs->pluck('id'));
 
             // Filtrer les autres entités en fonction des unités de valeur de l'enseignant
             $niveaux = Niveau::whereHas('uniteValeurs', function ($query) use ($unitesValeurs) {
-                $query->whereIn('id', $unitesValeurs->pluck('id'));
+                $query->where('id', 40);
             })->get();
 
             $filieres = Filiere::whereHas('uniteValeurs', function ($query) use ($unitesValeurs) {
@@ -34,10 +36,11 @@ $user=Auth::guard('enseignant')->user();
             $specialites = Specialite::whereHas('uniteValeurs', function ($query) use ($unitesValeurs) {
                 $query->whereIn('id', $unitesValeurs->pluck('id'));
             })->get();
-dd($specialites);
+// dd($specialites);
             $semestres = Semestre::whereHas('uniteValeurs', function ($query) use ($unitesValeurs) {
                 $query->whereIn('id', $unitesValeurs->pluck('id'));
             })->get();
+            // dd($niveaux);
 
             return [
                 'annees' => Annee::orderBy('created_at', 'desc')->get(),

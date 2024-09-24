@@ -10,10 +10,19 @@ use App\Models\Enseignant;
 use App\Models\Specialite;
 use App\Models\UniteValeur;
 use Illuminate\Http\Request;
+use App\Services\DataService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UniteValeurController extends Controller
 {
+
+
+    public function __construct(DataService $dataService)
+    {
+        $this->dataService = $dataService;
+    }
+
     public function index(Request $request)
     {
         $query = UniteValeur::query();
@@ -30,13 +39,14 @@ class UniteValeurController extends Controller
             $query->where('nom', 'like', '%' . $request->unitevaleur . '%');
         }
 
-        $unitevaleurs = $query->paginate(15);
-        $niveaux = Niveau::all();
-        $filieres = Filiere::all();
-        $uniteValeursAll = UniteValeur::all();
-        $total = $query->count();
 
-        return view('unitevaleur.index', compact('unitevaleurs','uniteValeursAll', 'niveaux', 'filieres', 'total'));
+
+
+        $total = $query->count();
+// dd();
+        return view('unitevaleur.index',array_merge([
+            'total' => $total,
+        ], $this->dataService->getAllData()));
     }
 
     public function create()
@@ -93,12 +103,12 @@ class UniteValeurController extends Controller
     {
         // Assure-toi que toutes les relations nécessaires sont chargées pour éviter les N+1 queries
         $uniteValeur->load('niveau', 'filiere', 'specialite', 'enseignant');
-    
+
         return view('unitevaleur.show', [
             'unitevaleur' => $uniteValeur
         ]);
     }
-    
+
     public function edit(UniteValeur $uniteValeur)
     {
         // Récupère les listes de niveaux, filières, spécialités et enseignants pour les sélectionner dans le formulaire

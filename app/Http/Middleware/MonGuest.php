@@ -14,14 +14,16 @@ class MonGuest
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $guard=null): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::guard($guard)->check()){
-            if($guard=='admin'){
-            return redirect()->route('dashboard');
-            }
-            return redirect()->route('login');
+                if(Auth::guard('admin')->check()){
+                    return redirect()->route('dashboard');
+                }
+                if(Auth::guard('enseignant')->check()){
+                return redirect()->route('enseignant.dashboard');
+                }
+            // return redirect()->route('login');
+            return $next($request);
         }
-        return $next($request);
     }
-}
+

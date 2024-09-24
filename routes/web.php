@@ -12,11 +12,19 @@ use App\Http\Controllers\EnseignantController;
 use App\Http\Controllers\UniteValeurController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\Etudiant\EtudiantController;
-use App\Http\Controllers\Auth\Admin\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return view('welcome');
-})->middleware('monGuest:admin');
+})->middleware('monGuest');
+
+
+//authentification de tous les utilisateurs
+Route::get('login', [AuthenticatedSessionController::class, 'create'])
+->name('login')->middleware('monGuest');
+
+Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
 
 Route::get('graphique', [GraphiqueController::class, 'index'])->name('graphique');
 Route::get('NoteGraphique/{annee_id}', [GraphiqueController::class, 'note'])->name('NoteGraphique');
@@ -30,10 +38,10 @@ Route::delete('destroy', [AuthenticatedSessionController::class, 'destroy'])
 //route pour l'admin
 Route::prefix('admin')->group(function () {
 
-Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('admin.login')->middleware('monGuest:admin','monGuest:enseignant');
+// Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('admin.login')->middleware('monGuest:admin','monGuest:enseignant');
 Route::get('logout', [AuthenticatedSessionController::class, 'logout'])
 ->name('admin.logout');
-Route::post('login', [AuthenticatedSessionController::class, 'store']);
+// Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
 Route::get('register', [RegisteredUserController::class, 'showRegister'])
 ->name('admin.register');
@@ -58,8 +66,6 @@ Route::get('teachers', [App\Http\Controllers\EnseignantController::class, 'index
 Route::get('enseignant/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'show'])->name('teacher.show');
 Route::get('enseignant/edit/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'edit'])->name('teacher.edit');
 
-Route::get('login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'showLogin'])->name('login');
-Route::post('login', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'login']);
 
 Route::get('/enseignants/logout', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'logout'])->name('enseignant.logout');
 
@@ -81,7 +87,7 @@ Route::prefix('etudiant')->middleware('monGuest:etudiant')->group(function () {
     Route::post('login', [EtudiantController::class, 'login']);
 });
 Route::get('etudian/logout', [EtudiantController::class, 'logout'])->name('etudiant.logout')->middleware('monAuth:etudiant');
-Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'home'])->name('etudiant.home')->middleware('monAuth:etudiant');
+Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'home'])->name('etudiant.home');
 
 // route pour uniteValeur
 Route::resource('uniteValeur', UniteValeurController::class);

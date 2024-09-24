@@ -24,11 +24,12 @@ class EtudiantController extends Controller
 
     public function index(Request $request)
 {
+
     $annee_id = Annee::where('is_active', true)->first()->id;
 
     // Si un enseignant est connecté
     if (Auth::guard('enseignant')->check()) {
-      
+
         $enseignantData = $this->getStudentsForEnseignant(Auth::guard('enseignant')->user(), $annee_id,$request);
         $students = $enseignantData['students'];
         $total = $enseignantData['total'];
@@ -41,9 +42,6 @@ class EtudiantController extends Controller
 
     // Récupérer les filtres pour les recherches
     $search = $request->input('search');
-    $filieres = Filiere::latest()->get();
-    $niveaux = Niveau::latest()->get();
-    $specialites = Specialite::latest()->get();
     $annees = Annee::all();
 
     return view('admin.students', array_merge([
@@ -60,21 +58,21 @@ private function getStudentsForEnseignant($enseignant,$annee_id, Request $reques
     $page = $request->input('page', 1);
     $perPage = 12;
     // dd($enseignant->specialites);
-    foreach ($enseignant->specialites as $specialite) { 
+    foreach ($enseignant->specialites as $specialite) {
 
         $query = Etudiant::where('annee_id', $annee_id)
         ->where('specialite_id', $specialite->id) ;
         $query = $query->where('specialite_id', $specialite->id);
         $filteredQuery = $this->applyFilters($query, $request);
-        
+
         // dump($filteredQuery->get());
         $students = $students->merge($filteredQuery->get());
         // dump($students);
     }
 
     $total= $students->count();
-    dump($total);
-    
+    // dump($total);
+
     $items = $students->forPage($page, $perPage);
 
     return [
@@ -111,7 +109,7 @@ private function applyFilters($query, Request $request)
     $query->where(function ($q) use ($search) {
         $q->where('nom', 'like', '%' . $search . '%')
           ->orWhere('prenom', 'like', '%' . $search . '%')
-          ->orWhere('code', 'like', '%' . $search . '%');
+          ->orWhere('matricule', 'like', '%' . $search . '%');
     });
 
     // Filtre par niveau, filière et spécialité
@@ -142,7 +140,7 @@ private function applyFilters($query, Request $request)
     return $query;
 }
 
-    
+
 
      public function home()
     {
