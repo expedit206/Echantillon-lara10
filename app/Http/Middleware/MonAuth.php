@@ -17,12 +17,12 @@ class MonAuth
         */
         public function handle(Request $request, Closure $next): Response
         {
-            if(!Auth::guard('enseignant')->check() && !Auth::guard('etudiant')->check()){
+            // if(!Auth::guard('enseignant')->check() && !Auth::guard('etudiant')->check()){
 
                 return redirect()->route('login');
 
-            }
-           
+            // }
+
 
         // return $request->expectsJson() ? null : route($guard.'.login');
 

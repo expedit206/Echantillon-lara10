@@ -51,18 +51,4 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
 
-    public function logout(Request $request)
-    {
-        // Déconnecter l'enseignant
-        Auth::guard('admin')->logout();
-// die;
-        // Invalider la session
-        $request->session()->invalidate();
-
-        // Régénérer le token CSRF pour la sécurité
-        $request->session()->regenerateToken();
-
-        // Rediriger vers la page de connexion ou d'accueil après la déconnexion
-        return redirect()->route('admin.login')->with('status', 'Vous avez été déconnecté.');
-    }
 }
