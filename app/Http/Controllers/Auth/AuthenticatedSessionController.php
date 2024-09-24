@@ -31,15 +31,15 @@ class AuthenticatedSessionController extends Controller
         // student
         if($request->user_type == 'student'){
             if (Auth::guard('etudiant')->attempt([
-                    'email' => $request->email, 
+                    'email' => $request->email,
                     'password' => $request->password
                 ])) {
                 // Si la tentative de connexion est réussie
                 return redirect()->intended('etudiant/home');
             }
-        
+
             // Si l'authentification échoue
-            return back()->withErrors([ 
+            return back()->withErrors([
                 'email' => 'Les informations de connexion sont incorrectes.',
             ]);
         }
@@ -48,7 +48,7 @@ class AuthenticatedSessionController extends Controller
 
 
             if (Auth::guard('enseignant')->attempt([
-                'email' => $request->email, 
+                'email' => $request->email,
                 'password' => $request->password
             ])) {
             // Auth::guard('enseignant') pour spécifier le guard enseignant
@@ -58,9 +58,9 @@ class AuthenticatedSessionController extends Controller
             return redirect()->back()->withErrors(['email' => 'Les informations d\'identification ne correspondent pas.'])->withInput();
         }
         }
-        
+
         if (Auth::guard('admin')->attempt([
-            'email' => $request->email, 
+            'email' => $request->email,
             'password' => $request->password
             ])) {
                 // Auth::guard('enseignant') pour spécifier le guard enseignant
