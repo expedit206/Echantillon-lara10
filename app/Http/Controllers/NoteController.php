@@ -11,6 +11,7 @@ use App\Models\UniteValeur;
 use Illuminate\Http\Request;
 use App\Services\DataService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -63,12 +64,14 @@ class NoteController extends Controller
 $enseignant=Auth::guard('enseignant')->user();
 // dd($enseignant);
         if ($enseignant) {
-            $semestres = Semestre::whereHas('uniteValeurs', function ($query) use ($enseignant) {
+            $semestres = Semestre::where('annee_id', $annee)
+            -> whereHas('uniteValeurs', function ($query) use ($enseignant) {
                 $query->where('enseignant_id', $enseignant->id);})
                 ->get();
             }else{
 
-                $semestres = Semestre::where('annee_id', $annee)->get();
+                $semestres = Semestre::where('annee_id', $annee)
+                ->get();
             }
     return response()->json($semestres);
 }
@@ -77,25 +80,30 @@ public function getSpecialites($niveau)
 {
     $enseignant=Auth::guard('enseignant')->user();
     // dd($enseignant);
-            if ($enseignant) {
-
+    if ($enseignant) {
+                // dd($niveau);
+    $specialites = Specialite::whereRelation('filiere', 'niveau_id', $niveau)
+    ->whereHas('enseignants', function ($query) use ($enseignant) {
+        $query->where('enseignant_id', $enseignant->id);})
+        ->get();
+}else{
     $specialites = Specialite::whereRelation('filiere', 'niveau_id', $niveau)->get();
+
+}
     return response()->json($specialites);
-            }
 }
 
 public function getMatieresBySpecialite($semestre,$specialite)
 {
     $enseignant=Auth::guard('enseignant')->user();
-
+    // dd($matieres);
     if ($enseignant) {
         // Si l'utilisateur est un enseignant, récupérer uniquement les données liées à ses unités de valeur
         $matieres = UniteValeur::whereHas('enseignant', function ($query) use ($enseignant) {
             $query->where('id', $enseignant->id);
         })
         ->whereRelation('annee', 'is_active', true)
-
-        ->paginate(20);
+        ->get();
     }else{
 
         $matieres = UniteValeur::
@@ -110,28 +118,28 @@ public function getMatieresBySpecialite($semestre,$specialite)
 
 public function getMatieresBySemestre($specialite,$semestre)
 {
-    $matieres = UniteValeur::
-    where('semestre_id', $semestre)
-    ->where('specialite_id',$specialite)
-    ->get();
+    $enseignant=Auth::guard('enseignant')->user();
+
+    if ($enseignant) {
+
+    $semestres = Semestre::whereHas('uniteValeurs', function ($query) use ($enseignant) {
+        $query->where('enseignant_id', $enseignant->id);})
+        ->whereRelation('annee', 'is_active', true)
+
+        ->get();
+        // dd($semestres);
+    }
+    else{
+
+        $matieres = UniteValeur::
+        where('semestre_id', $semestre)
+        ->where('specialite_id',$specialite)
+        ->whereRelation('annee', 'is_active', true)
+
+        ->get();
+    }
+    // return console.log($matieres);
     return response()->json($matieres);
-}
-
-
-
-public function showReleveDeNotes($etudiantId, $anneeAcademique)
-{
-    $etudiant = Etudiant::with('filiere', 'specialite', 'niveau', 'specialite.uniteValeurs')
-        ->findOrFail($etudiantId);
-
-    $matieres = $etudiant->specialite->matieres;
-
-    $notes = [
-        'semestre1' => $this->getNotesForSemestre($etudiant, 'Semestre 1'),
-        'semestre2' => $this->getNotesForSemestre($etudiant, 'Semestre 2'),
-    ];
-    $anneeAcademique=Annee::find($anneeAcademique)->nom;
-    return view('note.releve', compact('etudiant', 'notes', 'anneeAcademique', 'matieres'));
 }
 
 private function getNotesForSemestre($etudiant, $semestreNom)
@@ -182,6 +190,23 @@ private function getNotesForSemestre($etudiant, $semestreNom)
     // die;
     return $notesByUV;
 }
+
+public function showReleveDeNotes($etudiantId, $anneeAcademique)
+{
+    $etudiant = Etudiant::with('filiere', 'specialite', 'niveau', 'specialite.uniteValeurs')
+        ->findOrFail($etudiantId);
+
+    $matieres = $etudiant->specialite->matieres;
+
+    $notes = [
+        'semestre1' => $this->getNotesForSemestre($etudiant, 'Semestre 1'),
+        'semestre2' => $this->getNotesForSemestre($etudiant, 'Semestre 2'),
+    ];
+    $anneeAcademique=Annee::find($anneeAcademique)->nom;
+    return view('note.releve', compact('etudiant', 'notes', 'anneeAcademique', 'matieres'));
+}
+
+
 
 
 private function getAppreciation($note)

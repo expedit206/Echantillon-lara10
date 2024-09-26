@@ -34,12 +34,12 @@
                 @endif
                         </span>
                 </a>
-                <a href="{{ route('teachers') }}" class="open-modal nav_link" id='etudiants'> <i
+                <a href="#" class="open-modal nav_link" id='consulter'> <i
                         class='bx bx-bookmark nav_icon open-modal'></i> <span class="nav_name open-modal">consulter les evaluations</span>
                 </a>
                 @if(Auth::guard('enseignant')->check())
-                <a href="{{ route('notes.create') }}" class="nav_link open-modal"> <i class='bx bx-folder nav_icon'></i> <span 
-                    class="nav_name open-modal">Attribuer des note</span>
+                <a href="#" class="nav_link open-modal" id="attribuer"> <i class='bx bx-folder nav_icon'></i> <span
+                    class="nav_name open-modal">Attribuer des notes</span>
                 </a>
                     @endif
                     @php
@@ -75,7 +75,7 @@
                 @csrf
                 @method('DELETE')
             </form> --}}
-            
+
                 <a href="
             @if(Auth::guard('enseignant')->check())
                 {{ route('enseignant.logout') }}

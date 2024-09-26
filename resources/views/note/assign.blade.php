@@ -17,19 +17,68 @@
                             d="M10.293 6.293L8.879 7.707 13.172 12 8.879 16.293l1.414 1.414L16 12zM14.293 6.293L12.879 7.707 17.172 12 12.879 16.293l1.414 1.414L20 12z" />
                     </svg>
                 </a>
-                <div class="font-bold"> 
-                    <form method='post' action="{{ route('annee.setActive') }}" id="formAnnee">
+                <div class="font-bold">
+                    <form method="get" action="{{ route('uniteValeur.index') }}" id="form"
+                        class="px-3 text-white grid-cols-5 content flex gap-3 items-center justify-around bg-orange-400 py-2">
                         @csrf
-                        <label for="annee">Année Académique</label>
-                        <select name="annee" id="annee"
-                            class="border-none outline-none focus:border-none cursor-pointer" onchange="submit()">
-                            @foreach ($annees as $annee)
-                                <option value="{{ $annee->id }}"
-                                    class="cursor-pointer border-b-4 border-double border-black"
-                                    {{ $annee->is_active == true ? 'selected' : '' }}>{{ $annee->nom }}</option>
-                            @endforeach
-                        </select>
+
+                        <h3>Filtrer par:</h3>
+
+                        <article class="flex flex-col w-full">
+                            <label for="niveau">Niveau</label>
+                            <select id="niveau" name="niveau" class="text-black rounded-md w-full" onchange="submit()">
+                                <option value=""></option>
+                                @foreach ($niveaux as $niveau)
+                                    <option value="{{ $niveau->nom }}"
+                                        {{ request('niveau') === $niveau->nom ? 'selected' : '' }}>
+                                        {{ $niveau->nom }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </article>
+
+                        <article class="flex flex-col w-full">
+                            <label for="specialite">Spécialité</label>
+                            <select id="specialite" name="specialite" class="text-black rounded-md w-full"
+                                onchange="submit()">
+                                <option value=""></option>
+                                @foreach ($specialites as $specialite)
+                                    <option value="{{ $specialite->nom }}"
+                                        {{ request('specialite') === $specialite->nom ? 'selected' : '' }}>
+                                        {{ $specialite->nom }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </article>
+
+                        <article class="flex flex-col w-full">
+                            <label for="semestre">Semestre</label>
+                            <select id="semestre" name="semestre" class="text-black rounded-md w-full" onchange="submit()">
+                                <option value=""></option>
+                                @foreach ($semestres as $semestre)
+                                    <option value="{{ $semestre->nom }}"
+                                        {{ request('semestre') === $semestre->nom ? 'selected' : '' }}>
+                                        {{ $semestre->nom }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </article>
+
+                        <article class="flex flex-col w-full">
+                            <label for="unitevaleur">Unité de Valeur</label>
+                            <select id="unitevaleur" name="unitevaleur" class="text-black rounded-md w-full"
+                                onchange="submit()">
+                                <option value=""></option>
+                                @foreach ($uniteValeurs as $unitevaleur)
+                                    <option value="{{ $unitevaleur->nom }}"
+                                        {{ request('unitevaleur') === $unitevaleur->nom ? 'selected' : '' }}>
+                                        {{ $unitevaleur->nom }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </article>
                     </form>
+
                 </div>
             </div>
             <form method="get" action="{{ route('uniteValeur.index') }}" id="form"
@@ -45,13 +94,14 @@
                         onchange="submit()">
                         <option value=""></option>
                         @foreach ($niveaux as $niveau)
-                            <option value="{{ $niveau->nom }}" {{ request('niveau') === $niveau->nom ? 'selected' : '' }}>
+                            <option value="{{ $niveau->nom }}"
+                                {{ request('niveau') === $niveau->nom ? 'selected' : '' }}>
                                 {{ $niveau->nom }}</option>
                         @endforeach
                     </select>
                 </article>
 
-             
+
 
                 <article class="flex flex-col w-full">
                     <label for="filiere">spécialité</label>

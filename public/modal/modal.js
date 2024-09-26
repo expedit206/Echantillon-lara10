@@ -6,12 +6,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeModalBtn = document.getElementById("close-modal");
     const modal = document.getElementById("notes-modal");
     const body = document.body;
+    const form = document.getElementById("notes-form");
     openModalBtn.forEach((modalBtn) => {
         modalBtn.addEventListener("click", function (event) {
+            // console.log(modalBtn);
             // alert('vvf')
             event.preventDefault();
             modal.classList.add("showModal");
             body.classList.add("modal-open");
+
+            if (this.id === 'consulter') {
+                form.action = "/notes/show"; // Action pour consulter les notes
+            } else if (this.id === 'attribuer') {
+                form.action = "/notes/assign"; // Action pour attribuer des notes
+            }
             // Désactive le défilement de la page
         });
     });
@@ -81,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     response => response.json()
                 )
                 .then(data => {
-                    console.log(data);
+                    // console.log(data);
 
                     matiereSelect.innerHTML = ""; // Clear previous options
                     data.forEach(matiere => {
@@ -100,8 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
 
-                    console.log( specialiteId);
-                    console.log( semestreId);
                     console.log(data);
                     matiereSelect.innerHTML = ""; // Clear previous options
                     data.forEach(matiere => {
@@ -147,4 +153,3 @@ document.addEventListener("DOMContentLoaded", function () {
             updateMatieresBySemestre(specialiteSelect.value, this.value);
         });
 });
-console.log(specialiteSelect);
