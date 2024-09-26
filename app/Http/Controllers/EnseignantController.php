@@ -93,6 +93,7 @@ class EnseignantController extends Controller
                 $query->where('enseignant_id', $enseignant?->id);
             })->count();
             // Total des cours donnés par cet enseignant
+            // dd($annee_id);
             $totalCours = UniteValeur::where('annee_id', $annee_id)
             ->where('enseignant_id', $enseignant?->id)->count();
 

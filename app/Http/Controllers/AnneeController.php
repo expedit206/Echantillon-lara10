@@ -13,6 +13,5 @@ class AnneeController extends Controller
        return redirect()->back();
     //    return redirect()->route('students');
 
-        die;
     }
 }

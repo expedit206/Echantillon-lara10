@@ -23,21 +23,17 @@ class EtudiantController extends Controller
     }
 
     public function index(Request $request)
-{
-
-    $annee_id = Annee::where('is_active', true)->first()->id;
-
-    // Si un enseignant est connecté
-    if (Auth::guard('enseignant')->check()) {
-
-        $enseignantData = $this->getStudentsForEnseignant(Auth::guard('enseignant')->user(), $annee_id,$request);
+    {
+        $annee_id = Annee::where('is_active', true)->first()->id;
+        // Si un enseignant est connecté
+        if (Auth::guard('enseignant')->check()) {
+        $enseignantData = $this->getStudentsForEnseignant(Auth::guard('enseignant')->user(), $annee_id, $request);
         $students = $enseignantData['students'];
         $total = $enseignantData['total'];
     } else {
         // Si un administrateur est connecté
         $students = $this->getStudentsForAdmin($annee_id, $request);
         // $total=$students->count();
-
     }
 
     // Récupérer les filtres pour les recherches
@@ -52,24 +48,37 @@ class EtudiantController extends Controller
 }
 
 
-private function getStudentsForEnseignant($enseignant,$annee_id, Request $request)
+private function getStudentsForEnseignant($enseignant, $annee_id, Request $request)
 {
     $students = collect();
     $page = $request->input('page', 1);
     $perPage = 12;
     // dd($enseignant->specialites);
+    // dd($enseignant->specialites);
+
+    foreach ($enseignant->niveaux as $niveau) {
+        // dump($enseignant->filieres );
+    foreach ($enseignant->filieres as $filiere) {
     foreach ($enseignant->specialites as $specialite) {
-
+    // die;
         $query = Etudiant::where('annee_id', $annee_id)
-        ->where('specialite_id', $specialite->id) ;
-        $query = $query->where('specialite_id', $specialite->id);
-        $filteredQuery = $this->applyFilters($query, $request);
+        ->whereRelation('niveau','id', $niveau->id)
+        ->whereRelation('filiere','id', $filiere->id)
+        ->whereRelation('specialite','id', $specialite->id);
+        //  ->where('specialite')
+        //  ->whereHas('specialites', function($query) use($enseignant){
+        // $query->whereRelation('enseignant', 'id',$enseignant->id);   })
+        //  ->whereRelation('specialites','unite_valeur_id', $specialite->id);
+            // dd($specialite->id);
+        // dd($query->get());
 
+        // $query = $query->where('unite_valeur_id', $specialite->id);
+        $filteredQuery = $this->applyFilters($query, $request);
         // dump($filteredQuery->get());
         $students = $students->merge($filteredQuery->get());
         // dump($students);
     }
-
+    }}
     $total= $students->count();
     // dump($total);
 

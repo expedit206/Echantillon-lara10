@@ -27,6 +27,11 @@ class UniteValeurController extends Controller
     {
         $query = UniteValeur::query();
 
+$enseignant=Auth::guard('enseignant')->user();
+// dd($enseignant);
+        $query = $query->whereRelation('annee', 'is_active', true)
+        ->whereRelation('enseignant','enseignant_id', $enseignant->id)     ;
+
         if ($request->filled('niveau')) {
             $query->whereRelation('niveau', 'nom', $request->niveau);
         }
@@ -38,15 +43,13 @@ class UniteValeurController extends Controller
         if ($request->filled('unitevaleur')) {
             $query->where('nom', 'like', '%' . $request->unitevaleur . '%');
         }
-
+// dd($query->get());
 
 
 
         $total = $query->count();
 // dd();
-        return view('unitevaleur.index',array_merge([
-            'total' => $total,
-        ], $this->dataService->getAllData()));
+        return view('unitevaleur.index', $this->dataService->getAllData());
     }
 
     public function create()

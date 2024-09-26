@@ -19,6 +19,7 @@ class modalForm extends Component
 
     public function __construct($annees,$niveaux, $semestres, $specialites, $matieres)
     {
+        // dump($niveaux);
                $this->annees = $annees;
         $this->semestres = $semestres;
         $this->specialites = $specialites;

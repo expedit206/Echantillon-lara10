@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Annee;
 use App\Models\Niveau;
 use App\Models\Filiere;
-use App\Models\Specialite;
 
+use App\Models\Specialite;
 use App\Models\UniteValeur;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -87,5 +89,9 @@ class Enseignant extends Authenticatable
     }
 
 
+public function annee(): BelongsTo
+{
+    return $this->belongsTo(Annee::class);
+}
 
 }

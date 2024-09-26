@@ -38,8 +38,8 @@
                         class='bx bx-bookmark nav_icon open-modal'></i> <span class="nav_name open-modal">consulter les evaluations</span>
                 </a>
                 @if(Auth::guard('enseignant')->check())
-                <a href="{{ route('notes.create') }}" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span
-                    class="nav_name">Attribuer des note</span>
+                <a href="{{ route('notes.create') }}" class="nav_link open-modal"> <i class='bx bx-folder nav_icon'></i> <span 
+                    class="nav_name open-modal">Attribuer des note</span>
                 </a>
                     @endif
                     @php

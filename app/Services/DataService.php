@@ -15,32 +15,37 @@ class DataService
     public function getAllData()
     {
         // Récupérer l'utilisateur connecté
-$user=Auth::guard('enseignant')->user();
-// dd($user);
-        if ($user) {
+$enseignant=Auth::guard('enseignant')->user();
+// dd($enseignant);
+        if ($enseignant) {
             // Si l'utilisateur est un enseignant, récupérer uniquement les données liées à ses unités de valeur
-            $unitesValeurs = UniteValeur::whereHas('enseignant', function ($query) use ($user) {
-                $query->where('enseignant_id', $user->id);
-            })->paginate(20);
-            //  dd( $unitesValeurs->pluck('id'));
+            $unitesValeurs = UniteValeur::whereHas('enseignant', function ($query) use ($enseignant) {
+                $query->where('id', $enseignant->id);
+            })
+            ->whereRelation('annee', 'is_active', true)
+
+            ->paginate(20);
+            //  dd( $unitesValeurs);
 
             // Filtrer les autres entités en fonction des unités de valeur de l'enseignant
-            $niveaux = Niveau::whereHas('uniteValeurs', function ($query) use ($unitesValeurs) {
-                $query->where('id', 40);
-            })->get();
+            $niveaux = Niveau::whereHas('enseignants', function ($query) use ($enseignant) {
+                $query->where('enseignant_id', $enseignant->id);})
+                ->get();
 
-            $filieres = Filiere::whereHas('uniteValeurs', function ($query) use ($unitesValeurs) {
-                $query->whereIn('id', $unitesValeurs->pluck('id'));
+            $filieres = Filiere::whereHas('enseignants', function ($query) use ($enseignant) {
+                $query->where('enseignant_id', $enseignant->id);
             })->get();
+        // whereHas('uniteValeurs', function ($query) use ($unitesValeurs) {
+        //     $query->whereIn('id', $unitesValeurs->pluck('id'))
+        //     ->whereRelation('annee', 'is_active', true);
 
-            $specialites = Specialite::whereHas('uniteValeurs', function ($query) use ($unitesValeurs) {
-                $query->whereIn('id', $unitesValeurs->pluck('id'));
-            })->get();
-// dd($specialites);
-            $semestres = Semestre::whereHas('uniteValeurs', function ($query) use ($unitesValeurs) {
-                $query->whereIn('id', $unitesValeurs->pluck('id'));
-            })->get();
-            // dd($niveaux);
+            $specialites = Specialite::whereHas('enseignants', function ($query) use ($enseignant) {
+                $query->where('enseignant_id', $enseignant->id);})
+                ->get();
+
+            $semestres = Semestre::whereHas('uniteValeurs', function ($query) use ($enseignant) {
+                $query->where('enseignant_id', $enseignant->id);})
+                ->get();
 
             return [
                 'annees' => Annee::orderBy('created_at', 'desc')->get(),
@@ -49,6 +54,7 @@ $user=Auth::guard('enseignant')->user();
                 'niveaux' => $niveaux,
                 'filieres' => $filieres,
                 'uniteValeurs' => $unitesValeurs,
+                'total' => $unitesValeurs->count(),
             ];
         } else {
             // Si ce n'est pas un enseignant, retourner toutes les données

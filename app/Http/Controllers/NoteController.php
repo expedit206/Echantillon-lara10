@@ -59,23 +59,52 @@ class NoteController extends Controller
 
     public function getSemestres($annee)
 {
-    $semestres = Semestre::where('annee_id', $annee)->get();
+
+$enseignant=Auth::guard('enseignant')->user();
+// dd($enseignant);
+        if ($enseignant) {
+            $semestres = Semestre::whereHas('uniteValeurs', function ($query) use ($enseignant) {
+                $query->where('enseignant_id', $enseignant->id);})
+                ->get();
+            }else{
+
+                $semestres = Semestre::where('annee_id', $annee)->get();
+            }
     return response()->json($semestres);
 }
 
 public function getSpecialites($niveau)
 {
+    $enseignant=Auth::guard('enseignant')->user();
+    // dd($enseignant);
+            if ($enseignant) {
+
     $specialites = Specialite::whereRelation('filiere', 'niveau_id', $niveau)->get();
     return response()->json($specialites);
+            }
 }
 
 public function getMatieresBySpecialite($semestre,$specialite)
 {
+    $enseignant=Auth::guard('enseignant')->user();
 
-    $matieres = UniteValeur::
-    where('specialite_id', $specialite)
-    ->where('semestre_id', $semestre)
-    ->get();
+    if ($enseignant) {
+        // Si l'utilisateur est un enseignant, récupérer uniquement les données liées à ses unités de valeur
+        $matieres = UniteValeur::whereHas('enseignant', function ($query) use ($enseignant) {
+            $query->where('id', $enseignant->id);
+        })
+        ->whereRelation('annee', 'is_active', true)
+
+        ->paginate(20);
+    }else{
+
+        $matieres = UniteValeur::
+        where('specialite_id', $specialite)
+        ->where('semestre_id', $semestre)
+        ->whereRelation('annee', 'is_active', true)
+
+        ->get();
+    }
     return response()->json($matieres);
 }
 
@@ -184,7 +213,7 @@ public function create()
     $matieres = UniteValeur::all();
     $etudiants = Etudiant::all(); // ou filtrez selon les critères
 
-    return view('note.assign', compact('annees', 'semestres', 'matieres', 'etudiants'));
+    return view('note.assign',array_merge($this->dataService->getAllData(), compact('etudiants')));
 }
 
 

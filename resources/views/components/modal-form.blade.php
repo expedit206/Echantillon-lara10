@@ -2,12 +2,12 @@
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 class="text-2xl font-semibold mb-6">Sélectionner les critères de notes</h2>
         <form id="notes-form" action="{{ route('notes.index') }}" method="GET">
-            @csrf
+                @csrf
 
             <label for="anneeModal" class="block mb-3 font-medium text-gray-700">Année académique</label>
             <select id="anneeModal" name="annee" class="block w-full mb-4 border bg-gray-400 rounded-lg p-3 cursor-pointer" required>
                 @foreach ($annees as $annee)
-                    <option value="{{ $annee->id }}">{{ $annee->nom }}</option>
+                    <option value="{{ $annee->id }}" {{ $annee->is_active==true? 'selected' : '' }}>{{ $annee->nom }}</option>
                 @endforeach
             </select>
             <!-- Nouveau champ pour le niveau -->

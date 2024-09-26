@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Note;
+use App\Models\Annee;
 use App\Models\Niveau;
 use App\Models\Filiere;
 use App\Models\Category;
@@ -25,7 +26,7 @@ class UniteValeur extends Model
         'credit',
         'code',
         'enseignant_id',
-        'filiere_id',   
+        'filiere_id',
         'specialite_id',
         'semestre_id',
         'category_id',
@@ -56,6 +57,11 @@ class UniteValeur extends Model
     public function semestre(): BelongsTo
     {
         return $this->belongsTo(Semestre::class);
+    }
+
+    public function annee(): BelongsTo
+    {
+        return $this->belongsTo(Annee::class);
     }
 
 

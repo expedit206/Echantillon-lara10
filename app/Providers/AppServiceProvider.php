@@ -9,6 +9,7 @@ use App\Models\Semestre;
 use App\Models\Specialite;
 use App\Models\UniteValeur;
 use App\Services\DataService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,15 +30,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-   
-    View::composer('components.layout', function ($view) {
+    View::composer('components.layout', function ($view){
         $view->with([
-            'annees' => Annee::all(),
+            'annees' =>  Annee::all(),
             'niveaux' => Niveau::all(),
             'specialites' => Specialite::all(),
             'semestres' => Semestre::all(),
             'uniteValeurs' => UniteValeur::all(),
         ]);
+
     });
 }
 
