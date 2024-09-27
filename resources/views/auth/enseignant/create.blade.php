@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     @vite('resources/css/app.css')
 </head>
-<body class="bg-gray-300 text-gray-900">
+<body class="bg-gray-300 text-gray-800">
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -22,7 +22,8 @@
     <div class="max-w-3xl mx-auto p-6 bg-slate-500 rounded-lg shadow-md mt-10">
 
         <div class="flex font-bold justify-between">
-            <h1 class="text-2xl font-bold mb-6">Inscription Enseignant</h1>
+            <h1 class="text-2xl font-bold mb-6">
+                Ajouter un Enseignant</h1>
                 <form method='post' action="{{route('annee.setActive')}}" id="formAnnee">
                     @csrf
                             <label for="annee">Année Académique</label>
@@ -138,12 +139,12 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-800 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('enseignant.login') }}">
+                {{-- <a class="underline text-sm text-gray-800 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('enseignant.login') }}">
                     {{ __('Already registered?') }}
-                </a>
+                </a> --}}
 
                 <button type="submit" class="ms-4 inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out">
-                    {{ __('Register') }}
+                    {{ __('Enregistrer') }}
                 </button>
             </div>
         </form>

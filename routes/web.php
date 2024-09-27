@@ -72,7 +72,12 @@ Route::get('/enseignants/logout', [\App\Http\Controllers\Auth\Enseignant\Enseign
 Route::get('enseignants/dashboard', [EnseignantController::class, 'dashboard'])->name('enseignant.dashboard')->middleware('monAuth');
 
 Route::resource('enseignants', \App\Http\Controllers\Auth\Enseignant\EnseignantController::class);
+
+Route::get('/assigner-matiere', [EnseignantController::class, 'assignMatiere'])->name('assigner-matiere.create');
+Route::post('/assigner-matiere', [EnseignantController::class, 'storeAssignMatiere'])->name('assigner-matiere.store');
 // routes/web.php
+
+
 Route::get('/cours/{uniteValeur}/graphique', [EnseignantController::class, 'graphique'])->name('coursGraphique');
 
 

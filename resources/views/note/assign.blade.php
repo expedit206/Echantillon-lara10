@@ -1,11 +1,10 @@
 <x-layout>
 
-    @section('title', 'Unités de Valeur')
+    @section('title', 'Attribuer une note')
 
     @section('content')
         <x-header />
         <x-menu />
-        {{-- @dd($uniteValeurs) --}}
 
         <div class="filter">
             <div class="flex justify-between">
@@ -77,8 +76,6 @@
                     </select>
                 </article>
 
-
-
                 <article class="flex flex-col w-full">
                     <label for="unitevaleur">Unité de Valeur</label>
                     <select id="unitevaleur" name="unitevaleur" class="text-black rounded-md w-full" onchange="submit()">
@@ -93,52 +90,41 @@
             </form>
         </div>
 
-
         <div class="table mt-3">
-            {{-- <p class="font-bold text-1xl italic">Total : {{ $total }}</p> --}}
-            {{-- <table class="table-custom overflow-scroll">
-                <thead class="table-head-custom">
+<p>Total : {{$totalEtudiant}}</p>
+            <table class="min-w-full bg-white">
+                <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Code</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Niveau</th>
-                        <th scope="col">spécialité</th>
-                        <th scope="col">Spécialité</th>
-                        <th scope="col">Enseignant</th>
-                        <th scope="col" class="text-center" colspan="2">Action</th>
+                        <th class="py-2 px-4 border">Matricule</th>
+                        <th class="py-2 px-4 border">Nom et prenom</th>
+                        <th class="py-2 px-4 border">Contrôle Continu</th>
+                        <th class="py-2 px-4 border">Session Normale</th>
+                        <th class="py-2 px-4 border">Rattrapage</th>
+                        <th class="py-2 px-4 border">Moyenne</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($uniteValeurs as $unitevaleur)
-                        <tr>
-                            <td scope="row">{{ $unitevaleur->id }}</td>
-                            <td scope="row">{{ $unitevaleur->code }}</td>
-                            <td scope="row">{{ $unitevaleur->nom }}</td>
-                            <td scope="row">{{ $unitevaleur->niveau->nom }}</td>
-                            <td scope="row">{{ $unitevaleur->filiere->nom }}</td>
-                            <td scope="row">{{ $unitevaleur->specialite->nom }}</td>
-                            <td scope="row">{{ $unitevaleur->enseignant?->nom }}</td>
-                            <td scope="row"> <a href="{{ route('uniteValeur.show', $unitevaleur->id) }}"
-                                    class="text-blue-600 hover:text-blue-900">Voir</a> </td>
-                            <td scope="row"> <a href="{{ route('uniteValeur.edit', $unitevaleur->id) }}"
-                                    class="text-green-600 hover:text-green-900">Editer</a> </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="8" class="text-center">
-                                @if (request('search') || request('niveau') || request('filiere'))
-                                    Aucune unité de valeur ne correspond à ces critères.
-                                @else
-                                    Aucune unité de valeur enregistrée.
-                                @endif
-                            </td>
-                        </tr>
-                    @endforelse
+                        @foreach ($etudiants as $etudiant)
+                            @php
+                                $controleContinu = $etudiant->notes()->where('type', 'Controle continu')->first();
+                                $sessionNormale = $etudiant->notes()->where('type', 'Normale')->first();
+                                $rattrapage = $etudiant->notes()->where('type', 'Rattrapage')->first();
+                                $moyenne = ($controleContinu ? $controleContinu->note : 0) + ($sessionNormale ? $sessionNormale->note : 0);
+                                $moyenne /= ($controleContinu && $sessionNormale) ? 2 : 1; // Éviter la division par zéro
+                            @endphp
+                            <tr>
+                                <td class="py-2 px-4 border">{{ $etudiant->id }}</td>
+                                <td class="py-2 px-4 border">{{ $etudiant->nom }} {{ $etudiant->prenom }}</td>
+                                <td class="py-2 px-4 border">{{ $controleContinu ? $controleContinu->note : 'N/A' }}</td>
+                                <td class="py-2 px-4 border">{{ $sessionNormale ? $sessionNormale->note : 'N/A' }}</td>
+                                <td class="py-2 px-4 border">{{ $rattrapage ? $rattrapage->note : 'N/A' }}</td>
+                                <td class="py-2 px-4 border">{{ number_format($moyenne, 2) }}</td>
+                            </tr>
+                    @endforeach
                 </tbody>
             </table>
 
-            {{ $uniteValeurs->appends(request()->input())->links() }} --}}
+            {{ $uniteValeurs->appends(request()->input())->links() }}
         </div>
     @endsection
 </x-layout>

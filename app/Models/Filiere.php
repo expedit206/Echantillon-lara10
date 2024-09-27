@@ -32,6 +32,11 @@ class Filiere extends Model
         return $this->hasMany(UniteValeur::class);
     }
 
+    public function specialites(): HasMany
+    {
+        return $this->hasMany(Specialite::class);
+    }
+
     public function niveau(): BelongsTo
     {
         return $this->belongsTo(Niveau::class);

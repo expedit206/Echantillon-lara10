@@ -3,10 +3,11 @@
 namespace App\Services;
 
 use App\Models\Annee;
+use App\Models\Enseignant;
+use App\Models\Filiere;
+use App\Models\Niveau;
 use App\Models\Semestre;
 use App\Models\Specialite;
-use App\Models\Niveau;
-use App\Models\Filiere;
 use App\Models\UniteValeur;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,6 +66,9 @@ $enseignant=Auth::guard('enseignant')->user();
                 'niveaux' => Niveau::orderBy('created_at', 'desc')->get(),
                 'filieres' => Filiere::orderBy('created_at', 'desc')->get(),
                 'uniteValeurs' => UniteValeur::orderBy('created_at', 'desc')->get(),
+                'enseignants' => Enseignant::orderBy('created_at', 'desc')->get(),
+                'total' => UniteValeur::count(),
+
             ];
         }
     }

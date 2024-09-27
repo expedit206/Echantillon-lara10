@@ -28,21 +28,21 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call([
-            AnneesSeeder::class,
-            AdminSeeder::class,
+            // AnneesSeeder::class,
+            // AdminSeeder::class,
             CategorySeeder::class,
-            // FiliereSeeder::class,
-            // NiveauSeeder::class,
             SemestreSeeder::class,
-            EnseignantSeeder::class,
-            // UniteDeValeursSeeder::class,
-            EtudiantSeeder::class,
-            EtudiantUniteValeurSeeder::class,
-            NoteSeeder::class,
+            // EnseignantSeeder::class,
+            NiveauSeeder::class,
+                FiliereSeeder::class,
+            specialiteSeeder::class,
+        //     EtudiantSeeder::class,
+        //     EtudiantUniteValeurSeeder::class,
+        //     NoteSeeder::class,
         ]);
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }

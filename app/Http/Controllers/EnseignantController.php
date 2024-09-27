@@ -86,14 +86,15 @@ class EnseignantController extends Controller
             $enseignant = Auth::guard('enseignant')->user();
 
             $annee_id=\DB::table('annees')->where('is_active', true)->first()->id;
-
             // Statistiques globales pour l'enseignant
+            // dd($enseignant->niveau_id);
             $totalEtudiants = Etudiant::where('annee_id', $annee_id)
-            ->whereHas('uniteValeurs', function ($query) use ($enseignant) {
-                $query->where('enseignant_id', $enseignant?->id);
-            })->count();
+            ->where('niveau_id',$enseignant->niveaux->pluck('id'))
+            ->where('filiere_id', $enseignant->filieres->pluck('id'))
+            ->where('specialite_id', $enseignant->specialites->pluck('id'))
+            ->count();
             // Total des cours donnés par cet enseignant
-            // dd($annee_id);
+            // dd($totalEtudiants);
             $totalCours = UniteValeur::where('annee_id', $annee_id)
             ->where('enseignant_id', $enseignant?->id)->count();
 
@@ -236,4 +237,35 @@ class EnseignantController extends Controller
             // die;
             return view('enseignant.show', compact('enseignant'));
         }
+
+        public function assignMatiere()
+        {
+            // Récupérer tous les niveaux pour le formulaire
+            // $niveaux = Niveau::with('filieres.specialites.matieres')->get();
+
+           return view('enseignant.assigner-matiere', $this->dataService->getAllData());
+        }
+
+        public function storeAssignMatiere(Request $request)
+        {
+            // Valider les données du formulaire
+            $validated = $request->validate([
+                'enseignant_id' => 'required|exists:enseignants,id',
+                'matiere_id' => 'required|exists:matieres,id',
+                'specialite_id' => 'required|exists:specialites,id',
+            ]);
+
+            // Récupérer l'enseignant, la matière, et la spécialité
+            $enseignant = Enseignant::find($validated['enseignant_id']);
+            $matiere = Matiere::find($validated['matiere_id']);
+            $specialite = Specialite::find($validated['specialite_id']);
+
+            // Assigner la matière à l'enseignant
+            $matiere->enseignant_id = $enseignant->id;
+            $matiere->specialite_id = $specialite->id; // Optionnel si une matière appartient à une spécialité
+            $matiere->save();
+
+            return redirect()->route('assigner-matiere.create')->with('success', 'Matière assignée avec succès.');
+        }
+
     }

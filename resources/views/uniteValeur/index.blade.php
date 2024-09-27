@@ -135,7 +135,7 @@
                 </tbody>
             </table>
 
-            {{ $uniteValeurs->appends(request()->input())->links() }}
+            {{-- {{ $uniteValeurs->appends(request()->input())->links() }} --}}
         </div>
     @endsection
 </x-layout>

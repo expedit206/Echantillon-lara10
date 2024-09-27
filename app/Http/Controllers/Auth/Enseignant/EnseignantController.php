@@ -84,12 +84,12 @@ class EnseignantController extends Controller
             'message'=>"Connecter vous au site avec votre mot de passe",
             'password'=>$request->password,
             'email'=>$data['email'],
-            'route'=>'enseignant.login'
+            'route'=>'login'
         ];
 
         Mail::to($data['email'])->send(new CodeMail('reucperation du code', $dataMail, 'Admin@gmail.com', 'Administrateur'));
         // Rediriger après l'inscription
-        return redirect()->route('enseignant.login')->with('success', 'Enseignant ajouté avec succès.');
+        return redirect()->route('dashboard')->with('success', 'Enseignant ajouté avec succès.');
     }
 
     // Afficher le formulaire de connexion

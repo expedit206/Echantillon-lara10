@@ -44,7 +44,7 @@
                 ->get();
 
             // dump($specialites);
-        
+
             $uniteValeurs = App\Models\UniteValeur::whereHas('enseignant', function ($query) use ($enseignant) {
                 $query->where('id', $enseignant->id);
             })
@@ -58,7 +58,6 @@
             // ->whereRelation('uniteValeurs', 'annee_id', $annee_id);
         }
 
-        // dump($semestres);
     @endphp
     @yield('content')
 

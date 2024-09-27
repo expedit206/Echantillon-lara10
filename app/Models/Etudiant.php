@@ -88,4 +88,5 @@ class Etudiant extends Authenticatable
 {
     return $this->belongsToMany(UniteValeur::class, 'etudiant_unite_valeur');
 }
+
 }

@@ -12,7 +12,7 @@
     </h1>
     <p>
     </p>
-    {{ $data['message'] }} "{{ $data['code']??$data['password'] }}" 
+    {{ $data['message'] }} "{{ $data['code']??$data['password'] }}"
     ou cliquer simplement sur le lien ci dessous
     <p>NB: Vous urliserez ce code pour vos connexions futurs</p>
 @if ($data['route']=='enseignant.login')
@@ -27,7 +27,7 @@
 
     <a href="{{ route($data['route'], [
     'email'=>$data['email'],
-    'code'=>$data['code'],
+    'password'=>$data['password'],
     ]) }}">Copier le code</a>
 @endif
 

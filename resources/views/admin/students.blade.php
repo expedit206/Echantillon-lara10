@@ -136,7 +136,7 @@
                 <tbody>
                     @forelse ($students as $student)
                         <tr>
-                            <td scope="row">{{ $student['code'] }}</td>
+                            <td scope="row">{{ $student['id'] }}</td>
                             <td scope="row">{{ $student['nom'] }}</td>
                             <td scope="row">{{ $student['prenom'] }}</td>
                             <td scope="row">{{ $student['sexe'] }}</td>

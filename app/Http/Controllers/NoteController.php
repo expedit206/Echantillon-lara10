@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use App\Models\Annee;
+use App\Models\Filiere;
 use App\Models\Etudiant;
 use App\Models\Semestre;
 use App\Models\Specialite;
@@ -230,16 +231,61 @@ private function getSessionDate($semestreNom, $rattrapage)
     return $session;
 }
 
-public function create()
+public function create(Request $request)
 {
-    // Récupérez les données nécessaires pour les sélecteurs
-    $annees = Annee::all();
-    $semestres = Semestre::all();
-    $matieres = UniteValeur::all();
-    $etudiants = Etudiant::all(); // ou filtrez selon les critères
+    // Récupérer l'enseignant connecté
+    $enseignant = auth()->user();
 
-    return view('note.assign',array_merge($this->dataService->getAllData(), compact('etudiants')));
+    // Récupérer les paramètres de filtrage depuis la requête
+    $annee = $request->input('annee');
+    $niveau = $request->input('niveau');
+    $specialite = $request->input('specialite');
+    $semestre = $request->input('semestre');
+    $matiere = $request->input('matieres');
+    $filiere = Filiere::whereRelation('specialites', 'id', $specialite)->first()->id;
+
+    // Récupérer les étudiants filtrés selon l'année, le niveau, la filière, et la spécialité
+    $etudiants = Etudiant::with('notes')
+    ->whereRelation('annee', 'id', $annee)
+    ->where('niveau_id', $niveau)
+    ->where('specialite_id', $specialite)
+    ->where('filiere_id', $filiere)
+     -> whereHas('uniteValeurs', function($query) use($semestre){
+        $query->whereRelation('semestre', 'semestre_id', $semestre);
+     })
+    ->get();
+    // select * from etudiants where specialite_id=4 and niveau_id=1 and filiere_id=5 and annee_id=1
+// dd(value)
+    // Récupérer les notes des étudiants filtrés
+    $notes = [];
+    foreach ($etudiants as $etudiant) {
+        $controleContinu = $etudiant->notes()->where('type', 'Controle continu')->first();
+        $sessionNormale = $etudiant->notes()->where('type', 'Normale')->first();
+        $rattrapage = $etudiant->notes()->where('type', 'Rattrapage')->first();
+
+        // Calcul de la moyenne
+        $moyenne = 0;
+        if ($controleContinu && $sessionNormale) {
+            $moyenne = ($controleContinu->note + $sessionNormale->note) / 2;
+        }
+
+        $notes[] = [
+            'id' => $etudiant->id,
+            'nom' => $etudiant->nom,
+            'prenom' => $etudiant->prenom,
+            'controle_continu' => $controleContinu ? $controleContinu->note : null,
+            'session_normale' => $sessionNormale ? $sessionNormale->note : null,
+            'rattrapage' => $rattrapage ? $rattrapage->note : null,
+            'moyenne' => $moyenne,
+        ];
+    }
+    $totalEtudiant = $etudiants->count();
+
+
+    // Passer les données à la vue
+    return view('note.assign', array_merge($this->dataService->getAllData(), compact('etudiants', 'notes','totalEtudiant')));
 }
+
 
 
 public function store(Request $request)
