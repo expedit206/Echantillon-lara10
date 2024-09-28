@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Annee;
 use App\Models\Niveau;
 use App\Models\Filiere;
 use App\Models\Category;
@@ -57,27 +58,26 @@ $enseignant=Auth::guard('enseignant')->user();
     public function create()
     {
         // Récupération des données nécessaires pour le formulaire
-        $niveaux = Niveau::all(); // Récupère tous les niveaux
-        $filieres = Filiere::all(); // Récupère toutes les filières
         $enseignants = Enseignant::all(); // Récupère tous les enseignants
-        $specialites = Specialite::all(); // Récupère toutes les spécialités
-        $semestres = Semestre::all(); // Récupère tous les semestres
         $categories = Category::all(); // Récupère toutes les catégories
 
         // Retourne la vue 'unitevaleur.create' avec les données
-        return view('unitevaleur.create', compact('niveaux', 'filieres', 'enseignants', 'specialites', 'semestres', 'categories'));
+        return view('unitevaleur.create', array_merge(
+$this->dataService->getAllData(),
+compact('enseignants',  'categories'))
+        ) ;
     }
 
 
     public function store(Request $request)
     {
+        $annee_id = Annee::where('is_active', true);
         // Validation des données du formulaire
         $request->validate([
             'code' => 'required|string|max:255',
             'nom' => 'required|string|max:255',
             'description' => 'nullable|string',
             'credit' => 'required|integer|min:1',
-            'enseignant_id' => 'required|exists:enseignants,id',
             'filiere_id' => 'required|exists:filieres,id',
             'specialite_id' => 'required|exists:specialites,id',
             'niveau_id' => 'required|exists:niveaux,id',
@@ -91,12 +91,12 @@ $enseignant=Auth::guard('enseignant')->user();
             'nom' => $request->input('nom'),
             'description' => $request->input('description'),
             'credit' => $request->input('credit'),
-            'enseignant_id' => $request->input('enseignant_id'),
             'filiere_id' => $request->input('filiere_id'),
             'specialite_id' => $request->input('specialite_id'),
             'niveau_id' => $request->input('niveau_id'),
             'semestre_id' => $request->input('semestre_id'),
             'category_id' => $request->input('category_id'),
+            'annee_id' => $annee_id,
         ]);
 
         // Redirection avec un message de succès
@@ -157,4 +157,21 @@ $enseignant=Auth::guard('enseignant')->user();
 
         return redirect()->route('uniteValeur.index')->with('success', 'Unité de valeur supprimée avec succès.');
     }
+
+    public function getSpecialites(Niveau $niveau, Filiere $filiere)
+{
+    $specialites = Specialite::where('filiere_id', $filiere->id)
+   -> whereRelation('filiere','niveau_id', $niveau->id)
+                            ->get();
+
+    return response()->json($specialites);
+}
+
+    public function getFilieres(Niveau $niveau)
+{
+    $filieres = Filiere::where('niveau_id', $niveau->id)
+                            ->get();
+
+    return response()->json($filieres);
+}
 }

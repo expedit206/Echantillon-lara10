@@ -4,7 +4,7 @@
             {{ __('Assigner une matière à un enseignant') }}
         </h2>
     </x-slot>
-dd($niveaux)
+{{-- @dd($niveaux) --}}
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -34,7 +34,7 @@ dd($niveaux)
                             <x-label for="niveau_id" :value="__('Niveau')" />
                             <select name="niveau_id" id="niveau_id" class="block mt-1 w-full">
                                 @foreach($niveaux as $niveau)
-                                    <option value="{{ $niveau->id }}">{{ $niveau->nom }}</option>
+                                    <option value="{{ $niveau->id }}"> {{ $niveau->nom }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -44,6 +44,9 @@ dd($niveaux)
                             <x-label for="filiere_id" :value="__('Filière')" />
                             <select name="filiere_id" id="filiere_id" class="block mt-1 w-full">
                                 <!-- Options dynamiques selon le niveau sélectionné -->
+                                @foreach($filieres as $filiere)
+                                <option value="{{ $filiere->id }}">{{ $filiere->nom }}</option>
+                            @endforeach
                             </select>
                         </div>
 
@@ -52,14 +55,21 @@ dd($niveaux)
                             <x-label for="specialite_id" :value="__('Spécialité')" />
                             <select name="specialite_id" id="specialite_id" class="block mt-1 w-full">
                                 <!-- Options dynamiques selon la filière sélectionnée -->
+                                @foreach($specialites as $specialite)
+                                <option value="{{ $specialite->id }}">{{ $specialite->nom }}</option>
+                            @endforeach
                             </select>
                         </div>
 
                         <!-- Sélection de la matière (dynamique selon la spécialité) -->
                         <div class="mt-4">
+                            @dump($uniteValeurs)
                             <x-label for="matiere_id" :value="__('Matière')" />
                             <select name="matiere_id" id="matiere_id" class="block mt-1 w-full">
                                 <!-- Options dynamiques selon la spécialité sélectionnée -->
+                                @foreach($uniteValeurs as $unite_de_valeurs)
+                                <option value="{{ $unite_de_valeurs->id }}">{{ $unite_de_valeurs->nom }}</option>
+                            @endforeach
                             </select>
                         </div>
 

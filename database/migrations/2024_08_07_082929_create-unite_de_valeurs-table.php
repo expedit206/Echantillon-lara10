@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('nom'); // String nom, unique
             $table->string('description'); // String description
             $table->integer('credit'); // int credit
-            $table->foreignId('enseignant_id')->contrained(); // String nom, unique
             $table->foreignId('filiere_id')->contrained(); // String nom, unique
             $table->foreignId('specialite_id')->contrained(); // String nom, unique
             $table->foreignId('niveau_id')->contrained(); // String nom, unique

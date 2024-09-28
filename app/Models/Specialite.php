@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Specialite extends Model
 {
     use HasFactory;
+    
     public function filiere()
     {
         return $this->belongsTo(Filiere::class);

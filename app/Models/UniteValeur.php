@@ -29,6 +29,7 @@ class UniteValeur extends Model
         'filiere_id',
         'specialite_id',
         'semestre_id',
+        'annee_id',
         'category_id',
         'niveau_id',
     ];

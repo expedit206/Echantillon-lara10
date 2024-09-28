@@ -145,5 +145,9 @@ Route::get('/matieresBySpecialite/{semestre}/{specialite}', [NoteController::cla
 
 Route::get('/matieresBySemestre/{specialite}/{semestre}', [NoteController::class, 'getMatieresBySemestre'])->name('getMatieresBySemestre');
 
+Route::get('/specialites/{niveau}/{filiere}', [UniteValeurController::class, 'getSpecialites'])->name('getMatieresBySpecialiteNiveau');
+
+Route::get('/filieres/{niveau}', [UniteValeurController::class, 'getFilieres'])->name('getFiliereByNiveau');
+
 
 Route::get('/releve/{etudiant}/{annee}', [NoteController::class, 'showReleveDeNotes'])->name('releve.show');

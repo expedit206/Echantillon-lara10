@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call([
-            // AnneesSeeder::class,
-            // AdminSeeder::class,
+            AnneesSeeder::class,
+            AdminSeeder::class,
             CategorySeeder::class,
             SemestreSeeder::class,
             // EnseignantSeeder::class,
