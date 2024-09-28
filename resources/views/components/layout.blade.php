@@ -74,3 +74,77 @@
 </body>
 
 </html>
+
+
+{{-- Formulaire pour le choix des spécialités --}}
+<div id="overlay" class="fixed inset-0 bg-gray-500 bg-opacity-50 hidden"></div>
+<div id="selectionForm" style="display: none;" class="mt-4 p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-lg font-semibold mb-4 text-gray-700">Sélectionner une Spécialité</h2>
+    <form action="{{ route('specialite.selectUnite') }}" method="GET">
+        @csrf
+
+        <div class="mb-4">
+            <x-label for="niveau" :value="__('Niveau')" />
+            <select id="niveau" name="niveau" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" required>
+                <option value="">-- Choisir un Niveau --</option>
+                @foreach($niveaux as $niveau)
+                    <option value="{{ $niveau->id }}">{{ $niveau->nom }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <x-label for="specialite" :value="__('Spécialité')" />
+            <select id="specialite" name="specialite" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" required>
+                <option value="">-- Choisir une Spécialité --</option>
+                <!-- Les spécialités seront injectées ici via JavaScript -->
+            </select>
+        </div>
+
+        <div class="mt-6">
+            <x-primary-button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-blue-300">
+                {{ __('Suivant') }}
+            </x-primary-button>
+            <button type="button" id="cancelButton" class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-red-300">
+                {{ __('Annuler') }}
+            </button>
+        </div>
+    </form>
+</div>
+
+
+<a href="#" id="showFormLink" class="text-blue-500">Choisir une spécialité</a>
+
+<script>
+    document.getElementById('showFormLink').addEventListener('click', function(event) {
+        event.preventDefault(); // Empêche le rechargement de la page
+        document.getElementById('selectionForm').style.display = 'block'; // Affiche le formulaire
+        document.getElementById('overlay').style.display = 'block'; // Affiche l'overlay
+    });
+
+    document.getElementById('cancelButton').addEventListener('click', function() {
+        document.getElementById('selectionForm').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    });
+
+    document.getElementById('niveau').addEventListener('change', function() {
+        let niveauId = this.value;
+        let specialiteSelect = document.getElementById('specialite');
+        
+        // Réinitialiser le select des spécialités
+        specialiteSelect.innerHTML = '<option value="">-- Choisir une Spécialité --</option>';
+
+        if (niveauId) {
+            fetch(`/specialites/${niveauId}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.specialites.forEach(function(specialite) {
+                        let option = document.createElement('option');
+                        option.value = specialite.id;
+                        option.textContent = specialite.nom;
+                        specialiteSelect.appendChild(option);
+                    });
+                });
+        }
+    });
+</script>

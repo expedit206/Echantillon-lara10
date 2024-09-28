@@ -108,6 +108,14 @@ Route::get('/notes/assign', [NoteController::class, 'create'])->name('notes.crea
 Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
 
 
+// route pour specialite
+
+Route::get('/specialite/select', [SpecialiteController::class, 'selectUnite'])->name('specialite.selectUnite');
+
+
+Route::get('/specialite/{specialite}/assign-unite', [SpecialiteController::class, 'showAssignUnite'])->name('specialite.showAssignUnite');
+Route::post('/specialite/{specialite}/assign-unite', [SpecialiteController::class, 'assignUnite'])->name('specialite.assignUnite');
+
 //breeze
 
 
@@ -151,3 +159,5 @@ Route::get('/filieres/{niveau}', [UniteValeurController::class, 'getFilieres'])-
 
 
 Route::get('/releve/{etudiant}/{annee}', [NoteController::class, 'showReleveDeNotes'])->name('releve.show');
+
+

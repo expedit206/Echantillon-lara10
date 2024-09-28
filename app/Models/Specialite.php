@@ -13,17 +13,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Specialite extends Model
 {
     use HasFactory;
-    
+
     public function filiere()
     {
         return $this->belongsTo(Filiere::class);
     }
 
-    public function uniteValeurs():HasMany
-    {
-        return $this->hasMany(UniteValeur::class);
-     }
+    // public function uniteValeurs():HasMany
+    // {
+    //     return $this->hasMany(UniteValeur::class);
+    //  }
 
+     public function uniteValeurs()
+     {
+         return $this->belongsToMany(UniteDeValeur::class, 'specialite_unite_de_valeur');
+     }
      /**
       * The enseignants that belong to the Specialite
       *

@@ -60,7 +60,7 @@ $enseignant=Auth::guard('enseignant')->user();
         // Récupération des données nécessaires pour le formulaire
         $enseignants = Enseignant::all(); // Récupère tous les enseignants
         $categories = Category::all(); // Récupère toutes les catégories
-
+        
         // Retourne la vue 'unitevaleur.create' avec les données
         return view('unitevaleur.create', array_merge(
 $this->dataService->getAllData(),

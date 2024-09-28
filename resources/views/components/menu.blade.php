@@ -36,9 +36,16 @@
                 </a>
 
                 <a href="{{ route('assigner-matiere.create') }}" class="nav_link"> <i
+                        class='bx bx-message-square-detail nav_icon' ></i> <span class="nav_name">
+            @if(Auth::guard('admin')->check())
+            Associer  Unité de Valeur-enseignant
+                @endif
+                        </span>
+                </a>
+                <a href="#" class="nav_link" id="showFormLink"> <i
                         class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">
             @if(Auth::guard('admin')->check())
-            Assigner une Unité de Valeur
+            Associer matieres-specialite
                 @endif
                         </span>
                 </a>
@@ -77,17 +84,6 @@
                 <span class="nav_name">Ajouter une unité de valeur</span>
             </a>
             @endif
-            {{-- <form action="
-            @if(Auth::guard('enseignant')->check())
-            {{ route('enseignants.destroy', Auth::guard('enseignant')->user()->id) }}
-            @elseif(Auth::guard('admin')->check())
-            {{ route('admin.destroy', Auth::guard('admin')->user()->id) }}
-            @endif
-
-            " method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?');">
-                @csrf
-                @method('DELETE')
-            </form> --}}
 
                 <a href="
             @if(Auth::guard('enseignant')->check())
@@ -103,15 +99,13 @@
                 </a>
     </div>
     </nav>
-@if (session('success')
 
-{{session('succes')}}
+    @if(session('success'))
+    {{ session('success') }}
 @endif
-@if (session('error')
 
-{{session('error')}}
+@if(session('error'))
+    {{ session('error') }}
 @endif
+
 </div>
-
-
-{{-- @dd($teachers) --}}

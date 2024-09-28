@@ -40,7 +40,7 @@
 
 @media screen and (min-width: 768px) {
     .show {
-        width: calc(var(--nav-width) + 185px);
+        width: calc(var(--nav-width) + 210px);
     }
 
     .body-pd {
@@ -59,4 +59,24 @@ display: none;
     width: 2px;
     height: 32px;
     background-color: var(--white-color);
+}
+
+#selectionForm{
+    position:absolute;
+    top:30%;
+    left:30%;
+    z-index:50;
+    @apply bg-slate-500
+
+}
+
+#overlay {
+    display: none; /* Masquer par défaut */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Fond noir avec opacité */
+    z-index: 50; /* Au-dessus des autres éléments */
 }
