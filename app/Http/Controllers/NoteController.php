@@ -77,22 +77,22 @@ $enseignant=Auth::guard('enseignant')->user();
     return response()->json($semestres);
 }
 
-public function getSpecialites($niveau)
-{
-    $enseignant=Auth::guard('enseignant')->user();
-    // dd($enseignant);
-    if ($enseignant) {
-                // dd($niveau);
-    $specialites = Specialite::whereRelation('filiere', 'niveau_id', $niveau)
-    ->whereHas('enseignants', function ($query) use ($enseignant) {
-        $query->where('enseignant_id', $enseignant->id);})
-        ->get();
-}else{
-    $specialites = Specialite::whereRelation('filiere', 'niveau_id', $niveau)->get();
+    public function getSpecialites($niveau)
+    {
+        $enseignant=Auth::guard('enseignant')->user();
+        // dd($enseignant);
+        // dd($niveau);
+        if ($enseignant) {
+        $specialites = Specialite::whereRelation('filiere', 'niveau_id', $niveau)
+        ->whereHas('enseignants', function ($query) use ($enseignant) {
+            $query->where('enseignant_id', $enseignant->id);})
+            ->get();
+    }else{
+        $specialites = Specialite::whereRelation('filiere', 'niveau_id', $niveau)->get();
 
-}
-    return response()->json($specialites);
-}
+    }
+        return response()->json($specialites);
+    }
 
 public function getMatieresBySpecialite($semestre,$specialite)
 {

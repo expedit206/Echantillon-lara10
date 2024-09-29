@@ -22,6 +22,7 @@ class UniteValeurController extends Controller
     public function __construct(DataService $dataService)
     {
         $this->dataService = $dataService;
+        $this->middleware('monAuth');
     }
 
     public function index(Request $request)
@@ -60,7 +61,7 @@ $enseignant=Auth::guard('enseignant')->user();
         // Récupération des données nécessaires pour le formulaire
         $enseignants = Enseignant::all(); // Récupère tous les enseignants
         $categories = Category::all(); // Récupère toutes les catégories
-        
+
         // Retourne la vue 'unitevaleur.create' avec les données
         return view('unitevaleur.create', array_merge(
 $this->dataService->getAllData(),
@@ -71,7 +72,7 @@ compact('enseignants',  'categories'))
 
     public function store(Request $request)
     {
-        $annee_id = Annee::where('is_active', true);
+        $annee_id = Annee::where('is_active', true)->first()->id;
         // Validation des données du formulaire
         $request->validate([
             'code' => 'required|string|max:255',
@@ -174,4 +175,16 @@ compact('enseignants',  'categories'))
 
     return response()->json($filieres);
 }
+
+
+public function getMatieres($niveauId, $filiereId, $specialiteId)
+{
+    $matieres = UniteValeur::whereRelation('niveau', 'id', $niveauId)
+        ->whereRelation('filiere', 'id', $filiereId)
+        ->whereRelation('specialites', 'specialite_id', $specialiteId) // Assurez-vous que 'id' est le bon champ
+        ->get();
+
+    return response()->json($matieres);
+}
+
 }

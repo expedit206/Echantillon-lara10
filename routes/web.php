@@ -1,18 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AppController;
-use App\Http\Controllers\NoteController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnneeController;
-
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\GraphiqueController;
-use App\Http\Controllers\EnseignantController;
-use App\Http\Controllers\UniteValeurController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\Etudiant\EtudiantController;
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+
+use App\Http\Controllers\Auth\Etudiant\EtudiantController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\EnseignantController;
+use App\Http\Controllers\GraphiqueController;
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UniteValeurController;
+use App\Http\Controllers\SpecialiteController;
+use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -161,3 +163,5 @@ Route::get('/filieres/{niveau}', [UniteValeurController::class, 'getFilieres'])-
 Route::get('/releve/{etudiant}/{annee}', [NoteController::class, 'showReleveDeNotes'])->name('releve.show');
 
 
+// Route pour récupérer les matières par niveau, filière et spécialité
+Route::get('/matieres/{niveauId}/{filiereId}/{specialiteId}', [UniteValeurController::class, 'getMatieres']);

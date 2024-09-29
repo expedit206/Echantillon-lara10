@@ -26,7 +26,7 @@ class Specialite extends Model
 
      public function uniteValeurs()
      {
-         return $this->belongsToMany(UniteDeValeur::class, 'specialite_unite_de_valeur');
+         return $this->belongsToMany(UniteValeur::class, 'specialite_unite_de_valeur', 'specialite_id', 'unite_de_valeur_id');
      }
      /**
       * The enseignants that belong to the Specialite

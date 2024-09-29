@@ -114,8 +114,6 @@
                             <td scope="row">{{ $unitevaleur->nom }}</td>
                             <td scope="row">{{ $unitevaleur->niveau->nom }}</td>
                             <td scope="row">{{ $unitevaleur->filiere->nom }}</td>
-                            <td scope="row">{{ $unitevaleur->specialite->nom }}</td>
-                            <td scope="row">{{ $unitevaleur->enseignant?->nom }}</td>
                             <td scope="row"> <a href="{{ route('uniteValeur.show', $unitevaleur->id) }}"
                                     class="text-blue-600 hover:text-blue-900">Voir</a> </td>
                             <td scope="row"> <a href="{{ route('uniteValeur.edit', $unitevaleur->id) }}"

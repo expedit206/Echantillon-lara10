@@ -16,7 +16,7 @@
                             @foreach($unites as $unite)
                                 <div class="flex items-center">
                                     <x-checkbox id="unite_{{ $unite->id }}" name="unite_de_valeurs[]" value="{{ $unite->id }}"
-                                        :checked="$specialite->uniteDeValeurs->contains($unite->id)" />
+                                        :checked="$specialite->uniteValeurs->contains($unite->id)" />
                                     <label for="unite_{{ $unite->id }}" class="ml-2 block text-sm text-gray-600">
                                         {{ $unite->nom }}
                                     </label>
