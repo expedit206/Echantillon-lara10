@@ -14,6 +14,7 @@ use App\Models\Specialite;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class UniteValeur extends Model
 {
@@ -35,25 +36,25 @@ class UniteValeur extends Model
     ];
     protected $table = 'unite_de_valeurs';
 
-    public function niveau(): BelongsTo
-    {
-        return $this->belongsTo(Niveau::class);
-    }
+    // public function niveau(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Niveau::class);
+    // }
 
-    public function filiere(): BelongsTo
-    {
-        return $this->belongsTo(Filiere::class);
-    }
+    // public function filiere(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Filiere::class);
+    // }
 
     
     public function specialites()
     {
-        return $this->belongsToMany(Specialite::class, 'specialite_unite_de_valeur', 'specialite_id', 'unite_de_valeur_id');
+        return $this->belongsToMany(Specialite::class, 'specialite_unite_de_valeur', 'unite_de_valeur_id', 'specialite_id');
     }
 
-    public function enseignant(): BelongsToMany
+    public function enseignants(): BelongsToMany
     {
-        return $this->elongsToMany(Enseignant::class,'enseignant_unite_valeur');
+        return $this->belongsToMany(Enseignant::class,'enseignant_unite_valeur');
     }
 
     public function semestre(): BelongsTo

@@ -30,8 +30,9 @@ $enseignant=Auth::guard('enseignant')->user();
 
             // Filtrer les autres entités en fonction des unités de valeur de l'enseignant
             $niveaux = Niveau::whereHas('enseignants', function ($query) use ($enseignant) {
-                $query->whereRelation('enseignant','id', $enseignant->id);})
+                $query->where('enseignant_id', $enseignant->id);})
                 ->get();
+                // dd($niveaux);
 
             $filieres = Filiere::whereHas('enseignants', function ($query) use ($enseignant) {
                 $query->where('enseignant_id', $enseignant->id);

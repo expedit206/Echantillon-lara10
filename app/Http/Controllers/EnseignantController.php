@@ -89,18 +89,18 @@ class EnseignantController extends Controller
             // Statistiques globales pour l'enseignant
             // dd($enseignant->niveau_id);
             $totalEtudiants = Etudiant::where('annee_id', $annee_id)
-            ->where('niveau_id',$enseignant->niveaux->pluck('id'))
-            ->where('filiere_id', $enseignant->filieres->pluck('id'))
-            ->where('specialite_id', $enseignant->specialites->pluck('id'))
+            // ->where('niveau_id',$enseignant->niveaux->pluck('id'))
+            // ->where('filiere_id', $enseignant->filieres->pluck('id'))
+            // ->where('specialite_id', $enseignant->specialites->pluck('id'))
             ->count();
             // Total des cours donnés par cet enseignant
             // dd($totalEtudiants);
             $totalCours = UniteValeur::where('annee_id', $annee_id)
-            ->where('enseignant_id', $enseignant?->id)->count();
-
+            ->whereRelation('enseignants', 'enseignant_id', $enseignant?->id)->count();
+            
             // Statistiques par cours
             $cours = UniteValeur::where('annee_id', $annee_id)
-           ->where('enseignant_id', $enseignant?->id)
+            ->whereRelation('enseignants', 'enseignant_id', $enseignant?->id)
                           ->withCount('etudiants')
                           ->get()
                           ->map(function ($cour) {
@@ -241,11 +241,11 @@ class EnseignantController extends Controller
         public function assignMatiere()
         {
             // Récupérer tous les niveaux pour le formulaire
-            // $niveaux = Niveau::with('filieres.specialites.matieres')->get();
+           
 
-           return view('enseignant.assigner-matiere', $this->dataService->getAllData());
+           return view('enseignant.assigner-matiere', array_merge([], $this->dataService->getAllData()));
         }
-
+     
         public function storeAssignMatiere(Request $request)
         {
             // Valider les données du formulaire
@@ -253,27 +253,58 @@ class EnseignantController extends Controller
                 'enseignant_id' => 'required|exists:enseignants,id',
                 'matiere_id' => 'required|exists:unite_de_valeurs,id',
                 'specialite_id' => 'required|exists:specialites,id',
+                'filiere_id' => 'required|exists:filieres,id', // Ajout validation filière
+                'niveau_id' => 'required|exists:niveaux,id',    // Ajout validation niveau
             ]);
         
-            // Récupérer l'enseignant, la matière, et la spécialité
+            // Récupérer l'enseignant, la matière, la spécialité, la filière, et le niveau
             $enseignant = Enseignant::find($validated['enseignant_id']);
             $matiere = UniteValeur::find($validated['matiere_id']);
             $specialite = Specialite::find($validated['specialite_id']);
+            $filiere = Filiere::find($validated['filiere_id']);
+            $niveau = Niveau::find($validated['niveau_id']);
         
-            // Vérifier si l'enseignant est déjà assigné à cette matière avec cette spécialité
-            $exists = $enseignant->uniteValeurs()->wherePivot('unite_valeur_id', $matiere->id)
+            // Vérifier si l'enseignant est déjà assigné à cette matière avec ces conditions (spécialité, filière, niveau)
+            $exists = $enseignant->uniteValeurs()
+                ->wherePivot('unite_valeur_id', $matiere->id)
                 ->wherePivot('specialite_id', $specialite->id)
+                ->wherePivot('filiere_id', $filiere->id)
+                ->wherePivot('niveau_id', $niveau->id)
                 ->exists();
         
             if ($exists) {
-                return redirect()->route('assigner-matiere.create')->with('error', 'Cette matière est déjà assignée à cet enseignant pour cette spécialité.');
+                return redirect()->route('assigner-matiere.create')->with('error', 'Cette matière est déjà assignée à cet enseignant pour cette spécialité, filière, et niveau.');
             }
         
-            // Assigner la matière à l'enseignant via la table pivot avec la spécialité
-            $enseignant->uniteValeurs()->attach($matiere->id, ['specialite_id' => $specialite->id]);
+            // Assigner la matière à l'enseignant via la table pivot avec les relations appropriées
+            $enseignant->uniteValeurs()->attach($matiere->id, [
+                'specialite_id' => $specialite->id,
+                'filiere_id' => $filiere->id,
+                'niveau_id' => $niveau->id,
+            ]);
         
-            return redirect()->route('assigner-matiere.create')->with('success', 'Matière assignée avec succès.');
+            // Vérifier si l'enseignant n'est pas déjà assigné au niveau
+            if (!$enseignant->niveaux()->where('niveau_id', $niveau->id)->exists()) {
+                // Assigner le niveau à l'enseignant
+                $enseignant->niveaux()->attach($niveau->id);
+            }
+        
+        
+            // Vérifier si l'enseignant n'est pas déjà assigné au niveau
+            if (!$enseignant->specialites()->where('specialite_id', $specialite->id)->exists()) {
+                // Assigner le specialite à l'enseignant
+                $enseignant->specialites()->attach($specialite->id);
+            }
+        
+            // Vérifier si l'enseignant n'est pas déjà assigné à la filière
+            if (!$enseignant->filieres()->where('filiere_id', $filiere->id)->exists()) {
+                // Assigner la filière à l'enseignant
+                $enseignant->filieres()->attach($filiere->id);
+            }
+        
+            return redirect()->route('assigner-matiere.create')->with('success', 'Matière attribuer a l\'enseignant avec assignés avec succès.');
         }
+        
         
 
     }

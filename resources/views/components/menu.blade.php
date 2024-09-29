@@ -35,20 +35,21 @@
                         </span>
                 </a>
 
+                @if(Auth::guard('admin')->check())
                 <a href="{{ route('assigner-matiere.create') }}" class="nav_link"> <i
                         class='bx bx-message-square-detail nav_icon' ></i> <span class="nav_name">
-            @if(Auth::guard('admin')->check())
             Associer  Unité de Valeur-enseignant
-                @endif
-                        </span>
-                </a>
+        </span>
+    </a>
+    @endif
+    
+                @if(Auth::guard('admin')->check())
                 <a href="#" class="nav_link" id="showFormLink"> <i
                         class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">
-            @if(Auth::guard('admin')->check())
             Associer matieres-specialite
-                @endif
-                        </span>
-                </a>
+        </span>
+    </a>
+    @endif
 
                 <a href="#" class="open-modal nav_link" id='consulter'> <i
                         class='bx bx-bookmark nav_icon open-modal'></i> <span class="nav_name open-modal">consulter les evaluations</span>

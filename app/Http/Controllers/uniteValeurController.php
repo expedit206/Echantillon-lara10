@@ -33,7 +33,7 @@ $enseignant=Auth::guard('enseignant')->user();
 // dd($enseignant);
         $query = $query->whereRelation('annee', 'is_active', true);
         if($enseignant){
-            $query->whereRelation('enseignant','enseignant_id', $enseignant->id);
+            $query->whereRelation('enseignants','enseignant_id', $enseignant->id);
         }
 
         if ($request->filled('niveau')) {
@@ -79,9 +79,6 @@ compact('enseignants',  'categories'))
             'nom' => 'required|string|max:255',
             'description' => 'nullable|string',
             'credit' => 'required|integer|min:1',
-            'filiere_id' => 'required|exists:filieres,id',
-            'specialite_id' => 'required|exists:specialites,id',
-            'niveau_id' => 'required|exists:niveaux,id',
             'semestre_id' => 'required|exists:semestres,id',
             'category_id' => 'required|exists:categories,id',
         ]);
@@ -92,9 +89,6 @@ compact('enseignants',  'categories'))
             'nom' => $request->input('nom'),
             'description' => $request->input('description'),
             'credit' => $request->input('credit'),
-            'filiere_id' => $request->input('filiere_id'),
-            'specialite_id' => $request->input('specialite_id'),
-            'niveau_id' => $request->input('niveau_id'),
             'semestre_id' => $request->input('semestre_id'),
             'category_id' => $request->input('category_id'),
             'annee_id' => $annee_id,
@@ -132,20 +126,12 @@ compact('enseignants',  'categories'))
         $request->validate([
             'code' => 'required|string|max:255',
             'nom' => 'required|string|max:255',
-            'niveau_id' => 'required|exists:niveaux,id',
-            'filiere_id' => 'required|exists:filieres,id',
-            'specialite_id' => 'required|exists:specialites,id',
-            'enseignant_id' => 'nullable|exists:enseignants,id',
         ]);
 
         // Mise à jour des données
         $uniteValeur->update([
             'code' => $request->input('code'),
             'nom' => $request->input('nom'),
-            'niveau_id' => $request->input('niveau_id'),
-            'filiere_id' => $request->input('filiere_id'),
-            'specialite_id' => $request->input('specialite_id'),
-            'enseignant_id' => $request->input('enseignant_id') ?: null, // Permettre la valeur null pour "Non attribué"
         ]);
 
         // Redirection vers la vue de détails avec un message de succès
@@ -179,12 +165,35 @@ compact('enseignants',  'categories'))
 
 public function getMatieres($niveauId, $filiereId, $specialiteId)
 {
-    $matieres = UniteValeur::whereRelation('niveau', 'id', $niveauId)
-        // ->whereRelation('filiere', 'id', $filiereId)
-        // ->where('filiere_id',  $filiereId)
-        ->get();
-        // ->whereRelation('specialites', 'specialite_id', $specialiteId) // Assurez-vous que 'id' est le bon champ
+   
+    
+    $matieres = UniteValeur::
+    // whereRelation('specialites', 'specialite_id', 3)
+    whereHas('specialites', function($query) use ($specialiteId, $filiereId, $niveauId) {
 
+        $query->where ('specialite_id', $specialiteId)
+        ->whereHas('filiere', function($query) use($filiereId, $niveauId){
+
+             $query->where('filiere_id', $filiereId)
+              ->whereRelation('niveau', 'niveau_id', $niveauId);
+              
+    });
+    })
+    ->get();
+
+    // $matieres = UniteValeur::
+    // // whereRelation('specialites', 'specialite_id', 3)
+    // whereHas('specialites', function($query) {
+    //     $query->where ('specialite_id', 3)
+    //     ->whereHas('filiere', function($query) {
+
+    //          $query->where('filiere_id', 2)
+    //           ->whereRelation('niveau', 'niveau_id', 1);
+              
+    // });
+    // })
+    // ->get();
+   
     return response()->json($matieres);
 }
 

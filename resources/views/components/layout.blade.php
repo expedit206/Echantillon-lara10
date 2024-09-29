@@ -32,9 +32,10 @@
 
         if ($enseignant) {
             $niveaux = App\Models\Niveau::whereHas('enseignants', function ($query) use ($enseignant) {
-                $query->where('enseignant_id', $enseignant->id);
+           $query ->where('enseignant_id', $enseignant?->id);
+                
             })
-                ->whereRelation('uniteValeurs', 'annee_id', $annee_id)
+                // ->whereRelation('uniteValeurs', 'annee_id', $annee_id)
                 ->get();
 
             $specialites = App\Models\Specialite::whereHas('enseignants', function ($query) use ($enseignant) {
@@ -45,20 +46,33 @@
 
             // dump($specialites);
 
-            $uniteValeurs = App\Models\UniteValeur::whereHas('enseignant', function ($query) use ($enseignant) {
-                $query->where('id', $enseignant->id);
+            $uniteValeurs = App\Models\UniteValeur::whereHas('enseignants', function ($query) use ($enseignant) {
+                $query->where('enseignant_id', $enseignant->id);
             })
                 ->whereRelation('annee', 'is_active', true)
                 ->get();
 
             $semestres = App\Models\Semestre::whereHas('uniteValeurs', function ($query) use ($enseignant) {
-                $query->where('enseignant_id', $enseignant->id);
+                $query->whereRelation('enseignants','enseignant_id', $enseignant->id);
             })->get();
 
             // ->whereRelation('uniteValeurs', 'annee_id', $annee_id);
         }
 
     @endphp
+
+    @if (session('success'))
+        <div class="bg-green-200 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="bg-red-200 border border-red-400 text-green-700 px-4 py-3 rounded relative mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
+
     @yield('content')
 
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js">
@@ -85,9 +99,11 @@
 
         <div class="mb-4">
             <x-label for="niveau" :value="__('Niveau')" />
-            <select id="niveau" name="niveau" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" required>
+            <select id="niveau" name="niveau"
+                class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                required>
                 <option value="">-- Choisir un Niveau --</option>
-                @foreach($niveaux as $niveau)
+                @foreach ($niveaux as $niveau)
                     <option value="{{ $niveau->id }}">{{ $niveau->nom }}</option>
                 @endforeach
             </select>
@@ -95,17 +111,21 @@
 
         <div class="mb-4">
             <x-label for="specialite" :value="__('Spécialité')" />
-            <select id="specialite" name="specialite" class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" required>
+            <select id="specialite" name="specialite"
+                class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+                required>
                 <option value="">-- Choisir une Spécialité --</option>
                 <!-- Les spécialités seront injectées ici via JavaScript -->
             </select>
         </div>
 
         <div class="mt-6">
-            <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-blue-800">
+            <button
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-blue-800">
                 {{ __('Suivant') }}
             </button>
-            <button type="button" id="cancelButton" class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-red-300">
+            <button type="button" id="cancelButton"
+                class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-red-300">
                 {{ __('Annuler') }}
             </button>
         </div>
@@ -116,7 +136,6 @@
 {{-- <a href="#" id="showFormLink" class="text-blue-500">Choisir une spécialité</a> --}}
 
 <script>
-    
     document.getElementById('showFormLink').addEventListener('click', function(event) {
         event.preventDefault(); // Empêche le rechargement de la page
         document.getElementById('selectionForm').style.display = 'block'; // Affiche le formulaire
@@ -137,13 +156,13 @@
 
         if (niveauId) {
             console.log(specialiteSelect);
-            
+
 
             fetch(`/specialites/${niveauId}`)
-            // .then(response => console.log(response.body.json))
-            .then(response => response.json())
-            .then(data => {
-                specialiteSelect.innerHTML = ""; // Clear previous options
+                // .then(response => console.log(response.body.json))
+                .then(response => response.json())
+                .then(data => {
+                    specialiteSelect.innerHTML = ""; // Clear previous options
 
                     data.forEach(function(specialite) {
                         let option = document.createElement('option');

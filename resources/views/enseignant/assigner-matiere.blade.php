@@ -1,6 +1,6 @@
 <x-layout>
     @section('title', 'Assigner une Matière à un Enseignant')
-
+{{-- @dd($matieres) --}}
     @section('content')
     <x-header />
     <x-menu />
@@ -111,7 +111,7 @@
                     
                     let matiereSelect = document.getElementById('matiere_id');
                     matiereSelect.innerHTML = '';
-                    console.log(matiereSelect);
+                    console.log(data);
                     data.forEach(matiere => {
                         matiereSelect.innerHTML += `<option value="${matiere.id}">${matiere.nom}</option>`;
                     });

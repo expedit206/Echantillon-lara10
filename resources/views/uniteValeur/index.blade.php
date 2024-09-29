@@ -99,10 +99,10 @@
                         <th scope="col">#</th>
                         <th scope="col">Code</th>
                         <th scope="col">Nom</th>
-                        <th scope="col">Niveau</th>
-                        <th scope="col">spécialité</th>
-                        <th scope="col">Spécialité</th>
-                        <th scope="col">Enseignant</th>
+                        <th scope="col">credit</th>
+                        <th scope="col">semestre</th>
+                        <th scope="col">Categorie</th>
+                        
                         <th scope="col" class="text-center" colspan="2">Action</th>
                     </tr>
                 </thead>
@@ -112,8 +112,11 @@
                             <td scope="row">{{ $unitevaleur->id }}</td>
                             <td scope="row">{{ $unitevaleur->code }}</td>
                             <td scope="row">{{ $unitevaleur->nom }}</td>
-                            <td scope="row">{{ $unitevaleur->niveau->nom }}</td>
-                            <td scope="row">{{ $unitevaleur->filiere->nom }}</td>
+                            <td scope="row">{{ $unitevaleur->credit }}</td>
+                            <td scope="row">{{ $unitevaleur->semestre->nom }}</td>
+                            <td scope="row">{{ $unitevaleur->category->nom }}</td>
+                            {{-- <td scope="row">{{ $unitevaleur->niveau->nom }}</td>
+                            <td scope="row">{{ $unitevaleur->filiere->nom }}</td> --}}
                             <td scope="row"> <a href="{{ route('uniteValeur.show', $unitevaleur->id) }}"
                                     class="text-blue-600 hover:text-blue-900">Voir</a> </td>
                             <td scope="row"> <a href="{{ route('uniteValeur.edit', $unitevaleur->id) }}"
