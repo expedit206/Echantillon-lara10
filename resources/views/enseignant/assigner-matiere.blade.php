@@ -108,10 +108,10 @@
             fetch(`/matieres/${niveauId}/${filiereId}/${specialiteId}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     
                     let matiereSelect = document.getElementById('matiere_id');
                     matiereSelect.innerHTML = '';
+                    console.log(matiereSelect);
                     data.forEach(matiere => {
                         matiereSelect.innerHTML += `<option value="${matiere.id}">${matiere.nom}</option>`;
                     });

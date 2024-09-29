@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
 
-                    console.log(data);
+                    // console.log(data);
                     matiereSelect.innerHTML = ""; // Clear previous options
                     data.forEach(matiere => {
                         let option = document.createElement("option");

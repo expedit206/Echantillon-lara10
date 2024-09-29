@@ -180,9 +180,10 @@ compact('enseignants',  'categories'))
 public function getMatieres($niveauId, $filiereId, $specialiteId)
 {
     $matieres = UniteValeur::whereRelation('niveau', 'id', $niveauId)
-        ->whereRelation('filiere', 'id', $filiereId)
-        ->whereRelation('specialites', 'specialite_id', $specialiteId) // Assurez-vous que 'id' est le bon champ
+        // ->whereRelation('filiere', 'id', $filiereId)
+        // ->where('filiere_id',  $filiereId)
         ->get();
+        // ->whereRelation('specialites', 'specialite_id', $specialiteId) // Assurez-vous que 'id' est le bon champ
 
     return response()->json($matieres);
 }

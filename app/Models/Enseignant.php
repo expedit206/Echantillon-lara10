@@ -72,9 +72,9 @@ class Enseignant extends Authenticatable
     }
 
 
-    public function uniteValeurs(): HasMany
+    public function uniteValeurs(): BelongsToMany
     {
-        return $this->hasMany(UniteValeur::class);
+        return $this->belongsToMany(UniteValeur::class, 'enseignant_unite_valeur');
     }
 
     public function specialites(): BelongsToMany

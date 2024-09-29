@@ -20,17 +20,17 @@ $enseignant=Auth::guard('enseignant')->user();
 // dd($enseignant);
         if ($enseignant) {
             // Si l'utilisateur est un enseignant, récupérer uniquement les données liées à ses unités de valeur
-            $unitesValeurs = UniteValeur::whereHas('enseignant', function ($query) use ($enseignant) {
-                $query->where('id', $enseignant->id);
+            $unitesValeurs = UniteValeur::whereHas('enseignants', function ($query) use ($enseignant) {
+                $query->where('enseignant_id', $enseignant->id);
             })
             ->whereRelation('annee', 'is_active', true)
-
             ->paginate(20);
+            
             //  dd( $unitesValeurs);
 
             // Filtrer les autres entités en fonction des unités de valeur de l'enseignant
             $niveaux = Niveau::whereHas('enseignants', function ($query) use ($enseignant) {
-                $query->where('enseignant_id', $enseignant->id);})
+                $query->whereRelation('enseignant','id', $enseignant->id);})
                 ->get();
 
             $filieres = Filiere::whereHas('enseignants', function ($query) use ($enseignant) {
@@ -45,7 +45,7 @@ $enseignant=Auth::guard('enseignant')->user();
                 ->get();
 
             $semestres = Semestre::whereHas('uniteValeurs', function ($query) use ($enseignant) {
-                $query->where('enseignant_id', $enseignant->id);})
+                $query->whereRelation('enseignants', 'enseignant_id', $enseignant->id);})
                 ->get();
 
             return [

@@ -251,21 +251,29 @@ class EnseignantController extends Controller
             // Valider les données du formulaire
             $validated = $request->validate([
                 'enseignant_id' => 'required|exists:enseignants,id',
-                'matiere_id' => 'required|exists:matieres,id',
+                'matiere_id' => 'required|exists:unite_de_valeurs,id',
                 'specialite_id' => 'required|exists:specialites,id',
             ]);
-
+        
             // Récupérer l'enseignant, la matière, et la spécialité
             $enseignant = Enseignant::find($validated['enseignant_id']);
-            $matiere = Matiere::find($validated['matiere_id']);
+            $matiere = UniteValeur::find($validated['matiere_id']);
             $specialite = Specialite::find($validated['specialite_id']);
-
-            // Assigner la matière à l'enseignant
-            $matiere->enseignant_id = $enseignant->id;
-            $matiere->specialite_id = $specialite->id; // Optionnel si une matière appartient à une spécialité
-            $matiere->save();
-
+        
+            // Vérifier si l'enseignant est déjà assigné à cette matière avec cette spécialité
+            $exists = $enseignant->uniteValeurs()->wherePivot('unite_valeur_id', $matiere->id)
+                ->wherePivot('specialite_id', $specialite->id)
+                ->exists();
+        
+            if ($exists) {
+                return redirect()->route('assigner-matiere.create')->with('error', 'Cette matière est déjà assignée à cet enseignant pour cette spécialité.');
+            }
+        
+            // Assigner la matière à l'enseignant via la table pivot avec la spécialité
+            $enseignant->uniteValeurs()->attach($matiere->id, ['specialite_id' => $specialite->id]);
+        
             return redirect()->route('assigner-matiere.create')->with('success', 'Matière assignée avec succès.');
         }
+        
 
     }
