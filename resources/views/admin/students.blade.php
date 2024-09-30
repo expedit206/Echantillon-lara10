@@ -126,7 +126,6 @@
                         <th scope="col">#</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prenom</th>
-                        <th scope="col">Sexe</th>
                         <th scope="col">Niveau</th>
                         <th scope="col">Filiere</th>
                         <th scope="col">Spécialité</th>
@@ -136,10 +135,9 @@
                 <tbody>
                     @forelse ($students as $student)
                         <tr>
-                            <td scope="row">{{ $student['id'] }}</td>
+                            <td scope="row" class="text-[.9rem]">{{ $student['matricule'] }}</td>
                             <td scope="row">{{ $student['nom'] }}</td>
                             <td scope="row">{{ $student['prenom'] }}</td>
-                            <td scope="row">{{ $student['sexe'] }}</td>
                             <td scope="row">
                                 {{-- @dd($student->niveau) --}}
                                 <a href="{{ route('studentsByNiveau', ['niveau' => $student->niveau]) }}">
@@ -176,7 +174,7 @@
 
             {{ $students->appends(request()->input())->links() }}
         </div>
-        <x-modal-form :annees="$annees" :semestres="$semestres" :niveaux="$niveaux" :specialites="$specialites" :matieres="$uniteValeurs" />
+        {{-- <x-modal-form :annees="$annees" :semestres="$semestres" :niveaux="$niveaux" :specialites="$specialites" :matieres="$uniteValeurs" /> --}}
     @endsection
 
 </x-layout>

@@ -7,29 +7,20 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>
-        {{ $data['title'] }}
-    </h1>
+    <h1>{{ $data['title'] }}</h1>
+
+    <p>{{ $data['message'] }} : "<strong>{{ $data['code'] ?? $data['password'] }}</strong>"</p>
+    
     <p>
+        Vous pouvez également cliquer sur le lien ci-dessous pour vous connecter directement :
     </p>
-    {{ $data['message'] }} "{{ $data['code']??$data['password'] }}"
-    ou cliquer simplement sur le lien ci dessous
-    <p>NB: Vous urliserez ce code pour vos connexions futurs</p>
-@if ($data['route']=='enseignant.login')
 
+    <p>
+        <a href="{{ route('login', ['email' => $data['email'], 'password' => $data['password']]) }}">
+            Cliquer ici pour vous connecter
+        </a>
+    </p>
 
-    <a href="{{ route($data['route'], [
-    'email'=>$data['email'],
-     'password'=>$data['password'],
-    ]) }}">Copier le code</a>
-
-    @else
-
-    <a href="{{ route($data['route'], [
-    'email'=>$data['email'],
-    'password'=>$data['password'],
-    ]) }}">Copier le code</a>
-@endif
-
+    <p>NB : Vous utiliserez ce code pour vos futures connexions.</p>
 </body>
 </html>

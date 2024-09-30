@@ -45,6 +45,7 @@ $enseignant=Auth::guard('enseignant')->user();
                 $query->where('enseignant_id', $enseignant->id);})
                 ->get();
 
+                
             $semestres = Semestre::whereHas('uniteValeurs', function ($query) use ($enseignant) {
                 $query->whereRelation('enseignants', 'enseignant_id', $enseignant->id);})
                 ->get();

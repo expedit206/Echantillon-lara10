@@ -98,9 +98,10 @@ public function getMatieresBySpecialite($semestre,$specialite)
 {
     $enseignant=Auth::guard('enseignant')->user();
     // dd($matieres);
+    // dd($enseignant, $semestre, $specialite);
     if ($enseignant) {
         // Si l'utilisateur est un enseignant, récupérer uniquement les données liées à ses unités de valeur
-        $matieres = UniteValeur::whereHas('enseignant', function ($query) use ($enseignant) {
+        $matieres = UniteValeur::whereHas('enseignants', function ($query) use ($enseignant) {
             $query->where('id', $enseignant->id);
         })
         ->whereRelation('annee', 'is_active', true)
@@ -108,7 +109,7 @@ public function getMatieresBySpecialite($semestre,$specialite)
     }else{
 
         $matieres = UniteValeur::
-        where('specialite_id', $specialite)
+        whereRelation('specialites','specialite_id', $specialite)
         ->where('semestre_id', $semestre)
         ->whereRelation('annee', 'is_active', true)
 
@@ -134,7 +135,7 @@ public function getMatieresBySemestre($specialite,$semestre)
 
         $matieres = UniteValeur::
         where('semestre_id', $semestre)
-        ->where('specialite_id',$specialite)
+        ->whereRelation('specialites','specialite_id',$specialite)
         ->whereRelation('annee', 'is_active', true)
 
         ->get();

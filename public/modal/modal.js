@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
             updateSemestres(anneeSelect.value);
         }
         if (niveauSelect.value) {
-            updateSpecialites(niveauSelect.value);
+            // updateSpecialites(niveauSelect.value);
         }
         if (specialiteSelect.value) {
             updateMatieresBySpecialite(semestreSelect.value,specialiteSelect.value);
@@ -152,4 +152,23 @@ document.addEventListener("DOMContentLoaded", function () {
         semestreSelect.addEventListener("input", function () {
             updateMatieresBySemestre(specialiteSelect.value, this.value);
         });
+});
+
+// pour l\'annee avec ajax
+document.getElementById('anneeModal').addEventListener('change', function () {
+    let anneeId = this.value;
+
+    fetch(`annee/set-active?annee=${anneeId}`, {
+        method: "GET",
+
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // alert('Année académique mise à jour avec succès');
+        } else {
+            alert('Erreur lors de la mise à jour');
+        }
+    })
+    .catch(error => console.log('Erreur:', error));
 });

@@ -27,56 +27,47 @@ class EnseignantController extends Controller
     }
 
     public function index(Request $request)
-    {
+{
+    $query = Enseignant::query();
 
-        $data = $this->dataService->getAllData();
-
-        $teachers =Enseignant:: latest()->paginate(15);
-        // dd($teachers);
-        $total=$teachers->total();
-            $search=$request['search'];
-            $annee_id=\DB::table('annees')->where('is_active', true)->first()->id;
-
-        //     // dd($request);
-            $filiere= Filiere::where('id',$request['filiere'])->first()??  "";
-            $specialite=Specialite::where('id', $request['specialite'])->first()?? "";
-            $uniteValeur=UniteValeur::where('nom', $request['uniteValeur'])->first()?? "";
-        // dd($uniteValeur);
-            // dd($filiere->id);
-        $teachers = Enseignant::orderBy('created_at', 'desc')
-        ->where('annee_id', $annee_id)
-        -> where(function ($query) use ($search){
-              $query->where('nom','like','%' .$search. '%')
-              ->orWhere('prenom','like', '%' . $search . '%')
-              ->orWhere('id', 'like', '%' . $search . '%');
-               })
-                ->when($specialite, function($query) use ($specialite){
-                    return $query->whereRelation('specialites','specialite_id', $specialite->id);
-                })
-                ->when($filiere, function($query) use ($filiere){
-                //   dd($filiere->id);
-                  return $query->whereRelation('filieres', 'filiere_id', $filiere->id);
-                })
-              ->when($uniteValeur, function($query) use ($uniteValeur){
-                  return $query->whereRelation('uniteValeurs', 'id', $uniteValeur->id);
-              })
-
-              ->latest()->paginate(10);
-            //   dd($teachers);
-        $total = $teachers->count();
-            $search=$request?->search;
-        $filieres = Filiere::with('uniteValeurs')->orderBy('created_at', 'desc')->get();
-        $specialites = Specialite::orderBy('created_at', 'desc')->get();
-        $annees = Annee::orderBy('created_at', 'desc')->get();
-        $uniteValeurs = UniteValeur::orderBy('created_at', 'desc')->get();
-
-        // dd($annees);
-        return view('admin.teachers', array_merge([
-            'teachers' => $teachers,
-            'total' => $total,
-                'search' => $search,
-        ], $data));
+    // Appliquer les filtres si présents
+    if ($request->filled('search')) {
+        $query->where('nom', 'like', '%' . $request->search . '%')
+              ->orWhere('prenom', 'like', '%' . $request->search . '%');
     }
+
+    if ($request->filled('niveau')) {
+        $query->whereHas('niveaux', function ($q) use ($request) {
+            $q->where('id', $request->niveau);
+        });
+    }
+    
+    if ($request->filled('filiere')) {
+        $query->whereHas('filieres', function ($q) use ($request) {
+            $q->where('id', $request->filiere);
+        });
+    }
+    
+    if ($request->filled('specialite')) {
+        $query->whereHas('specialites', function ($q) use ($request) {
+            $q->where('id', $request->specialite);
+        });
+    }
+    
+    if ($request->filled('uniteValeur')) {
+        $query->whereHas('unitesValeur', function ($q) use ($request) {
+            $q->where('id', $request->uniteValeur);
+        });
+    }
+    $teachers = $query->paginate(10);
+    $total = $teachers->total();
+
+    if ($request->ajax()) {
+        return view('admin.teachers', array_merge($this->dataService->getAllData(),  compact('teachers', 'total'))); // Créez une vue partielle si nécessaire
+    }
+
+    return view('admin.teachers', array_merge($this->dataService->getAllData(),  compact('teachers', 'total')));
+}
 
 
 
@@ -97,7 +88,7 @@ class EnseignantController extends Controller
             // dd($totalEtudiants);
             $totalCours = UniteValeur::where('annee_id', $annee_id)
             ->whereRelation('enseignants', 'enseignant_id', $enseignant?->id)->count();
-            
+
             // Statistiques par cours
             $cours = UniteValeur::where('annee_id', $annee_id)
             ->whereRelation('enseignants', 'enseignant_id', $enseignant?->id)
@@ -181,8 +172,8 @@ class EnseignantController extends Controller
         $tauxCC = array_column(array_values($tauxReussite), 'controle_continu');
         $tauxSN = array_column(array_values($tauxReussite), 'session_normale');
         $tauxR = array_column(array_values($tauxReussite), 'rattrapage');
-        $annee=Annee::where('is_active',true)->nom;
-
+        $annee=Annee::where('is_active',true)->first()->nom;
+// dd($annee);
         return view('enseignant.courGraphique', compact('cours', 'semestresNoms', 'tauxCC', 'tauxSN','tauxR'));
     }
 
@@ -241,11 +232,11 @@ class EnseignantController extends Controller
         public function assignMatiere()
         {
             // Récupérer tous les niveaux pour le formulaire
-           
+
 
            return view('enseignant.assigner-matiere', array_merge([], $this->dataService->getAllData()));
         }
-     
+
         public function storeAssignMatiere(Request $request)
         {
             // Valider les données du formulaire
@@ -256,14 +247,14 @@ class EnseignantController extends Controller
                 'filiere_id' => 'required|exists:filieres,id', // Ajout validation filière
                 'niveau_id' => 'required|exists:niveaux,id',    // Ajout validation niveau
             ]);
-        
+
             // Récupérer l'enseignant, la matière, la spécialité, la filière, et le niveau
             $enseignant = Enseignant::find($validated['enseignant_id']);
             $matiere = UniteValeur::find($validated['matiere_id']);
             $specialite = Specialite::find($validated['specialite_id']);
             $filiere = Filiere::find($validated['filiere_id']);
             $niveau = Niveau::find($validated['niveau_id']);
-        
+
             // Vérifier si l'enseignant est déjà assigné à cette matière avec ces conditions (spécialité, filière, niveau)
             $exists = $enseignant->uniteValeurs()
                 ->wherePivot('unite_valeur_id', $matiere->id)
@@ -271,40 +262,40 @@ class EnseignantController extends Controller
                 ->wherePivot('filiere_id', $filiere->id)
                 ->wherePivot('niveau_id', $niveau->id)
                 ->exists();
-        
+
             if ($exists) {
                 return redirect()->route('assigner-matiere.create')->with('error', 'Cette matière est déjà assignée à cet enseignant pour cette spécialité, filière, et niveau.');
             }
-        
+
             // Assigner la matière à l'enseignant via la table pivot avec les relations appropriées
             $enseignant->uniteValeurs()->attach($matiere->id, [
                 'specialite_id' => $specialite->id,
                 'filiere_id' => $filiere->id,
                 'niveau_id' => $niveau->id,
             ]);
-        
+
             // Vérifier si l'enseignant n'est pas déjà assigné au niveau
             if (!$enseignant->niveaux()->where('niveau_id', $niveau->id)->exists()) {
                 // Assigner le niveau à l'enseignant
                 $enseignant->niveaux()->attach($niveau->id);
             }
-        
-        
+
+
             // Vérifier si l'enseignant n'est pas déjà assigné au niveau
             if (!$enseignant->specialites()->where('specialite_id', $specialite->id)->exists()) {
                 // Assigner le specialite à l'enseignant
                 $enseignant->specialites()->attach($specialite->id);
             }
-        
+
             // Vérifier si l'enseignant n'est pas déjà assigné à la filière
             if (!$enseignant->filieres()->where('filiere_id', $filiere->id)->exists()) {
                 // Assigner la filière à l'enseignant
                 $enseignant->filieres()->attach($filiere->id);
             }
-        
+
             return redirect()->route('assigner-matiere.create')->with('success', 'Matière attribuer a l\'enseignant avec assignés avec succès.');
         }
-        
-        
+
+
 
     }

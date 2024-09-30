@@ -26,6 +26,8 @@ class Etudiant extends Authenticatable
         // Ajoutez les autres champs qui doivent être des dates
     ];
     protected $fillable = [
+        'matricule',
+        'password',
         'nom',
         'prenom',
         'email',
@@ -36,9 +38,9 @@ class Etudiant extends Authenticatable
         'specialite_id',
         'niveau_id',
         'sexe',
-        'code',
         'photo',
         'annee_id'
+
     ];
 
     protected $with=[

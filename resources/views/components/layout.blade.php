@@ -33,7 +33,7 @@
         if ($enseignant) {
             $niveaux = App\Models\Niveau::whereHas('enseignants', function ($query) use ($enseignant) {
            $query ->where('enseignant_id', $enseignant?->id);
-                
+
             })
                 // ->whereRelation('uniteValeurs', 'annee_id', $annee_id)
                 ->get();

@@ -27,10 +27,10 @@ class Filiere extends Model
         return $this->hasMany(Etudiant::class);
     }
 
-    public function uniteValeurs(): HasMany
-    {
-        return $this->hasMany(UniteValeur::class);
-    }
+    // public function uniteValeurs(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(UniteValeur::class);
+    // }
 
     public function specialites(): HasMany
     {

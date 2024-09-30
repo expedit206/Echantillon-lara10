@@ -85,13 +85,13 @@ Route::get('/cours/{uniteValeur}/graphique', [EnseignantController::class, 'grap
 
 
 // route pour l'etudiant
+Route::get('register', [EtudiantController::class, 'showRegister'])->name('etudiant.register')->middleware('monAuth:admin');
+Route::post('register', [EtudiantController::class, 'register']);
 Route::prefix('etudiant')->middleware('monGuest:etudiant')->group(function () {
 
-    Route::get('register', [EtudiantController::class, 'showRegister'])->name('etudiant.register');
-    Route::post('register', [EtudiantController::class, 'register']);
 
-    Route::get('login/{email?}/{code?}', [EtudiantController::class, 'showLogin'])->name('etudiant.login');
-    Route::post('login', [EtudiantController::class, 'login']);
+    // Route::get('login/{email?}/{code?}', [EtudiantController::class, 'showLogin'])->name('etudiant.login');
+    // Route::post('login', [EtudiantController::class, 'login']);
 });
 Route::get('etudian/logout', [EtudiantController::class, 'logout'])->name('etudiant.logout')->middleware('monAuth:etudiant');
 Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'home'])->name('etudiant.home');
@@ -142,7 +142,7 @@ Route::post('/specialite/{specialite}/assign-unite', [SpecialiteController::clas
 // require __DIR__.'/auth.php';
 
 
-Route::post('annee/set-active',[AnneeController::class, 'setActive'])->name('annee.setActive');
+Route::get('annee/set-active',[AnneeController::class, 'setActive'])->name('annee.setActive');
 
 
 // Route pour obtenir les semestres en fonction de l'année

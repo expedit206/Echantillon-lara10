@@ -20,7 +20,7 @@
 
                 <a href="{{ route('teachers') }}" class="nav_link" id='enseignants'> <i class='bx bx-user nav_icon'></i>
                     <span class="nav_name">
-                        Enseignants</span>
+                      Liste des  Enseignants</span>
                 </a>
                 @endif
 
@@ -42,7 +42,7 @@
         </span>
     </a>
     @endif
-    
+
                 @if(Auth::guard('admin')->check())
                 <a href="#" class="nav_link" id="showFormLink"> <i
                         class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">

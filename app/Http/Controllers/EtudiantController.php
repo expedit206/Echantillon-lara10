@@ -33,7 +33,7 @@ class EtudiantController extends Controller
     } else {
         // Si un administrateur est connecté
         $students = $this->getStudentsForAdmin($annee_id, $request);
-        // $total=$students->count();
+        $total=$students->count();
     }
 
     // Récupérer les filtres pour les recherches

@@ -15,32 +15,51 @@
                     </svg>
                 </a>
                 <div class="  font-bold">
-                    <form method='post' action="{{ route('annee.setActive') }}" id="formAnnee">
-                        @csrf
-                        <label for="annee">Année Académique</label>
-                        <select name="annee" id="annee" class="border-none outline-none focus:border-none cursor-pointer"
-                            onchange="submit()">
+                       <div>
+                           <label for="annee">Année Académique</label>
+                           <select name="annee" id="anneeModal" class="border-none outline-none focus:border-none cursor-pointer">
                             @foreach ($annees as $annee)
                                 <option value="{{ $annee->id }}"
                                     class="cursor-pointer border-b-4 border-double border-black"
-                                    {{ $annee->is_active == true ? 'selected' : '' }}>{{ $annee->nom }}</option>
-                            @endforeach
-                        </select>
-                    </form>
+                                    {{ $annee->is_active == true ? 'selected' : '' }}>
+                                    {{ $annee->nom }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
                 </div>
             </div>
             <form method="get" action="{{ route('teachers') }}" id="form"
-                class="px-3 text-white grid-cols-4 content flex gap-5 items-center justify-around bg-orange-400 py-2">
+                class="px-3 text-white grid-cols-4 content flex gap-4 items-center justify-around bg-orange-400 py-2">
                 @csrf
 
                 <input type="text" id="search" name="search" class="hidden">
 
                 <h3>Filtrer par :</h3>
+                <article class="flex flex-col  w-full">
+                    <label for="niveau">Niveau</label>
+
+                    <select type="text" id="niveau" list="listNiveau" name="niveau"
+                        class="text-black rounded-md w-full"
+                        {{-- onchange="
+                document.querySelector('#search').value=document.querySelector('#searchHead').value
+                this.value=this.value
+                submit() --}}
+                ">
+
+                        <option value=""></option>
+                        @foreach ($niveaux as $niveau)
+                            <option value="{{ $niveau->id }}" {{ request('niveau') === $niveau->nom ? 'selected' : '' }}>
+                                {{ $niveau->nom }}</option>
+                        @endforeach
+                    </select>
+                </article>
 
 
                 <article class="flex flex-col w-full">
                     <label for="filiere">Filieres</label>
-                    <select name="filiere" id="filiere" class="text-black rounded-md w-full"  onchange="
+                    <select name="filiere" id="filiere" class="text-black rounded-md w-full" 
+                     {{-- onchange="
                 document.querySelector('#search').value=document.querySelector('#searchHead').value
                 this.value=this.value
                 console.log(document.querySelector('#filiereHead').value)
@@ -48,7 +67,7 @@
                 "
                 oninput="
 
-                "
+                " --}}
                 >
                         <option value=""></option>
                         @foreach ($filieres as $filiere)
@@ -61,12 +80,13 @@
                 <!-- specialite Filter -->
                 <article class="flex flex-col w-full">
                     <label for="specialite">specialite</label>
-                    <select name="specialite" id="specialite" class="text-black rounded-md w-full"  onchange="
+                    <select name="specialite" id="specialite" class="text-black rounded-md w-full"
+                      {{-- onchange="
                     document.querySelector('#search').value=document.querySelector('#searchHead').value
                 this.value=this.value
 
                     submit()"
-                oninput=" this.value=this.value"
+                oninput=" this.value=this.value" --}}
                 >
                         <option value=""></option>
                         @foreach ($specialites as $specialite)
@@ -81,11 +101,12 @@
                 <!-- Tri par Ancienneté -->
                 <article class="flex flex-col w-full">
                     <label for="uniteValeur">Unite de valeur</label>
-                    <select id="uniteValeur" name="uniteValeur" class="text-black rounded-md w-full"  onchange="
+                    <select id="uniteValeur" name="uniteValeur" class="text-black rounded-md w-full"  
+                    {{-- onchange="
                     document.querySelector('#search').value=document.querySelector('#searchHead').value
                 this.value=this.value
 
-                    submit()"
+                    submit()" --}}
                 >
                         <option value=""></option>
                         @foreach ($uniteValeurs as $uniteValeur)
@@ -194,56 +215,6 @@
             {{ $teachers->appends(request()->input())->links() }}
         </div>
         {{-- @dd($filieres) --}}
-        <script>
-            //         document.addEventListener('DOMContentLoaded', function() {
-            //        const specialites = @json($specialites);
-            //        function updateFilieres(selectElement) {
-            //     const specialiteId = selectElement.value;
-
-            //     const teacherId = selectElement.getAttribute('data-teacher-id');
-            //     // console.log(selectElement)
-            //     let filiereSelect = document.querySelector(`#filiere[data-teacher-id="${teacherId}"]`);
-            //     filiereValues = [];
-            //     filiereSelect.querySelectorAll('option').forEach(option => {
-            //         filiereValues.push(option.value);
-            //     });
-            //     filiere_idstore=`filiere_${teacherId}_${filiereValues.length}`
-
-            //     if (!localStorage.getItem(filiere_idstore)) {
-            //     localStorage.setItem(filiere_idstore, JSON.stringify(filiereValues));
-            //     }
-            //     filiereValues = JSON.parse(localStorage.getItem(filiere_idstore))
-            //     console.log(filiereValues)
-            //     filiereSelect.innerHTML=''
-            //     if (specialiteId) {
-            //         const specialite = specialites.find(n => n.id == specialiteId);
-            //         if (specialite) {
-            //             specialite.filieres.forEach(filiere => {
-            //                 let option = document.createElement('option');
-            //                 filiereValues.forEach(filiere_id => {
-            //                     if(filiere_id == filiere.id){
-
-            //                         option.value = filiere.id;
-            //                         option.textContent = filiere.nom;
-            //                         filiereSelect.appendChild(option);
-            //                     }
-            //                 })
-            //             });
-            //         }
-            //     }
-            // }
-            // Vous pouvez également pré-remplir les filières pour chaque enseignant au chargement de la page
-            // allspecialite=document.querySelectorAll('#specialite')
-            // allspecialite.forEach(specialite => {
-            //     specialite.addEventListener('change', function() {
-            //         updateFilieres(this);
-            //     });
-            // console.log('k,l')
-            // updateFilieres(specialite);
-            // });
-
-            // })
-        </script>
 
     @endsection
 </x-layout>
