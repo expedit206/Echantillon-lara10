@@ -89,7 +89,10 @@ $enseignant=Auth::guard('enseignant')->user();
             ->get();
     }else{
         $specialites = Specialite::whereRelation('filiere', 'niveau_id', $niveau)->get();
+        if(!$niveau){
+    $specialites = Specialite::all();
 
+}
     }
         return response()->json($specialites);
     }

@@ -55,6 +55,7 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 // });
 
 Route::get('students', [App\Http\Controllers\EtudiantController::class, 'index'])->name('students')->middleware('monAuth');
+Route::post('studentsP', [App\Http\Controllers\EtudiantController::class, 'index'])->middleware('monAuth');
 Route::get('students/{student}', [App\Http\Controllers\EtudiantController::class, 'show'])->name('student.show');
 Route::get('students/edit/{student}', [EtudiantController::class, 'edit'])->name('student.edit');
 Route::post('students/update/{student}', [EtudiantController::class, 'update'])->name('student.update');
@@ -64,6 +65,7 @@ Route::get('students/niveau/{niveau}', [App\Http\Controllers\EtudiantController:
 
 //route concernant l'enseignant
 Route::get('teachers', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers');
+Route::post('teachersP', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers');
 
 Route::get('enseignant/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'show'])->name('teacher.show');
 Route::get('enseignant/edit/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'edit'])->name('teacher.edit');

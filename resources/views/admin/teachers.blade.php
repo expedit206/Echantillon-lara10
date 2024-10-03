@@ -7,7 +7,7 @@
 
         <div class="filter">
             <div class="flex justify-between">
-                <a href="{{ route('etudiant.register') }}" class="btn text-violet-800 font-bold flex w-1/3">Ajouter un
+                <a href="{{ route('enseignant.register') }}" class="btn text-violet-800 font-bold flex w-1/3">Ajouter un
                     enseignant<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px"
                         height="24px">
                         <path
@@ -39,12 +39,9 @@
                 <article class="flex flex-col  w-full">
                     <label for="niveau">Niveau</label>
 
-                    <select type="text" id="niveau" list="listNiveau" name="niveau"
+                    <select type="text" id="niveauModal" list="listNiveau" name="niveau"
                         class="text-black rounded-md w-full"
-                        {{-- onchange="
-                document.querySelector('#search').value=document.querySelector('#searchHead').value
-                this.value=this.value
-                submit() --}}
+                     
                 ">
 
                         <option value=""></option>
@@ -58,16 +55,8 @@
 
                 <article class="flex flex-col w-full">
                     <label for="filiere">Filieres</label>
-                    <select name="filiere" id="filiere" class="text-black rounded-md w-full" 
-                     {{-- onchange="
-                document.querySelector('#search').value=document.querySelector('#searchHead').value
-                this.value=this.value
-                console.log(document.querySelector('#filiereHead').value)
-                submit()
-                "
-                oninput="
-
-                " --}}
+                    <select name="filiere" id="filiereModal" class="text-black rounded-md w-full" 
+              
                 >
                         <option value=""></option>
                         @foreach ($filieres as $filiere)
@@ -80,13 +69,8 @@
                 <!-- specialite Filter -->
                 <article class="flex flex-col w-full">
                     <label for="specialite">specialite</label>
-                    <select name="specialite" id="specialite" class="text-black rounded-md w-full"
-                      {{-- onchange="
-                    document.querySelector('#search').value=document.querySelector('#searchHead').value
-                this.value=this.value
-
-                    submit()"
-                oninput=" this.value=this.value" --}}
+                    <select name="specialite" id="specialiteModal" class="text-black rounded-md w-full"
+              
                 >
                         <option value=""></option>
                         @foreach ($specialites as $specialite)
@@ -101,7 +85,7 @@
                 <!-- Tri par Ancienneté -->
                 <article class="flex flex-col w-full">
                     <label for="uniteValeur">Unite de valeur</label>
-                    <select id="uniteValeur" name="uniteValeur" class="text-black rounded-md w-full"  
+                    <select id="matiereModal" name="uniteValeur" class="text-black rounded-md w-full"  
                     {{-- onchange="
                     document.querySelector('#search').value=document.querySelector('#searchHead').value
                 this.value=this.value
@@ -218,3 +202,59 @@
 
     @endsection
 </x-layout>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fonction pour mettre à jour la table des enseignants
+        
+        function updateTeachers() {
+            console.log('ok')
+            const formData = new FormData(document.getElementById('form'));
+            fetch('teachersP', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('tbody');
+                tbody.innerHTML = ''; // Efface les anciennes lignes
+
+                // Ajoute les nouvelles lignes
+                data.teachers.forEach(teacher => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${teacher.id}</td>
+                        <td>${teacher.nom}</td>
+                        <td>${teacher.prenom}</td>
+                        <td>${teacher.sexe}</td>
+                        <td>${teacher.typeContrat}</td>
+                        <td>${teacher.diplome}</td>
+                        <td>${teacher.mobile}</td>
+                        <td>${teacher.profession}</td>
+                        <td class="text-center">
+                            <a href="/teachers/${teacher.id}" class="text-blue-600 hover:text-blue-900">Voir</a>
+                        </td>
+                        <td class="text-center">
+                            <a href="/teachers/${teacher.id}/edit" class="text-green-600 hover:text-green-900">Éditer</a>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Met à jour le total
+                document.querySelector('.font-bold.text-1xl.italic').innerText = `Total : ${data.total}`;
+            })
+            .catch(error => console.error('Erreur:', error));
+        }
+
+        // Ajoute des écouteurs d'événements pour les sélecteurs
+        document.querySelectorAll('#form select').forEach(select => {
+            
+            select.addEventListener('input', updateTeachers);
+        });
+    });
+</script>
+
+

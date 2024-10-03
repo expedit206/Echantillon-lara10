@@ -55,17 +55,20 @@ class EnseignantController extends Controller
     }
     
     if ($request->filled('uniteValeur')) {
-        $query->whereHas('unitesValeur', function ($q) use ($request) {
-            $q->where('id', $request->uniteValeur);
+        $query->whereHas('uniteValeurs', function ($q) use ($request) {
+            $q->where('unite_valeur_id', $request->uniteValeur);
         });
     }
     $teachers = $query->paginate(10);
     $total = $teachers->total();
 
+   
     if ($request->ajax()) {
-        return view('admin.teachers', array_merge($this->dataService->getAllData(),  compact('teachers', 'total'))); // Créez une vue partielle si nécessaire
+        return response()->json([
+            'teachers' => $teachers->items(),
+            'total' => $total,
+        ]);
     }
-
     return view('admin.teachers', array_merge($this->dataService->getAllData(),  compact('teachers', 'total')));
 }
 

@@ -25,27 +25,35 @@ class EtudiantController extends Controller
     public function index(Request $request)
     {
         $annee_id = Annee::where('is_active', true)->first()->id;
-        // Si un enseignant est connecté
+    
         if (Auth::guard('enseignant')->check()) {
-        $enseignantData = $this->getStudentsForEnseignant(Auth::guard('enseignant')->user(), $annee_id, $request);
-        $students = $enseignantData['students'];
-        $total = $enseignantData['total'];
-    } else {
-        // Si un administrateur est connecté
-        $students = $this->getStudentsForAdmin($annee_id, $request);
-        $total=$students->count();
+            $enseignantData = $this->getStudentsForEnseignant(Auth::guard('enseignant')->user(), $annee_id, $request);
+            $students = $enseignantData['students'];
+            $total = $enseignantData['total'];
+        } else {
+            $students = $this->getStudentsForAdmin($annee_id, $request);
+            $total = $students->count();
+        }
+    
+        // Récupérer les filtres pour les recherches
+        $search = $request->input('search');
+        $annees = Annee::all();
+    
+        if ($request->ajax()) {
+            return response()->json([
+                // 'students' => $students,
+                'students' => $students->items(),
+                'total' => $total,
+            ]);
+        }
+    
+        return view('admin.students', array_merge([
+            'search' => $search,
+            'students' => $students,
+            'total' => $total,
+        ], $this->dataService->getAllData()));
     }
-
-    // Récupérer les filtres pour les recherches
-    $search = $request->input('search');
-    $annees = Annee::all();
-
-    return view('admin.students', array_merge([
-        'search' => $search,
-        'students' => $students,
-        'total' => $total,
-    ], $this->dataService->getAllData()));
-}
+    
 
 
 private function getStudentsForEnseignant($enseignant, $annee_id, Request $request)
@@ -100,7 +108,7 @@ private function getStudentsForAdmin($annee_id, Request $request)
 {
     $query = Etudiant::where('annee_id', $annee_id);
 
-    if ($request->has('search') || $request->has('niveau') || $request->has('filiere') || $request->has('anciennete')) {
+    if ($request->has('search') || $request->has('niveau') || $request->has('filiere')|| $request->has('specialite') || $request->has('anciennete')) {
         $query = $this->applyFilters($query, $request);
     }
 
@@ -110,8 +118,8 @@ private function getStudentsForAdmin($annee_id, Request $request)
 private function applyFilters($query, Request $request)
 {
     $search = $request->input('search');
-    $niveau = Niveau::where('nom', $request->input('niveau'))->first();
-    $filiere = Filiere::where('nom', $request->input('filiere'))->first();
+    $niveau = Niveau::where('id', $request->input('niveau'))->first();
+    $filiere = Filiere::where('id', $request->input('filiere'))->first();
     $specialite = Specialite::find($request->input('specialite'));
 
     // Recherche par mot-clé

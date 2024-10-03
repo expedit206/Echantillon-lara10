@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Annee;
-use App\Models\Niveau;
-use App\Models\Filiere;
 use App\Models\Category;
-use App\Models\Semestre;
 use App\Models\Enseignant;
+use App\Models\Filiere;
+use App\Models\Niveau;
 use App\Models\Specialite;
 use App\Models\UniteValeur;
-use Illuminate\Http\Request;
 use App\Services\DataService;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UniteValeurController extends Controller
 {
-
 
     public function __construct(DataService $dataService)
     {
@@ -29,11 +27,11 @@ class UniteValeurController extends Controller
     {
         $query = UniteValeur::query();
 
-$enseignant=Auth::guard('enseignant')->user();
+        $enseignant = Auth::guard('enseignant')->user();
 // dd($enseignant);
         $query = $query->whereRelation('annee', 'is_active', true);
-        if($enseignant){
-            $query->whereRelation('enseignants','enseignant_id', $enseignant->id);
+        if ($enseignant) {
+            $query->whereRelation('enseignants', 'enseignant_id', $enseignant->id);
         }
 
         if ($request->filled('niveau')) {
@@ -49,8 +47,6 @@ $enseignant=Auth::guard('enseignant')->user();
         }
 // dd($query->get());
 
-
-
         $total = $query->count();
 // dd($this->dataService->getAllData());
         return view('unitevaleur.index', $this->dataService->getAllData());
@@ -64,11 +60,10 @@ $enseignant=Auth::guard('enseignant')->user();
 
         // Retourne la vue 'unitevaleur.create' avec les données
         return view('unitevaleur.create', array_merge(
-$this->dataService->getAllData(),
-compact('enseignants',  'categories'))
-        ) ;
+            $this->dataService->getAllData(),
+            compact('enseignants', 'categories'))
+        );
     }
-
 
     public function store(Request $request)
     {
@@ -98,14 +93,13 @@ compact('enseignants',  'categories'))
         return redirect()->route('uniteValeur.index')->with('success', 'Unité de valeur créée avec succès.');
     }
 
-
     public function show(UniteValeur $uniteValeur)
     {
         // Assure-toi que toutes les relations nécessaires sont chargées pour éviter les N+1 queries
         $uniteValeur->load('niveau', 'filiere', 'specialite', 'enseignant');
 
         return view('unitevaleur.show', [
-            'unitevaleur' => $uniteValeur
+            'unitevaleur' => $uniteValeur,
         ]);
     }
 
@@ -136,7 +130,7 @@ compact('enseignants',  'categories'))
 
         // Redirection vers la vue de détails avec un message de succès
         return redirect()->route('uniteValeur.show', $uniteValeur->id)
-                         ->with('success', 'Unité de valeur mise à jour avec succès.');
+            ->with('success', 'Unité de valeur mise à jour avec succès.');
     }
     public function destroy(UniteValeur $uniteValeur)
     {
@@ -146,55 +140,55 @@ compact('enseignants',  'categories'))
     }
 
     public function getSpecialites(Niveau $niveau, Filiere $filiere)
-{
-    $specialites = Specialite::where('filiere_id', $filiere->id)
-   -> whereRelation('filiere','niveau_id', $niveau->id)
-                            ->get();
+    {
+        $specialites = Specialite::where('filiere_id', $filiere->id)
+            ->get();
 
-    return response()->json($specialites);
-}
+        return response()->json($specialites);
+    }
 
     public function getFilieres(Niveau $niveau)
-{
-    $filieres = Filiere::where('niveau_id', $niveau->id)
-                            ->get();
+    {
+        $filieres = Filiere::where('niveau_id', $niveau->id)
+            ->get();
+        // if (!$niveau) {
+        //     $filieres = Filiere::all();
+        // }
 
-    return response()->json($filieres);
-}
+        return response()->json($filieres);
+    }
 
+    public function getMatieres($niveauId, $filiereId, $specialiteId)
+    {
 
-public function getMatieres($niveauId, $filiereId, $specialiteId)
-{
-   
-    
-    $matieres = UniteValeur::
-    // whereRelation('specialites', 'specialite_id', 3)
-    whereHas('specialites', function($query) use ($specialiteId, $filiereId, $niveauId) {
+        $matieres = UniteValeur::
+            // whereRelation('specialites', 'specialite_id', 3)
+            whereHas('specialites', function ($query) use ($specialiteId, $filiereId, $niveauId) {
 
-        $query->where ('specialite_id', $specialiteId)
-        ->whereHas('filiere', function($query) use($filiereId, $niveauId){
+            $query->where('specialite_id', $specialiteId)
+                ->whereHas('filiere', function ($query) use ($filiereId, $niveauId) {
 
-             $query->where('filiere_id', $filiereId)
-              ->whereRelation('niveau', 'niveau_id', $niveauId);
-              
-    });
-    })
-    ->get();
+                    $query->where('filiere_id', $filiereId)
+                        ->whereRelation('niveau', 'niveau_id', $niveauId);
 
-    // $matieres = UniteValeur::
-    // // whereRelation('specialites', 'specialite_id', 3)
-    // whereHas('specialites', function($query) {
-    //     $query->where ('specialite_id', 3)
-    //     ->whereHas('filiere', function($query) {
+                });
+        })
+            ->get();
 
-    //          $query->where('filiere_id', 2)
-    //           ->whereRelation('niveau', 'niveau_id', 1);
-              
-    // });
-    // })
-    // ->get();
-   
-    return response()->json($matieres);
-}
+        // $matieres = UniteValeur::
+        // // whereRelation('specialites', 'specialite_id', 3)
+        // whereHas('specialites', function($query) {
+        //     $query->where ('specialite_id', 3)
+        //     ->whereHas('filiere', function($query) {
+
+        //          $query->where('filiere_id', 2)
+        //           ->whereRelation('niveau', 'niveau_id', 1);
+
+        // });
+        // })
+        // ->get();
+
+        return response()->json($matieres);
+    }
 
 }

@@ -6,8 +6,7 @@
         <x-menu />
 
 
-        <div class="filter ">
-
+        <div class="filter">
             <div class="flex justify-between">
                 <a href="{{ route('etudiant.register') }}" class="btn text-violet-800 font-bold flex w-1/3">Ajouter un
                     etudiant<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px"
@@ -17,82 +16,72 @@
                     </svg>
                 </a>
                 <div class="  font-bold">
-                    <form method='post' action="{{ route('annee.setActive') }}" id="formAnnee">
-                        @csrf
-                        <label for="annee">Année Académique</label>
-                        <select name="annee" id="annee"
-                            class="border-none outline-none focus:border-none cursor-pointer" onchange="submit()">
+                       <div>
+                           <label for="annee">Année Académique</label>
+                           <select name="annee" id="anneeModal" class="border-none outline-none focus:border-none cursor-pointer">
                             @foreach ($annees as $annee)
                                 <option value="{{ $annee->id }}"
                                     class="cursor-pointer border-b-4 border-double border-black"
-                                    {{ $annee->is_active == true ? 'selected' : '' }}>{{ $annee->nom }}</option>
-                            @endforeach
-                        </select>
-                    </form>
+                                    {{ $annee->is_active == true ? 'selected' : '' }}>
+                                    {{ $annee->nom }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
                 </div>
             </div>
-            <form method="get" action="{{ route('students') }}" id="form"
-                class="px-3 text-white  grid-cols-5 content flex gap-3 items-center justify-around bg-orange-400 py-2">
+            <form method="get" action="{{ route('teachers') }}" id="form"
+                class="px-3 text-white grid-cols-4 content flex gap-4 items-center justify-around bg-orange-400 py-2">
                 @csrf
-                <h3>Filtrer par:</h3>
-                {{-- <input type="text" name="annee" id="anneeForm"> --}}
+
+                <input type="text" id="search" name="search" class="hidden">
+
+                <h3>Filtrer par :</h3>
                 <article class="flex flex-col  w-full">
                     <label for="niveau">Niveau</label>
 
-                    <select type="text" id="niveau" list="listNiveau" name="niveau"
+                    <select type="text" id="niveauModal" list="listNiveau" name="niveau"
                         class="text-black rounded-md w-full"
-                        onchange="
-                document.querySelector('#search').value=document.querySelector('#searchHead').value
-                this.value=this.value
-                submit()">
+                     
+                ">
 
                         <option value=""></option>
                         @foreach ($niveaux as $niveau)
-                            <option value="{{ $niveau->nom }}" {{ request('niveau') === $niveau->nom ? 'selected' : '' }}>
+                            <option value="{{ $niveau->id }}" {{ request('niveau') === $niveau->nom ? 'selected' : '' }}>
                                 {{ $niveau->nom }}</option>
                         @endforeach
                     </select>
                 </article>
 
+
                 <article class="flex flex-col w-full">
-                    <label for="filiere">Filiere</label>
-                    <input type="text" id="search" name="search" class="hidden">
-                    <select type="text" id="filiere" name="filiere" class="w-full text-black rounded-md"
-                        placeholder="----------------------------"
-                        onchange="
-                document.querySelector('#search').value=document.querySelector('#searchHead').value
-                console.log(document.querySelector('#search').value)
-            this.value=this.value
-
-                submit()
-                ">
-
+                    <label for="filiere">Filieres</label>
+                    <select name="filiere" id="filiereModal" class="text-black rounded-md w-full" 
+              
+                >
                         <option value=""></option>
                         @foreach ($filieres as $filiere)
-                            <option value="{{ $filiere->nom }}" {{ request('filiere') === $filiere->nom ? 'selected' : '' }}>
-                                {{ $filiere->nom }}</option>
+                            <option value="{{ $filiere->id }}" {{ request('filiere') == $filiere->id ? 'selected' : '' }}
+                                id={{ $filiere->id }}>{{ $filiere->nom }}</option>
                         @endforeach
                     </select>
                 </article>
 
+                <!-- specialite Filter -->
                 <article class="flex flex-col w-full">
                     <label for="specialite">specialite</label>
-                    <input type="text" id="search" name="search" class="hidden">
-                    <select type="text" id="specialite" name="specialite" class="w-full text-black rounded-md"
-                        placeholder="----------------------------"
-                        onchange="
-                document.querySelector('#search').value=document.querySelector('#searchHead').value
-                submit();
-                ">
-
+                    <select name="specialite" id="specialiteModal" class="text-black rounded-md w-full"
+              
+                >
                         <option value=""></option>
                         @foreach ($specialites as $specialite)
-                            <option value="{{ $specialite->id }}"
+                            <option id={{ $specialite->id }} value="{{ $specialite->id }}"
                                 {{ request('specialite') == $specialite->id ? 'selected' : '' }}>{{ $specialite->nom }}
                             </option>
                         @endforeach
                     </select>
                 </article>
+
 
                 <article class="flex flex-col w-full">
                     <label for="anciennete">Trie par</label>
@@ -100,9 +89,7 @@
 
                     <select type="text" id="anciennete" name="anciennete" class="text-black ounded-md" list="listdate"
                         placeholder="----------------------------"
-                        onchange="
-                document.querySelector('#search').value=document.querySelector('#searchHead').value
-                submit()
+                        
                 "
                         oninput=" this.value=this.value">
 
@@ -115,6 +102,7 @@
 
                     </select>
                 </article>
+
             </form>
         </div>
 
@@ -180,11 +168,55 @@
 </x-layout>
 
 <script>
-    function change() {
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fonction pour mettre à jour la table des enseignants
+        
+        function updateTeachers() {
+            const formData = new FormData(document.getElementById('form'));
+            console.log([...formData.entries()]);
+            fetch('studentsP', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('tbody');
+                tbody.innerHTML = ''; // Efface les anciennes lignes
+                
+                console.log(data.students)
+                // Ajoute les nouvelles lignes
+                data.students.forEach(student => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                         <td scope="row" class="text-[.9rem]">${student.matricule}</td>
+            <td scope="row">${student.nom}</td>
+            <td scope="row">${student.prenom}</td>
+            <td scope="row">
+                <a href="/students/niveau/${student.niveau.nom}">${student.niveau.nom}</a>
+            </td>
+            <td scope="row">
+                <a href="students/filiere/${student.filiere.id}">${student.filiere.nom}</a>
+            </td>
+            <td scope="row">${student.specialite.nom}</td>
+            <td scope="row"><a href="students/${student.id}" class="text-blue-600 hover:text-blue-900">Voir</a></td>
+            <td scope="row"><a href="students/edit/${student.id}" class="text-green-600 hover:text-green-900">Editer</a></td>
+        `;
+                    tbody.appendChild(row);
+                });
 
-        document.querySelector('#search').value = document.querySelector('#searchHead').value
-        anneeForm.value = annee.value;
-        console.log(anneeForm)
+                // Met à jour le total
+                document.querySelector('.font-bold.text-1xl.italic').innerText = `Total : ${data.total}`;
+            })
+            .catch(error => console.error('Erreur:', error));
+        }
 
-    }
+        // Ajoute des écouteurs d'événements pour les sélecteurs
+        document.querySelectorAll('#form select').forEach(select => {
+            
+            select.addEventListener('input', updateTeachers);
+        });
+    });
 </script>
