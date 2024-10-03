@@ -80,3 +80,12 @@ display: none;
     background-color: rgba(0, 0, 0, 0.5); /* Fond noir avec opacité */
     z-index: 50; /* Au-dessus des autres éléments */
 }
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}

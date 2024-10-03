@@ -1,0 +1,25 @@
+{
+    "particles": {
+      "number": {
+        "value": 80
+      },
+      "color": {
+        "value": "afafaf"
+      },
+      "shape": {
+        "type": "circle"
+      },
+      "size": {
+        "value": 4
+      }
+    },
+    "interactivity": {
+      "events": {
+        "onhover": {
+          "enable": true,
+          "mode": "repulse"
+        }
+      }
+    }
+  }
+  

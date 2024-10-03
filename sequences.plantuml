@@ -1,0 +1,52 @@
+@startuml
+' Augmenter la taille de la police
+skinparam defaultFontSize 16
+
+' Mettre en gras et définir des couleurs pour chaque acteur et leurs séquences
+actor Administrateur #FF6347
+actor Etudiant #4682B4
+actor Enseignant #32CD32
+participant Systeme #FFD700
+
+' Définir des couleurs de lignes de séquence
+skinparam sequence {
+    ArrowColor #FF6347
+    LifeLineBorderColor #FF6347
+    LifeLineBackgroundColor #FF6347
+}
+
+== Séquence pour un administrateur validant des notes ==
+Administrateur -> Systeme : **Se connecter**
+Systeme -> Systeme : **Vérifier les identifiants**
+Administrateur -> Systeme : **Consulter les notes saisies**
+Systeme -> Administrateur : **Afficher les notes à valider**
+Administrateur -> Systeme : **Valider ou rejeter les notes**
+Systeme -> Systeme : **Mettre à jour l'état des notes**
+
+skinparam sequence {
+    ArrowColor #4682B4
+    LifeLineBorderColor #4682B4
+    LifeLineBackgroundColor #4682B4
+}
+
+== Séquence pour un étudiant consultant ses notes ==
+Etudiant -> Systeme : **Se connecter**
+Systeme -> Systeme : **Vérifier les identifiants**
+Etudiant -> Systeme : **Demander à consulter ses notes**
+Systeme -> Systeme : **Récupérer les notes de l'étudiant**
+Systeme -> Etudiant : **Afficher les notes par semestre et par matière**
+
+skinparam sequence {
+    ArrowColor #32CD32
+    LifeLineBorderColor #32CD32
+    LifeLineBackgroundColor #32CD32
+}
+
+== Séquence pour un enseignant saisissant des notes ==
+Enseignant -> Systeme : **Se connecter**
+Systeme -> Systeme : **Vérifier les identifiants**
+Enseignant -> Systeme : **Saisir les notes des étudiants**
+Systeme -> Systeme : **Enregistrer les notes**
+Enseignant -> Systeme : **Modifier ou corriger les notes avant validation**
+
+@enduml

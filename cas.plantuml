@@ -1,0 +1,59 @@
+@startuml
+' Configuration pour un agencement vertical
+left to right direction
+skinparam usecase {
+  BackgroundColor LightBlue
+  BorderColor Black
+  BorderThickness 2
+}
+
+' Cadre global pour tous les cas d'utilisation
+rectangle "Système de Gestion des Relevés de Notes" as System {
+  ' Définition des acteurs avec des couleurs
+  actor "Administrateur" as admin #FF6347
+  actor "Étudiant" as etudiant #4682B4
+  actor "Enseignant" as enseignant #32CD32
+
+  ' Définition des cas d'utilisation avec encadrement pour chaque groupe
+  rectangle "Cas d'utilisation Étudiant" as StudentUseCases {
+    usecase "Se connecter" as UC1
+    usecase "Consulter ses notes" as UC2
+    usecase "Visualiser, imprimer son relevé de notes" as UC25
+    usecase "Suivre son évolution scolaire" as UC3
+    usecase "Recevoir des notifications" as UC4
+    usecase "Mettre à jour son profil" as UC5
+  }
+
+  rectangle "Cas d'utilisation Enseignant" as TeacherUseCases {
+    usecase "Se connecter" as UC6
+    usecase "Saisir les notes" as UC7
+    usecase "Modifier les notes" as UC8
+    usecase "Consulter les examens des étudiants" as UC9
+  }
+
+  rectangle "Cas d'utilisation Administrateur" as AdminUseCases {
+    usecase "Modifier les notes" as UC10
+    usecase "Gérer les profils d’utilisateurs" as UC11
+    usecase "Gérer les niveaux, filières et spécialités" as UC12
+    usecase "Générer des rapports de performances" as UC13
+  }
+
+  ' Relations entre les acteurs et les cas d'utilisation
+  etudiant --> UC1
+  etudiant --> UC2
+  etudiant --> UC3
+  etudiant --> UC4
+  etudiant --> UC5
+
+  enseignant --> UC6
+  enseignant --> UC7
+  enseignant --> UC8
+  enseignant --> UC9
+
+  admin --> UC10
+  admin --> UC11
+  admin --> UC12
+  admin --> UC13
+}
+
+@enduml

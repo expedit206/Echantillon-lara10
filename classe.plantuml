@@ -1,33 +1,172 @@
 @startuml
-' Augmenter la taille de la police
-skinparam defaultFontSize 16
+' Définit la position des entités
+left to right direction
 
-' Début du diagramme de séquence
-actor Administrateur
-actor Etudiant
-actor Enseignant
-participant Systeme
+' Définir les couleurs pour les entités
+skinparam entity {
+  BackgroundColor #B0E0E6
+  BorderColor DarkSlateBlue
+  FontColor Black
+}
 
-== Séquence pour un administrateur validant des notes ==
-Administrateur -> Systeme : Se connecter
-Systeme -> Systeme : Vérifier les identifiants
-Administrateur -> Systeme : Consulter les notes saisies
-Systeme -> Administrateur : Afficher les notes à valider
-Administrateur -> Systeme : Valider ou rejeter les notes
-Systeme -> Systeme : Mettre à jour l'état des notes
+' Définir les polices et les tailles
+skinparam defaultFontSize 16  ' Taille de police augmentée
 
-== Séquence pour un étudiant consultant ses notes ==
-Etudiant -> Systeme : Se connecter
-Systeme -> Systeme : Vérifier les identifiants
-Etudiant -> Systeme : Demander à consulter ses notes
-Systeme -> Systeme : Récupérer les notes de l'étudiant
-Systeme -> Etudiant : Afficher les notes par semestre et par matière
+entity "Admins" as admins {
+  + id : bigint
+  + role : enum('admin', 'secretaire')
+  + nom : varchar(255)
+  + prenom : varchar(255)
+  + email : varchar(255)
+  + password : varchar(255)
+  + created_at : timestamp
+  + updated_at : timestamp
+  + createAdmin()
+  + updateAdmin()
+  + deleteAdmin()
+  + getAllAdmins()
+}
 
-== Séquence pour un enseignant saisissant des notes ==
-Enseignant -> Systeme : Se connecter
-Systeme -> Systeme : Vérifier les identifiants
-Enseignant -> Systeme : Saisir les notes des étudiants
-Systeme -> Systeme : Enregistrer les notes
-Enseignant -> Systeme : Modifier ou corriger les notes avant validation
+entity "Enseignants" as enseignants {
+  + id : bigint
+  + nom : varchar(255)
+  + prenom : varchar(255)
+  + sexe : varchar(255)
+  + email : varchar(255)
+  + password : varchar(255)
+  + dateNaiss : date
+  + lieuNaiss : varchar(255)
+  + nationalite : varchar(255)
+  + mobile : varchar(255)
+  + photo : varchar(255)
+  + profession : varchar(255)
+  + diplome : varchar(255)
+  + annee_id : bigint
+  + salaire : decimal(10, 2)
+  + typeContrat : varchar(255)
+  + debutContrat : date
+  + finContrat : date
+  + created_at : timestamp
+  + updated_at : timestamp
+  + createEnseignant()
+  + updateEnseignant()
+  + deleteEnseignant()
+  + getAllEnseignants()
+}
+
+entity "Etudiants" as etudiants {
+  + id : bigint
+  + matricule : char(255)
+  + nom : varchar(255)
+  + prenom : varchar(255)
+  + email : varchar(255)
+  + password : varchar(255)
+  + dateNaissance : date
+  + lieuNaiss : varchar(255)
+  + photo : varchar(255)
+  + numeroTelephone : varchar(255)
+  + sexe : varchar(255)
+  + niveau_id : bigint
+  + filiere_id : bigint
+  + specialite_id : bigint
+  + annee_id : bigint
+  + created_at : timestamp
+  + updated_at : timestamp
+  + createEtudiant()
+  + updateEtudiant()
+  + deleteEtudiant()
+  + getAllEtudiants()
+}
+
+entity "Annees" as annees {
+  + id : bigint
+  + nom : varchar(255)
+  + debut : date
+  + fin : date
+  + is_active : tinyint(1)
+  + created_at : timestamp
+  + updated_at : timestamp
+  + createAnnee()
+  + updateAnnee()
+  + deleteAnnee()
+  + getAllAnnees()
+}
+
+entity "Semestres" as semestres {
+  + id : bigint
+  + nom : varchar(255)
+  + annee_id : bigint
+  + debut : date
+  + fin : date
+  + is_active : tinyint(1)
+  + created_at : timestamp
+  + updated_at : timestamp
+  + createSemestre()
+  + updateSemestre()
+  + deleteSemestre()
+  + getAllSemestres()
+}
+
+entity "Niveaux" as niveaux {
+  + id : bigint
+  + nom : varchar(255)
+  + created_at : timestamp
+  + updated_at : timestamp
+  + createNiveau()
+  + updateNiveau()
+  + deleteNiveau()
+  + getAllNiveaux()
+}
+
+entity "Filieres" as filieres {
+  + id : bigint
+  + nom : varchar(255)
+  + niveau_id : bigint
+  + created_at : timestamp
+  + updated_at : timestamp
+  + createFiliere()
+  + updateFiliere()
+  + deleteFiliere()
+  + getAllFilieres()
+}
+
+entity "Specialites" as specialites {
+  + id : bigint
+  + nom : varchar(255)
+  + filiere_id : bigint
+  + created_at : timestamp
+  + updated_at : timestamp
+  + createSpecialite()
+  + updateSpecialite()
+  + deleteSpecialite()
+  + getAllSpecialites()
+}
+
+entity "Notes" as notes {
+  + id : bigint
+  + etudiant_id : bigint
+  + unite_valeur_id : bigint
+  + note : decimal(5, 2)
+  + type : enum('Controle continu', 'Normale', 'Rattrapage')
+  + enseignant_id : bigint
+  + created_at : timestamp
+  + updated_at : timestamp
+  + createNote()
+  + updateNote()
+  + deleteNote()
+  + getAllNotes()
+}
+
+' Définir les relations
+admins --o{ enseignants : "1..*"
+annees --o{ enseignants : "0..*"
+filieres --o{ etudiants : "0..*"
+niveaux --o{ etudiants : "0..*"
+specialites --o{ etudiants : "0..*"
+annees --o{ etudiants : "0..*"
+annees --o{ semestres : "2"
+semestres --o{ notes : "1..*"
+etudiants --o{ notes : "1..*"
+enseignants --o{ notes : "0..*"
 
 @enduml
