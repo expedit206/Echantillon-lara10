@@ -41,19 +41,19 @@ class EnseignantController extends Controller
             $q->where('id', $request->niveau);
         });
     }
-    
+
     if ($request->filled('filiere')) {
         $query->whereHas('filieres', function ($q) use ($request) {
             $q->where('id', $request->filiere);
         });
     }
-    
+
     if ($request->filled('specialite')) {
         $query->whereHas('specialites', function ($q) use ($request) {
             $q->where('id', $request->specialite);
         });
     }
-    
+
     if ($request->filled('uniteValeur')) {
         $query->whereHas('uniteValeurs', function ($q) use ($request) {
             $q->where('unite_valeur_id', $request->uniteValeur);
@@ -62,7 +62,7 @@ class EnseignantController extends Controller
     $teachers = $query->paginate(10);
     $total = $teachers->total();
 
-   
+
     if ($request->ajax()) {
         return response()->json([
             'teachers' => $teachers->items(),

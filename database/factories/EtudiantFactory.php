@@ -1,16 +1,13 @@
 <?php
-
 namespace Database\Factories;
 
 use App\Models\Annee;
 use App\Models\Niveau;
 use App\Models\Filiere;
 use App\Models\Specialite;
+use App\Models\Etudiant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Etudiant>
- */
 class EtudiantFactory extends Factory
 {
     /**
@@ -24,24 +21,59 @@ class EtudiantFactory extends Factory
         $filieres = Filiere::all();
         $annees = Annee::all();
         $specialites = Specialite::all();
+        $specialite = $specialites->random();
+        $etu = Etudiant::all();
+        dump($etu);
+
+        // Choisir des valeurs aléatoires pour les relations
+        $annee = $annees->where('is_active', true)->first();
+
+        // Générer le matricule en utilisant la logique que tu as fournie
+        $matricule = $this->generateMatricule($specialite->id, $annee->id);
+
         return [
-            'matricule' => $this->faker->unique()->bothify('####'), // Code unique au format ETU###
-            'nom' => $this->faker->lastName, // Nom de famille
-            'prenom' => $this->faker->firstName, // Prénom
-            'email' => $this->faker->unique()->safeEmail, // Email unique
-            'password' => \Hash::make('aaaaaaaa'),
+            'matricule' => $matricule,
+            'nom' => $this->faker->lastName,
+            'prenom' => $this->faker->firstName,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => \Hash::make('aaaaaaaa'), // Utilise le hashage ici
 
-            'dateNaissance' => $this->faker->date, // Date de naissance
-            'lieuNaiss' => $this->faker->firstName, // Prénom
-            'numeroTelephone' => $this->faker->phoneNumber, // Numéro de téléphone
+            'dateNaissance' => $this->faker->date,
+            'lieuNaiss' => $this->faker->city,
+            'numeroTelephone' => $this->faker->phoneNumber,
 
-            'sexe' => $this->faker->randomElement(['Homme', 'Femme']), // Sexe aléatoire
-            'niveau_id' => $niveaux->random()->id, // Référence à un niveau existant ou généré
-            'filiere_id' => $filieres->random()->id, // Référence à une filière existante ou générée
-            'annee_id' => $annees->random()->id, // Référence à une filière existante ou générée
-            'specialite_id' => $specialites->random()->id, // Référence à une filière existante ou générée
-            'created_at'=>now(),
-            'updated_at'=>NULL
+            'sexe' => $this->faker->randomElement(['Homme', 'Femme']),
+            'niveau_id' => $niveaux->random()->id,
+            'filiere_id' => $filieres->random()->id,
+            'annee_id' => $annee->id,
+            'specialite_id' => $specialite->id,
+            'created_at' => now(),
+            'updated_at' => null,
         ];
+    }
+
+    /**
+     * Générer le matricule selon la logique spécifiée.
+     */
+    public function generateMatricule($specialite_id, $annee_id)
+    {
+        // Obtenir les deux premières lettres de la spécialité
+        $specialite = Specialite::find($specialite_id);
+        $specialiteCode = strtoupper(substr($specialite->nom, 0, 2));
+
+        // Récupérer l'année active et prendre les deux derniers chiffres
+        $annee = Annee::find($annee_id);
+        $anneeCode = substr($annee->nom, -2);
+
+        // Compter le nombre d'étudiants dans cette spécialité
+        $count = Etudiant::where('specialite_id', $specialite_id)->count() + 1;
+        // $etu = Etudiant::where('specialite_id', $specialite_id)->get();
+        // dump($etu);
+        dump("count : " . $count);
+        $numero = str_pad($count, 4, '0', STR_PAD_LEFT);
+        dump("num : " . $numero);
+
+        // Générer le matricule complet
+        return "CM-ESCa-{$numero}-{$specialiteCode}-{$anneeCode}";
     }
 }

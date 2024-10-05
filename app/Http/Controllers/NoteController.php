@@ -246,7 +246,7 @@ public function create(Request $request)
     $specialite = $request->input('specialite');
     $semestre = $request->input('semestre');
     $matiere = $request->input('matieres');
-    $filiere = Filiere::whereRelation('specialites', 'id', $specialite)->first()->id;
+    $filiere = Filiere::whereRelation('specialites', 'id', $specialite)->first()->id ?? null;
 
     // Récupérer les étudiants filtrés selon l'année, le niveau, la filière, et la spécialité
     $etudiants = Etudiant::with('notes')
@@ -257,7 +257,7 @@ public function create(Request $request)
      -> whereHas('uniteValeurs', function($query) use($semestre){
         $query->whereRelation('semestre', 'semestre_id', $semestre);
      })
-    ->get();
+    ->paginate(20);
     // select * from etudiants where specialite_id=4 and niveau_id=1 and filiere_id=5 and annee_id=1
 // dd(value)
     // Récupérer les notes des étudiants filtrés

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnneeController;
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 use App\Http\Controllers\Auth\Etudiant\EtudiantController;
@@ -43,12 +44,18 @@ Route::prefix('admin')->group(function () {
 // Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('admin.login')->middleware('monGuest:admin','monGuest:enseignant');
 Route::get('logout', [AuthenticatedSessionController::class, 'logout'])
 ->name('admin.logout');
+Route::get('{admin}', [AdminController::class, 'show'])
+->name('admin.show');
 // Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
 Route::get('register', [RegisteredUserController::class, 'showRegister'])
 ->name('admin.register');
 Route::post('register', [RegisteredUserController::class, 'store']);
 });
+
+// routes/web.php
+Route::put('/password/update', [PasswordController::class, 'updatePassword'])->name('password.update');
+Route::get('/password/edit', [PasswordController::class, 'editPassword'])->name('password.edit');
 
 // Route::prefix('admin')->middleware(['monAuth:admin'])->group(function () {
 //     Route::get('home',[RegisteredUserController::class, 'home'])->middleware(['monAuth:admin'])->name('admin.home');//verified
@@ -64,9 +71,15 @@ Route::get('students/filiere/{filiere}', [App\Http\Controllers\EtudiantControlle
 Route::get('students/niveau/{niveau}', [App\Http\Controllers\EtudiantController::class, 'studentsByNiveau'])->name('studentsByNiveau');
 
 //route concernant l'enseignant
-Route::get('teachers', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers');
-Route::post('teachersP', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers');
+Route::get('enseignant/register', [App\Http\Controllers\Auth\enseignant\EnseignantController::class, 'create'])->name('enseignant.register');
+// Route::post('register', [App\Http\Controllers\Auth\EnseignantController::class, 'create'])->name('enseignant.register');
+// Route::post('teachersP', [App\Http\Controllers\EnseignantController::class, 'index'])->name('enseignant.register');
 
+Route::post('teachersP', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers');
+Route::get('teachers', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers');
+
+
+Route::post('register', [EnseignantController::class, 'store']);
 Route::get('enseignant/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'show'])->name('teacher.show');
 Route::get('enseignant/edit/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'edit'])->name('teacher.edit');
 

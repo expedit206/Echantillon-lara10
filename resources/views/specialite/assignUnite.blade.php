@@ -1,11 +1,17 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+<x-layout>
+    @section('title', 'matieres->specialite')
+
+    @section('content')
+        <x-header />
+        <x-menu />
+
+        <div class="mt-4 bg-slate-500 rounded-lg py-5">
+
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight px-5 text-white">
             {{ __('Attribuer des Unités de Valeur à la Spécialité : ') . $specialite->nom }}
         </h2>
-    </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 bg-slate-500 h-full">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -25,13 +31,15 @@
                         </div>
 
                         <div class="mt-6">
-                            <x-primary-button>
+                            <button class="bg-blue-500 rounded-lg p-2 text-white">
                                 {{ __('Attribuer') }}
-                            </x-primary-button>
+                            </button >
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+    </div>
+    @endsection
+</x-layout>

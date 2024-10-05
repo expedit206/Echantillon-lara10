@@ -8,17 +8,18 @@
     <div class="container mx-auto p-6 bg-slate-400">
         <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">Assigner une Matière à un Enseignant</h1>
 
-        @if (session('success'))
+        {{-- @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
                 {{ session('success') }}
             </div>
-        @endif
+        @endif --}}
 
         <form method="POST" action="{{ route('assigner-matiere.store') }}">
             @csrf
 
             <!-- Sélection de l'enseignant -->
             <div class="mb-4">
+                <p>* Choisir l'enseignant</p>
                 <x-label class="text-gray-800" for="enseignant_id" :value="__('Enseignant')" />
                 <select name="enseignant_id" id="enseignant_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
                     @foreach($enseignants as $enseignant)
@@ -26,6 +27,8 @@
                     @endforeach
                 </select>
             </div>
+
+           <p>* Choisir l'unite de valeur </p>
 
             <!-- Sélection du niveau -->
             <div class="mb-4">
@@ -73,17 +76,17 @@
                     data.forEach(filiere => {
                         filiereSelect.innerHTML += `<option value="${filiere.id}">${filiere.nom}</option>`;
                     });
-    
+
                     // Appel du callback après que les filières sont chargées
                     if (callback) {
                         callback();
                     }
-    
+
                     document.getElementById('specialite_id').innerHTML = '';
                     document.getElementById('matiere_id').innerHTML = '';
                 });
         }
-    
+
         // Fonction pour remplir les spécialités
         function loadSpecialites(niveauId, filiereId, callback) {
             fetch(`/specialites/${niveauId}/${filiereId}`)
@@ -95,20 +98,20 @@
                         specialiteSelect.innerHTML += `<option value="${specialite.id}">${specialite.nom}</option>`;
                     });
                     document.getElementById('matiere_id').innerHTML = '';
-    
+
                     // Appel du callback après que les spécialités sont chargées
                     if (callback) {
                         callback();
                     }
                 });
         }
-    
+
         // Fonction pour remplir les matières
         function loadMatieres(niveauId, filiereId, specialiteId) {
             fetch(`/matieres/${niveauId}/${filiereId}/${specialiteId}`)
                 .then(response => response.json())
                 .then(data => {
-                    
+
                     let matiereSelect = document.getElementById('matiere_id');
                     matiereSelect.innerHTML = '';
                     console.log(data);
@@ -117,13 +120,13 @@
                     });
                 });
         }
-    
+
         // Événements de changement pour niveau, filière, spécialité
         document.getElementById('niveau_id').addEventListener('change', function () {
             let niveauId = this.value;
             loadFilieres(niveauId);
         });
-    
+
         document.getElementById('filiere_id').addEventListener('input', function () {
             let niveauId = document.getElementById('niveau_id').value;
             let filiereId = this.value;
@@ -136,7 +139,7 @@
                 });
             }
         });
-    
+
         document.getElementById('specialite_id').addEventListener('change', function () {
             let niveauId = document.getElementById('niveau_id').value;
             let filiereId = document.getElementById('filiere_id').value;
@@ -145,11 +148,11 @@
                 loadMatieres(niveauId, filiereId, specialiteId);
             }
         });
-    
+
         // Charger les options au chargement de la page si des valeurs sont déjà sélectionnées
         document.addEventListener('DOMContentLoaded', function () {
             let niveauId = document.getElementById('niveau_id').value;
-    
+
             // Charger les filières si un niveau est déjà sélectionné
             if (niveauId) {
                 loadFilieres(niveauId, function() {
@@ -159,7 +162,7 @@
                         loadSpecialites(niveauId, filiereId, function() {
                             // Charger les matières après les spécialités
                             let specialiteId = document.getElementById('specialite_id').value;
-                            
+
                             if (specialiteId) {
                                 // console.log('bj');
                                 loadMatieres(niveauId, filiereId, specialiteId);
@@ -170,6 +173,6 @@
             }
         });
     </script>
-    
+
     @endsection
 </x-layout>

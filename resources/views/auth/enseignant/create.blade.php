@@ -1,153 +1,148 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Inscription Enseignant</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    @vite('resources/css/app.css')
-</head>
-<body class="bg-gray-300 text-gray-800">
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+<x-layout>
+    @section('title', 'Ajouter un Etudiant')
 
-    <div class="max-w-3xl mx-auto p-6 bg-slate-500 rounded-lg shadow-md mt-10">
+    @section('content')
+        <x-header />
+        <x-menu />
 
-        <div class="flex font-bold justify-between">
-            <h1 class="text-2xl font-bold mb-6">
-                Ajouter un Enseignant</h1>
-                <form method='post' action="{{route('annee.setActive')}}" id="formAnnee">
-                    @csrf
-                            <label for="annee">Année Académique</label>
-                            <select name="annee" id="annee" class="bg-slate-400 rounded-full  border-none outline-none focus:border-none cursor-pointer" onchange="submit()"
-                            >
-                                @foreach($annees as $annee)
-                                <option value="{{ $annee->id }}" class="cursor-pointer border-b-4 border-double border-black"
-                                    {{ $annee->is_active==true? 'selected':''}}
-                                    >{{ $annee->nom }}</option>
-                                @endforeach
-                            </select>
-                        </form>
+        {{-- Error Messages --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="mt-5 bg-slate-500 px-5 rounded-md py-6">
+            <h1 class="text-3xl font-bold text-center mb-6">Ajouter un Etudiant</h1>
+
+            {{-- Form for Student Registration --}}
+            <form method="POST" action="{{ route('enseignants.store') }}" enctype="multipart/form-data">
+                @csrf
+
+                {{-- Informations Personnelles --}}
+                <h2 class="text-lg font-semibold mb-4">Informations Personnelles</h2>
+
+                <div class="grid md:md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <x-label for="nom" value="Nom" />
+                        <x-input id="nom" name="nom" class="w-full border border-gray-300 rounded-md p-2" type="text" :value="old('nom')" autofocus />
+                    </div>
+                    <div>
+                        <x-label for="prenom" value="Prénom" />
+                        <x-input id="prenom" name="prenom" class="w-full border border-gray-300 rounded-md p-2" type="text" :value="old('prenom')" />
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <x-label for="email" value="Email" />
+                        <x-input id="email" name="email" class="w-full border border-gray-300 rounded-md p-2" type="email" :value="old('email')" />
+                    </div>
+                    <div>
+                        <x-label for="sexe" value="Sexe" />
+                        <select id="sexe" name="sexe" class="w-full border-gray-300 rounded-md p-2">
+                            <option value="Masculin">Masculin</option>
+                            <option value="Féminin">Féminin</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <x-label for="dateNaiss" value="Date de naissance" />
+                        <x-input id="dateNaiss" name="dateNaiss" class="w-full border border-gray-300 rounded-md p-2" type="date" :value="old('dateNaiss')" />
+                    </div>
+                    <div>
+                        <x-label for="lieuNaiss" value="Lieu de naissance" />
+                        <x-input id="lieuNaiss" name="lieuNaiss" class="w-full border border-gray-300 rounded-md p-2" type="text" :value="old('lieuNaiss')" />
+                    </div>
+                </div>
+
+                {{-- Contact Information --}}
+                <h2 class="text-lg font-semibold mb-4">Informations de Contact</h2>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <x-label for="nationalite" value="Nationalité" />
+                        <x-input id="nationalite" name="nationalite" class="w-full border border-gray-300 rounded-md p-2" type="text" :value="old('nationalite')" />
+                    </div>
+                    <div>
+                        <x-label for="mobile" value="Mobile" />
+                        <x-input id="mobile" name="mobile" class="w-full border border-gray-300 rounded-md p-2" type="tel" :value="old('mobile')" />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <x-label for="photo" value="Photo" />
+                    <input id="photo" name="photo" class="w-full border border-gray-300 rounded-md p-2" type="file" accept="image/*" />
+                </div>
+
+                {{-- Professional Information --}}
+                <h2 class="text-lg font-semibold mb-4">Informations Professionnelles</h2>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <x-label for="profession" value="Profession" />
+                        <x-input id="profession" name="profession" class="w-full border border-gray-300 rounded-md p-2" type="text" :value="old('profession')" />
+                    </div>
+                    <div>
+                        <x-label for="diplome" value="Diplôme" />
+                        <x-input id="diplome" name="diplome" class="w-full border border-gray-300 rounded-md p-2" type="text" :value="old('diplome')" />
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <x-label for="salaire" value="Salaire" />
+                        <x-input id="salaire" name="salaire" class="w-full border border-gray-300 rounded-md p-2" type="number" step="0.01" :value="old('salaire')" />
+                    </div>
+                    <div>
+                        <x-label for="typeContrat" value="Type de contrat" />
+                        <select id="typeContrat" name="typeContrat" class="w-full border border-gray-300 rounded-md p-2">
+                            <option value="CDI">CDI</option>
+                            <option value="CDD">CDD</option>
+                            <option value="Intérim">Intérim</option>
+                            <option value="Stage">Stage</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <x-label for="debutContrat" value="Début du contrat" />
+                        <x-input id="debutContrat" name="debutContrat" class="w-full border border-gray-300 rounded-md p-2" type="date" :value="old('debutContrat')" />
+                    </div>
+                    <div>
+                        <x-label for="finContrat" value="Fin du contrat (optionnel)" />
+                        <x-input id="finContrat" name="finContrat" class="w-full border border-gray-300 rounded-md p-2" type="date" :value="old('finContrat')" />
+                    </div>
+                </div>
+
+                {{-- Password --}}
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <x-label for="password" value="Password" />
+                        <x-input id="password" name="password" class="w-full border border-gray-300 rounded-md p-2" type="password" />
+                    </div>
+                    <div>
+                        <x-label for="password_confirmation" value="Confirm Password" />
+                        <x-input id="password_confirmation" name="password_confirmation" class="w-full border border-gray-300 rounded-md p-2" type="password" />
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-4">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:bg-indigo-700 focus:outline-none transition duration-150 ease-in-out">
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
         </div>
 
-        <form method="POST" action="{{ route('enseignants.store') }}" enctype="multipart/form-data" class="">
-            @csrf
-
-            <div class="mb-4">
-                <x-label for="nom" value="{{ __('Nom') }}" />
-                <x-input id="nom" name='nom' class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text"  :value="old('nom')"  autofocus autocomplete="nom" />
-
-
-            </div>
-
-            <div class="mb-4">
-                <x-label for="prenom" value="{{ __('Prénom') }}" />
-                <x-input id="prenom" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text" name="prenom" :value="old('prenom')"  autocomplete="prenom" />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="email" name="email" :value="old('email')"  autocomplete="username" />
-            </div>
-            <div class="mb-4">
-                <x-label for="sexe" value="{{ __('Sexe') }}" />
-                <select id="sexe" name="sexe" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
-                    <option value="Masculin">Masculin</option>
-                    <option value="Femme">Féminin</option>
-                    <option value="Autre">Autre</option>
-                </select>
-            </div>
-            <div class="mb-4">
-                <x-label for="dateNaiss" value="{{ __('Date de naissance') }}" />
-                <x-input id="dateNaiss" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="date" name="dateNaiss" :value="old('dateNaiss')"  autocomplete="bday" />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="lieuNaiss" value="{{ __('Lieu de naissance') }}" />
-                <x-input id="lieuNaiss" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text" name="lieuNaiss" :value="old('lieuNaiss')"  />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="nationalite" value="{{ __('Nationalité') }}" />
-                <x-input id="nationalite" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text" name="nationalite" :value="old('nationalite')"  />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="mobile" value="{{ __('Mobile') }}" />
-                <x-input id="mobile" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="tel" name="mobile" :value="old('mobile')"  />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="photo" value="{{ __('Photo') }}" />
-                <input id="photo" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="file" name="photo" accept="image/*" />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="profession" value="{{ __('Profession') }}" />
-                <x-input id="profession" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text" name="profession" :value="old('profession')"  />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="diplome" value="{{ __('Diplôme') }}" />
-                <x-input id="diplome" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="text" name="diplome" :value="old('diplome')"  />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="salaire" value="{{ __('Salaire') }}" />
-                <x-input id="salaire" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="number" name="salaire" step="0.01" :value="old('salaire')"  />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="typeContrat" value="{{ __('Type de contrat') }}" />
-                <select id="typeContrat" name="typeContrat" class="block mt-1 w-full border border-gray-300 rounded-md p-2" >
-                    <option value="CDI">CDI</option>
-                    <option value="CDD">CDD</option>
-                    <option value="Intérim">Intérim</option>
-                    <option value="Stage">Stage</option>
-                    <option value="Autre">Autre</option>
-                </select>
-            </div>
-
-            <div class="mb-4">
-                <x-label for="debutContrat" value="{{ __('Début du contrat') }}" />
-                <x-input id="debutContrat" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="date" name="debutContrat" :value="old('debutContrat')"  />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="finContrat" value="{{ __('Fin du contrat (optionnel)') }}" />
-                <x-input id="finContrat" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="date" name="finContrat" :value="old('finContrat')" />
-            </div>
-
-                <input type="text" hidden>
-
-            <div class="mb-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="password" name="password"  autocomplete="new-password" />
-            </div>
-
-            <div class="mb-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full border border-gray-300 rounded-md p-2" type="password" name="password_confirmation"  autocomplete="new-password" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                {{-- <a class="underline text-sm text-gray-800 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('enseignant.login') }}">
-                    {{ __('Already registered?') }}
-                </a> --}}
-
-                <button type="submit" class="ms-4 inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out">
-                    {{ __('Enregistrer') }}
-                </button>
-            </div>
-        </form>
-    </div>
-</body>
-</html>
+    @endsection
+</x-layout>

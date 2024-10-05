@@ -12,12 +12,11 @@
     document.querySelector('#anneeHead').value=document.querySelector('#annee').value
     document.querySelector('#niveauHead').value=document.querySelector('#niveau').value
     document.querySelector('#uniteValeurHead').value=document.querySelector('#uniteValeur').value
-"
-    >
+    ">
 
-<input name="search" id="searchHead" value="{{request('search')}}" class="focus:outline-none focus:border-transparent border-none bg-transparent" placeholder="Rechercher"  oninput=" this.value=this.value
+    <input name="search" id="searchHead" value="{{request('search')}}" class="focus:outline-none focus:border-transparent border-none   bg-transparent" placeholder="Rechercher"  oninput=" this.value=this.value
 
-    " >
+        " >
 
                 <input type="text" name="filiere" id="filiereHead" hidden>
                 <input type="text" name="specialite" id="specialiteHead" hidden>
@@ -37,36 +36,79 @@
         </svg>
     </button>
 
-</form>
-@endif
+    </form>
+    @endif
 
-    <div class="flex items-center justify-center gap-2">
-        <span>Mon compte</span>
-        <div class="flex">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" class=" text" viewBox="0 0 24 24"
-                style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;">
-                <path
-                    d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z">
+    <div class="relative  border-3 rounded-lg px-2 lg:py-1 bg-blue-300">
+        <!-- Bouton du profil -->
+        <div class="flex items-center justify-center gap-2 cursor-pointer" id="profileButton">
+            <span>Mon profil</span>
+            <div class="flex">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" class="text" viewBox="0 0 24 24"
+                    style="fill: rgba(0, 0, 0, 1);">
+                    <path
+                        d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z">
                 </path>
             </svg>
-
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    onfghjklm
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </div>
-
-
         </div>
-
     </div>
+
+    <!-- Menu déroulant -->
+   
+    </div>
+
+    {{-- rofile menu --}}
+    @php
+    $id = null; // Initialiser $id à null
+
+    if (Auth::guard('admin')->check()) {
+        $id = Auth::guard('admin')->id(); // Récupère l'ID de l'admin
+    } elseif (Auth::guard('enseignant')->check()) {
+        $id = Auth::guard('enseignant')->id(); // Récupère l'ID de l'enseignant
+    } elseif (Auth::guard('etudiant')->check()) {
+        $id = Auth::guard('etudiant')->id(); // Récupère l'ID de l'étudiant
+    }
+@endphp
+
+    <div id="profileMenu"  class="w-[100%]  absolute right-0 top-[-800%] lg:top-[-600%]  mt-0  bg-white rounded-lg shadow-lg  transition-all duration-250 ease-in-out ">
+    <ul class="py-2 font-bold font-serif bg-slate-300 rounded-md">
+        <li>
+       
+            @if (Auth::guard('enseignant')->check())
+            <a href="{{ route('teacher.show', $id) }}" class="block px-4 py-2 text-green-800 hover:bg-gray-200 text-center">Informations personnelles</a>
+        @elseif (Auth::guard('admin')->check())
+            <a href="{{ route('admin.show', $id) }}" class="block px-4 py-2 text-green-800 hover:bg-gray-200 text-center">Informations personnelles</a>
+        @elseif (Auth::guard('etudiant')->check())
+            <a href="{{ route('student.show', $id) }}" class="block px-4 py-2 text-green-800 hover:bg-gray-200 text-center">Informations personnelles</a>
+        @endif
+     </li>
+  <hr>
+        <li>
+            <a href="{{route('password.edit')}}" class="block px-4 py-2 text-green-800 hover:bg-gray-200 text-center">Modifier mon mot de passe</a>
+        </li>
+    </ul>
+    </div>
+    <!-- Script pour afficher/masquer le menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const profileButton = document.getElementById('profileButton');
+        const menu = document.getElementById('profileMenu');
+
+        profileButton.addEventListener('click', function () {
+            // Alterner la visibilité du menu
+            menu.style.top = menu.style.top === '100%' ? '-800%' : '100%';
+        });
+
+        // Fermer le menu si on clique en dehors
+        document.addEventListener('click', function (event) {
+            // Vérifiez si le clic a eu lieu à l'extérieur du bouton et du menu
+            if (!profileButton.contains(event.target)) {
+                menu.style.top = '-800%'; // Fermer le menu
+            }
+        });
+    });
+    </script>
+
 </header>
 
 <div>

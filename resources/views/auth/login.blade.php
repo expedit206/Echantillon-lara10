@@ -4,8 +4,8 @@
 
     <form method="POST" action="{{ route('login') }}"
         class="bg-white shadow-md shadow-red-500 rounded-lg px-8 pt-6 pb-8 mb-4 z-10" style="
-        border-top-left-radius:4rem; 
-        border-top-right-radius:4rem; 
+        border-top-left-radius:4rem;
+        border-top-right-radius:4rem;
         ">
         @csrf
 
@@ -49,7 +49,7 @@
         <div class="block mb-6">
             <label for="remember_me" class="inline-flex items-center">
                 <input id="remember_me" type="checkbox"
-                    class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500" name="remember">
+                    class="rounded border-gray-600 text-blue-600 shadow-md focus:ring-blue-500" name="remember">
                 <span class="ms-2 text-sm text-gray-900">{{ __('Se souvenir de moi') }}</span>
             </label>
         </div>
@@ -63,10 +63,10 @@
                 </a>
             @endif
 
-            <x-primary-button
-                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline">
+            <button
+                class="hover:bg-red-500 bg-red-800  text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline">
                 {{ __('Se connecter') }}
-            </x-primary-button>
+            </button>
         </div>
     </form>
 

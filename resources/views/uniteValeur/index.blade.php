@@ -10,6 +10,8 @@
 
         <div class="filter">
             <div class="flex justify-between ">
+                @auth()->guard('admin')->user()
+
                 <a href="{{ route('uniteValeur.create') }}" class="btn text-violet-800 font-bold flex w-1/3">Ajouter une unité
                     de valeur
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px"
@@ -18,6 +20,7 @@
                             d="M10.293 6.293L8.879 7.707 13.172 12 8.879 16.293l1.414 1.414L16 12zM14.293 6.293L12.879 7.707 17.172 12 12.879 16.293l1.414 1.414L20 12z" />
                     </svg>
                 </a>
+@endauth
                 <div class="font-bold">
                     <form method='post' action="{{ route('annee.setActive') }}" id="formAnnee">
                         @csrf
@@ -102,7 +105,7 @@
                         <th scope="col">credit</th>
                         <th scope="col">semestre</th>
                         <th scope="col">Categorie</th>
-                        
+
                         <th scope="col" class="text-center" colspan="2">Action</th>
                     </tr>
                 </thead>

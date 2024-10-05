@@ -8,12 +8,16 @@
 
         <div class="filter">
             <div class="flex justify-between">
-                <a href="{{ route('uniteValeur.create') }}" class="btn text-violet-800 font-bold flex w-1/3">
-                    Ajouter une unité de valeur
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
-                        <path d="M10.293 6.293L8.879 7.707 13.172 12 8.879 16.293l1.414 1.414L16 12zM14.293 6.293L12.879 7.707 17.172 12 12.879 16.293l1.414 1.414L20 12z" />
-                    </svg>
-                </a>
+
+                @auth()->guard('admin')->user()
+
+              <a href="{{ route('uniteValeur.create') }}" class="btn text-violet-800 font-bold flex w-1/3">
+                Ajouter une unité de valeur
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
+                    <path d="M10.293 6.293L8.879 7.707 13.172 12 8.879 16.293l1.414 1.414L16 12zM14.293 6.293L12.879 7.707 17.172 12 12.879 16.293l1.414 1.414L20 12z" />
+                </svg>
+            </a>
+            @endauth
 
                 <div class="font-bold">
                     <form method='post' action="{{ route('annee.setActive') }}" id="formAnnee">
@@ -104,7 +108,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                        @foreach ($etudiants as $etudiant)
+                        @forelse ($etudiants as $etudiant)
                             @php
                                 $controleContinu = $etudiant->notes()->where('type', 'Controle continu')->first();
                                 $sessionNormale = $etudiant->notes()->where('type', 'Normale')->first();
@@ -113,18 +117,25 @@
                                 $moyenne /= ($controleContinu && $sessionNormale) ? 2 : 1; // Éviter la division par zéro
                             @endphp
                             <tr>
-                                <td class="py-2 px-4 border">{{ $etudiant->id }}</td>
+                                <td class="py-2 px-4 border">{{ $etudiant->matricule }}</td>
                                 <td class="py-2 px-4 border">{{ $etudiant->nom }} {{ $etudiant->prenom }}</td>
                                 <td class="py-2 px-4 border">{{ $controleContinu ? $controleContinu->note : 'N/A' }}</td>
                                 <td class="py-2 px-4 border">{{ $sessionNormale ? $sessionNormale->note : 'N/A' }}</td>
                                 <td class="py-2 px-4 border">{{ $rattrapage ? $rattrapage->note : 'N/A' }}</td>
                                 <td class="py-2 px-4 border">{{ number_format($moyenne, 2) }}</td>
                             </tr>
-                    @endforeach
+                            @empty
+                            <tr>
+                                <td class="text-center">
+
+                                    Acune notes enregistrée
+                                </td>
+                            </tr>
+                    @endforelse
                 </tbody>
             </table>
 
-            {{ $uniteValeurs->appends(request()->input())->links() }}
+            {{ $etudiants->appends(request()->input())->links() }}
         </div>
     @endsection
 </x-layout>

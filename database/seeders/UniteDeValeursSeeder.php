@@ -89,22 +89,23 @@ class UniteDeValeursSeeder extends Seeder
 
 
         foreach ($unites as &$unite) {
-            $unite['enseignant_id'] = $enseignants->random()->id;
-            $unite['filiere_id'] = $filieres->random()->id;
+            $unite->enseignants()->attach([
+                'enseignant_id' => $enseignants->random()->id
+            ]);
+            
             $unite['specialite_id'] = $specialites->random()->id;
-            $unite['niveau_id'] = $niveaux->random()->id;
             $unite['semestre_id'] = $semestre->random()->id;
             $unite['category_id'] = $categories->random()->id;
             $unite['annee_id'] = $annees->random()->id;
-
+$filiere_id = Filiere::whereRelation('specialites', 'id',$unite['specialite_id'])->first()->id;
             $specialite = Specialite::find($unite['specialite_id']);
-            $filiere = Filiere::find($unite['filiere_id']);
+            $filiere = Filiere::find($filiere_id);
 
             $codePrefix = strtoupper(substr($specialite->nom, 0, 3));
 
             // Récupère tous les codes existants pour cette filière
-            $existingCodes = DB::table('unite_de_valeurs')
-                ->where('filiere_id', $unite['filiere_id'])
+            $existingCodes = UniteValeur::whereRelation('specialites','specialite_id', $specialite->id)
+                // ->where( 'filiere_id', $filiere_id)
                 ->where('code', 'like', $codePrefix . '%')
                 ->pluck('code')
                 ->toArray();

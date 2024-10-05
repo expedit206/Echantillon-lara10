@@ -42,7 +42,7 @@
 
                     <select type="text" id="niveauModal" list="listNiveau" name="niveau"
                         class="text-black rounded-md w-full"
-                     
+
                 ">
 
                         <option value=""></option>
@@ -56,8 +56,8 @@
 
                 <article class="flex flex-col w-full">
                     <label for="filiere">Filieres</label>
-                    <select name="filiere" id="filiereModal" class="text-black rounded-md w-full" 
-              
+                    <select name="filiere" id="filiereModal" class="text-black rounded-md w-full"
+
                 >
                         <option value=""></option>
                         @foreach ($filieres as $filiere)
@@ -71,7 +71,7 @@
                 <article class="flex flex-col w-full">
                     <label for="specialite">specialite</label>
                     <select name="specialite" id="specialiteModal" class="text-black rounded-md w-full"
-              
+
                 >
                         <option value=""></option>
                         @foreach ($specialites as $specialite)
@@ -89,7 +89,7 @@
 
                     <select type="text" id="anciennete" name="anciennete" class="text-black ounded-md" list="listdate"
                         placeholder="----------------------------"
-                        
+
                 "
                         oninput=" this.value=this.value">
 
@@ -163,14 +163,12 @@
             {{ $students->appends(request()->input())->links() }}
         </div>
         {{-- <x-modal-form :annees="$annees" :semestres="$semestres" :niveaux="$niveaux" :specialites="$specialites" :matieres="$uniteValeurs" /> --}}
-    @endsection
-
-</x-layout>
+   
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Fonction pour mettre à jour la table des enseignants
-        
+
         function updateTeachers() {
             const formData = new FormData(document.getElementById('form'));
             console.log([...formData.entries()]);
@@ -185,7 +183,7 @@
             .then(data => {
                 const tbody = document.querySelector('tbody');
                 tbody.innerHTML = ''; // Efface les anciennes lignes
-                
+
                 console.log(data.students)
                 // Ajoute les nouvelles lignes
                 data.students.forEach(student => {
@@ -215,7 +213,7 @@
 
         // Ajoute des écouteurs d'événements pour les sélecteurs
         document.querySelectorAll('#form select').forEach(select => {
-            
+
             select.addEventListener('input', updateTeachers);
         });
     });

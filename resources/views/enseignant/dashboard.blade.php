@@ -37,7 +37,7 @@
 
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
-                        @foreach ($cours as $cour)
+                        @forelse($cours as $cour)
                         <div class="swiper-slide mb-8">
                             <div class="flex justify-between">
                                 <h3 class="text-2xl font-semibold text-gray-700 mb-4">Cours : {{ $cour->nom }} (  semestre   {{$cour->semestre_id }} )</h3>
@@ -67,7 +67,12 @@
                                 </div>
                             </div>
                         </div>
-                        @endforeach
+                        @empty
+                        <p class="border-2 p-2 rounded-lg">
+
+                            Aucun cours pour l'instant
+                        </p>
+                        @endforelse
                     </div>
             </div>
                 <div class="swiper-button-next  "></div>
@@ -78,15 +83,24 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Gestion des Cours -->
                 <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-                    <h2 class="text-3xl font-semibold mb-4">Mes Cours</h2>
-                    <a href="{{ route('uniteValeur.index') }}" class="block bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-4 rounded-lg mb-4 transition duration-300">Voir mes Cours</a>
+                    <h2 class="text-3xl font-semibold mb-4 text-center">Mes Cours</h2>
+                    <a href="{{ route('uniteValeur.index') }}" class="block bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-4 rounded-lg mb-4 transition duration-300">Liste des Cours</a>
                     <a href="{{ route('uniteValeur.create') }}" class="block bg-green-600 hover:bg-green-700 text-white text-center py-3 px-4 rounded-lg transition duration-300">Ajouter un Cours</a>
                 </div>
 
                 <!-- Gestion des Étudiants par cours -->
                 <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
-                    <h2 class="text-3xl font-semibold mb-4">Étudiants par Cours</h2>
-                    <a href="{{ route('students') }}" class="block bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-4 rounded-lg mb-4 transition duration-300">Voir les Étudiants Inscrits</a>
+                    <h2 class="text-3xl font-semibold mb-4 text-center" >Mes Étudiants </h2>
+                    <a href="{{ route('students') }}" class="block bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-4 rounded-lg mb-4 transition duration-300">Listes des Etudiants
+                    </a>
+                    
+                    <a href="{{ route('students') }}" class="block bg-green-600 hover:bg-green-700 text-white text-center py-3 px-4 rounded-lg transition duration-300">Chercher</a>
+                </div>
+                <!-- Gestion des Étudiants par cours -->
+                <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+                    <h2 class="text-3xl font-semibold mb-4 text-center" >Notes </h2>
+                    <a href="#" class=" open-modal block bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-4 rounded-lg mb-4 transition duration-300">Consulter</a>
+                    <a href="{{ route('notes.create') }}" class="block bg-green-600 hover:bg-green-700 text-white text-center py-3 px-4 rounded-lg transition duration-300">Attribuer</a>
                 </div>
             </div>
         </div>

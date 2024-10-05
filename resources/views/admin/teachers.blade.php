@@ -41,7 +41,7 @@
 
                     <select type="text" id="niveauModal" list="listNiveau" name="niveau"
                         class="text-black rounded-md w-full"
-                     
+
                 ">
 
                         <option value=""></option>
@@ -55,8 +55,8 @@
 
                 <article class="flex flex-col w-full">
                     <label for="filiere">Filieres</label>
-                    <select name="filiere" id="filiereModal" class="text-black rounded-md w-full" 
-              
+                    <select name="filiere" id="filiereModal" class="text-black rounded-md w-full"
+
                 >
                         <option value=""></option>
                         @foreach ($filieres as $filiere)
@@ -70,7 +70,7 @@
                 <article class="flex flex-col w-full">
                     <label for="specialite">specialite</label>
                     <select name="specialite" id="specialiteModal" class="text-black rounded-md w-full"
-              
+
                 >
                         <option value=""></option>
                         @foreach ($specialites as $specialite)
@@ -85,7 +85,7 @@
                 <!-- Tri par Ancienneté -->
                 <article class="flex flex-col w-full">
                     <label for="uniteValeur">Unite de valeur</label>
-                    <select id="matiereModal" name="uniteValeur" class="text-black rounded-md w-full"  
+                    <select id="matiereModal" name="uniteValeur" class="text-black rounded-md w-full"
                     {{-- onchange="
                     document.querySelector('#search').value=document.querySelector('#searchHead').value
                 this.value=this.value
@@ -205,7 +205,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Fonction pour mettre à jour la table des enseignants
-        
+
         function updateTeachers() {
             console.log('ok')
             const formData = new FormData(document.getElementById('form'));
@@ -251,7 +251,7 @@
 
         // Ajoute des écouteurs d'événements pour les sélecteurs
         document.querySelectorAll('#form select').forEach(select => {
-            
+
             select.addEventListener('input', updateTeachers);
         });
     });

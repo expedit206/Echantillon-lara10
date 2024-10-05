@@ -19,7 +19,7 @@
         width: 100%;
         height: 100%;
         position: absolute;
-        background: rgba(15, 200, 195, 0.4);
+        background: rgba(15, 200, 195, 0.1);
         /* z-index: -1; */
     }
 </style>
@@ -34,14 +34,17 @@ z-index: -5;
   grid-template-rows: 12% 89%;
   height: 98.7vh;
   width: 100vw;
-  background: url('/img/bgwelcome.webp') no-repeat  center/cover;
+  /* background: url('/img/bgwelcome.webp') no-repeat  center/cover; */
+  /* background: url('/img/bgwelcome4.jpg') no-repeat  center/cover; */
   /* background: url('/img/bgwelcome3.jpg') no-repeat  center/cover; */
+  /* background: url('/img/bgwelcome5.jpg') no-repeat  center/cover; */
+  background: url('/img/bgwelcome6.jpg') no-repeat  center/cover;
 
   "
         id='main'>
 
-        <nav class=" grid min-w-full px-2 border-b item-center  border-gray-200 lg:px-3 z-10">
-            <div class="flex flex-wrap items-center justify-between gap-2 px-2 py-8">
+        <nav class=" grid min-w-full px-2  item-center  border-gray-200 lg:px-3 z-10 bg-red-800 bg-opacity-100" >
+            <div class="flex flex-wrap items-center justify-between gap-2 px-2">
                 <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
                     <img src="/img/logo.webp" class="h-14" alt="logo ESCa">
                     {{-- <span class="self-center text-2xl font-semibold whitespace-nowrap ">StudAdmin</span> --}}
@@ -70,7 +73,7 @@ z-index: -5;
                 <div class="flex gap-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                     <div class="flex-col text-white font-bold border-red-500 border-3 p-2 rounded-lg hidden lg:flex">
                         <div>
-                            <marquee behavior="slide" direction="" class='bg-red-300 bg-opacity-30'>
+                            <marquee behavior="" direction="" class='bg-red-300 bg-opacity-30'>
 
                                 <span>un etudiant -</span>
                                 <span>une entreprise</span>
@@ -98,19 +101,33 @@ z-index: -5;
 
 
             </div>
+            {{-- <hr class="text-white" /> --}}
         </nav>
 
 
 
         {{-- hero section --}}
 
-        <section id="hero" class=" gap-3 flex justify-center items-center h-full p-5 z-10 lg:mt-10" {{-- style="background-image: url('build/assets/img/bdhero.jpeg');" --}}>
+        <section id="hero" class=" flex justify-center items-center h-full p-5 z-10 lg:mt-0"
+         style="
+  /* background: url('/img/bgwelcome6.jpg') no-repeat  center/cover; */
+
+         "
+         >
+
 
             <div
-                class="first flex item-center py-0  flex-col lg:gap-16 gap-12 text-white w-full mt-2 pl-5 pr-3 lg:h-full  ">
+                class=" first flex item-center py-0 justify-center flex-col lg:gap-12 gap-8 text-white w-[75%] mt-2 lg:h-full" style="
+font-family: 'Pacifico', cursive;
+
+                ">
                 <h1 class="font-bold"
                     style="text-align: center;
          font-size: clamp(60px, 10vw , 90px);
+         /* font-family: 'Roboto', sans-serif;
+font-family: 'Playfair Display', serif;
+font-family: 'Pacifico', cursive; */
+
          ">!!StudAdmin!!
                 </h1>
 
@@ -118,10 +135,14 @@ z-index: -5;
                     style="
         text-align: center;
         font-size: clamp(20px, 3vw , 100px);
+font-family: 'Pacifico', cursive;
+font-family: 'Montserrat', sans-serif;
+
+
         ">
                     Bienvenue sur l'appplication qui revolutionne la gestion de vos relevés de notes </p>
                 <div class="flex gap-2 text-white justify-center">
-                    <a href="{{ route('login') }}" class="rounded-md p-2 px-4 text-2xl hover:bg-red-500 bg-red-600">Se
+                    <a href="{{ route('login') }}" class="rounded-md p-2 px-4 text-2xl hover:bg-red-500 bg-red-800 ">Se
                         connecter</a>
                 </div>
             </div>

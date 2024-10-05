@@ -27,7 +27,7 @@ class EnseignantController extends Controller
     public function store(Request $request)
     {
         // Validation des données
-        $validator = Validator::make($request->all(), [
+        $validator = $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'sexe' => 'required|string|in:Masculin,Féminin,Autre',
@@ -44,7 +44,55 @@ class EnseignantController extends Controller
             'finContrat' => 'nullable|date|after_or_equal:debutContrat',
             'email' => 'required|string|email|max:255|unique:enseignants',
             'password' => 'required|string|min:8|confirmed',
+        ], [
+            'nom.required' => 'Le nom est requis.',
+            'nom.string' => 'Le nom doit être une chaîne de caractères.',
+            'nom.max' => 'Le nom ne doit pas dépasser 255 caractères.',
+            'prenom.required' => 'Le prénom est requis.',
+            'prenom.string' => 'Le prénom doit être une chaîne de caractères.',
+            'prenom.max' => 'Le prénom ne doit pas dépasser 255 caractères.',
+            'sexe.required' => 'Le sexe est requis.',
+            'sexe.string' => 'Le sexe doit être une chaîne de caractères.',
+            'sexe.in' => 'Le sexe doit être soit Masculin, Féminin ou Autre.',
+            'dateNaiss.required' => 'La date de naissance est requise.',
+            'dateNaiss.date' => 'La date de naissance doit être une date valide.',
+            'lieuNaiss.required' => 'Le lieu de naissance est requis.',
+            'lieuNaiss.string' => 'Le lieu de naissance doit être une chaîne de caractères.',
+            'lieuNaiss.max' => 'Le lieu de naissance ne doit pas dépasser 255 caractères.',
+            'nationalite.required' => 'La nationalité est requise.',
+            'nationalite.string' => 'La nationalité doit être une chaîne de caractères.',
+            'nationalite.max' => 'La nationalité ne doit pas dépasser 255 caractères.',
+            'mobile.required' => 'Le numéro de mobile est requis.',
+            'mobile.string' => 'Le numéro de mobile doit être une chaîne de caractères.',
+            'mobile.max' => 'Le numéro de mobile ne doit pas dépasser 20 caractères.',
+            'photo.image' => 'Le fichier doit être une image.',
+            'photo.mimes' => 'Le fichier doit être de type :values.',
+            'photo.max' => 'L\'image ne doit pas dépasser 2048 Ko.',
+            'profession.required' => 'La profession est requise.',
+            'profession.string' => 'La profession doit être une chaîne de caractères.',
+            'profession.max' => 'La profession ne doit pas dépasser 255 caractères.',
+            'diplome.required' => 'Le diplôme est requis.',
+            'diplome.string' => 'Le diplôme doit être une chaîne de caractères.',
+            'diplome.max' => 'Le diplôme ne doit pas dépasser 255 caractères.',
+            'salaire.required' => 'Le salaire est requis.',
+            'salaire.numeric' => 'Le salaire doit être un nombre.',
+            'typeContrat.required' => 'Le type de contrat est requis.',
+            'typeContrat.string' => 'Le type de contrat doit être une chaîne de caractères.',
+            'typeContrat.max' => 'Le type de contrat ne doit pas dépasser 255 caractères.',
+            'debutContrat.required' => 'La date de début du contrat est requise.',
+            'debutContrat.date' => 'La date de début du contrat doit être une date valide.',
+            'finContrat.date' => 'La date de fin du contrat doit être une date valide.',
+            'finContrat.after_or_equal' => 'La date de fin doit être égale ou postérieure à la date de début.',
+            'email.required' => 'L\'adresse e-mail est requise.',
+            'email.email' => 'L\'adresse e-mail doit être une adresse valide.',
+            'email.max' => 'L\'adresse e-mail ne doit pas dépasser 255 caractères.',
+            'email.unique' => 'Cette adresse e-mail est déjà utilisée.',
+            'password.required' => 'Le mot de passe est requis.',
+            'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
+            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
         ]);
+
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('status', 'Erreur de validation. Veuillez vérifier les informations.');

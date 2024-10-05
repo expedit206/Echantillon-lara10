@@ -17,7 +17,7 @@ class EtudiantSeeder extends Seeder
     public function run(): void
     {
         // Nombre d'étudiants à créer
-        $nombreEtudiants = 100;
+        $nombreEtudiants = 5;
 
         // Création des étudiants via la factory
         $etudiants = Etudiant::factory($nombreEtudiants)->create();
