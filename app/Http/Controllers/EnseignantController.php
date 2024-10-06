@@ -83,10 +83,11 @@ class EnseignantController extends Controller
             // Statistiques globales pour l'enseignant
             // dd($enseignant->niveau_id);
             $totalEtudiants = Etudiant::where('annee_id', $annee_id)
-            // ->where('niveau_id',$enseignant->niveaux->pluck('id'))
-            // ->where('filiere_id', $enseignant->filieres->pluck('id'))
-            // ->where('specialite_id', $enseignant->specialites->pluck('id'))
+            // ->where('niveau_id',$enseignant->niveaux?->pluck('id'))
+            // ->where('filiere_id', $enseignant->filieres?->pluck('id'))
+            // ->where('specialite_id', $enseignant->specialites?->pluck('id'))
             ->count();
+            // dump($totalEtudiants);
             // Total des cours donnés par cet enseignant
             // dd($totalEtudiants);
             $totalCours = UniteValeur::where('annee_id', $annee_id)
