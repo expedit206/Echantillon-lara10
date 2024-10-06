@@ -127,7 +127,6 @@
                             <td scope="row">{{ $student['nom'] }}</td>
                             <td scope="row">{{ $student['prenom'] }}</td>
                             <td scope="row">
-                                {{-- @dd($student->niveau) --}}
                                 <a href="{{ route('studentsByNiveau', ['niveau' => $student->niveau]) }}">
                                     {{ $student->niveau->nom }}
                                 </a>
@@ -138,32 +137,28 @@
                                 </a>
                             </td>
                             <td scope="row">{{ $student['specialite']->nom }}</td>
-
-                            <td scope="row"> <a href="{{ route('student.show', ['student' => $student]) }}"
-                                    class="text-blue-600 hover:text-blue-900">Voir</a> </td>
-                            <td scope="row"> <a href="{{ route('student.edit', ['student' => $student]) }}"
-                                    class="text-green-600 hover:text-green-900">Editer</a> </td>
-
-
+                            <td scope="row"><a href="{{ route('student.show', ['student' => $student]) }}" class="text-blue-600 hover:text-blue-900">Voir</a></td>
+                            <td scope="row"><a href="{{ route('student.edit', ['student' => $student]) }}" class="text-green-600 hover:text-green-900">Editer</a></td>
                         </tr>
                     @empty
                         <tr>
                             <td colspan="8" class="text-center">
                                 @if (request('search') || request('niveau') || request('filiere'))
-                                    Aucun etudiant ne correspond à ces critères.
+                                    Aucun étudiant ne correspond à ces critères.
                                 @else
-                                    Aucun etudiant enregistré.
+                                    Aucun étudiant enregistré.
                                 @endif
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
+
             </table>
 
             {{ $students->appends(request()->input())->links() }}
         </div>
         {{-- <x-modal-form :annees="$annees" :semestres="$semestres" :niveaux="$niveaux" :specialites="$specialites" :matieres="$uniteValeurs" /> --}}
-   
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -217,4 +212,9 @@
             select.addEventListener('input', updateTeachers);
         });
     });
+
+
 </script>
+
+    @endsection
+</x-layout>

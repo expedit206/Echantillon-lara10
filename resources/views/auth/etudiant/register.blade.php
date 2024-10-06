@@ -1,6 +1,6 @@
 <x-layout>
     @section('title', 'Students')
-    
+
     @section('content')
         <x-header />
         <x-menu />
@@ -22,7 +22,7 @@
                     <label for="annee" class="italic">Année Académique</label>
                     <select name="annee" id="annee" class="rounded-full bg-slate-400 border-none outline-none focus:border-none cursor-pointer" onchange="submit()">
                         @foreach($annees as $annee)
-                            <option value="{{ $annee->id }}" class="cursor-pointer border-b-4 border-double border-black" 
+                            <option value="{{ $annee->id }}" class="cursor-pointer border-b-4 border-double border-black"
                                 {{ $annee->is_active ? 'selected' : '' }}>
                                 {{ $annee->nom }}
                             </option>
@@ -110,82 +110,102 @@
         </div>
 
         <script>
-            // Fonction pour remplir les filières
-            function loadFilieres(niveauId, callback) {
-                fetch(`/filieres/${niveauId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        let filiereSelect = document.getElementById('filiere_id');
-                        filiereSelect.innerHTML = '';
-                        data.forEach(filiere => {
-                            filiereSelect.innerHTML += `<option value="${filiere.id}">${filiere.nom}</option>`;
-                        });
+            document.addEventListener('DOMContentLoaded', function () {
+                let matiereSelect = document.getElementById('matiere_id');
+                let filiereSelect = document.getElementById('filiere_id');
+                let specialiteSelect = document.getElementById('specialite_id');
+                let niveauSelect = document.getElementById('niveau_id');
 
-                        // Appel du callback après que les filières sont chargées
-                        if (callback) {
-                            callback();
+                // Fonction pour remplir les filières
+                function loadFilieres(niveauId, callback) {
+                    fetch(`/filieres/${niveauId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            filiereSelect.innerHTML = '';
+                            data.forEach(filiere => {
+                                filiereSelect.innerHTML += `<option value="${filiere.id}">${filiere.nom}</option>`;
+                            });
+
+                            // Appel du callback après que les filières sont chargées
+                            if (callback) {
+                                callback();
+                            }
+                        });
+                }
+
+                // Fonction pour remplir les spécialités
+                function loadSpecialites(niveauId, filiereId, callback) {
+                    fetch(`/specialites/${niveauId}/${filiereId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            specialiteSelect.innerHTML = '';
+                            data.forEach(specialite => {
+                                specialiteSelect.innerHTML += `<option value="${specialite.id}">${specialite.nom}</option>`;
+                            });
+
+                            // Appel du callback après que les spécialités sont chargées
+                            if (callback) {
+                                callback();
+                            }
+                        });
+                }
+
+                // Fonction pour remplir les matières
+                function loadMatieres(niveauId, filiereId, specialiteId) {
+                    fetch(`/matieres/${niveauId}/${filiereId}/${specialiteId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            matiereSelect.innerHTML = '';
+                            console.log(data);
+                            data.forEach(matiere => {
+                                matiereSelect.innerHTML += `<option value="${matiere.id}">${matiere.nom}</option>`;
+                            });
+                        });
+                }
+
+                // Événements de changement pour niveau, filière, spécialité
+                niveauSelect.addEventListener('change', function () {
+                    let niveauId = this.value;
+                    loadFilieres(niveauId);
+                });
+
+                filiereSelect.addEventListener('input', function () {
+                    let niveauId = niveauSelect.value;
+                    let filiereId = this.value;
+                    if (niveauId && filiereId) {
+                        loadSpecialites(niveauId, filiereId);
+                    }
+                });
+
+                specialiteSelect.addEventListener('input', function () {
+                    let niveauId = niveauSelect.value;
+                    let filiereId = filiereSelect.value;
+                    let specialiteId = this.value;
+                    if (niveauId && filiereId && specialiteId) {
+                        loadMatieres(niveauId, filiereId, specialiteId);
+                    }
+                });
+
+                // Chargement initial des données au chargement de la page
+                if (niveauSelect.value) {
+                    loadFilieres(niveauSelect.value, function () {
+                        if (filiereSelect.value) {
+                            loadSpecialites(niveauSelect.value, filiereSelect.value);
                         }
-
-                        document.getElementById('specialite_id').innerHTML = '';
-                        document.getElementById('matiere_id').innerHTML = '';
                     });
-            }
+                }
 
-            // Fonction pour remplir les spécialités
-            function loadSpecialites(niveauId, filiereId, callback) {
-                fetch(`/specialites/${niveauId}/${filiereId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        let specialiteSelect = document.getElementById('specialite_id');
-                        specialiteSelect.innerHTML = '';
-                        data.forEach(specialite => {
-                            specialiteSelect.innerHTML += `<option value="${specialite.id}">${specialite.nom}</option>`;
-                        });
-                        document.getElementById('matiere_id').innerHTML = '';
+                if (filiereSelect.value && niveauSelect.value) {
+                    loadSpecialites(niveauSelect.value, filiereSelect.value);
+                }
 
-                        // Appel du callback après que les spécialités sont chargées
-                        if (callback) {
-                            callback();
-                        }
-                    });
-            }
-
-            // Fonction pour remplir les matières
-            function loadMatieres(niveauId, filiereId, specialiteId) {
-                fetch(`/matieres/${niveauId}/${filiereId}/${specialiteId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        let matiereSelect = document.getElementById('matiere_id');
-                        matiereSelect.innerHTML = '';
-                        console.log(data);
-                        data.forEach(matiere => {
-                            matiereSelect.innerHTML += `<option value="${matiere.id}">${matiere.nom}</option>`;
-                        });
-                    });
-            }
-
-            // Événements de changement pour niveau, filière, spécialité
-            document.getElementById('niveau_id').addEventListener('change', function () {
-                let niveauId = this.value;
-                loadFilieres(niveauId);
-            });
-
-            document.getElementById('filiere_id').addEventListener('input', function () {
-                let niveauId = document.getElementById('niveau_id').value;
-                let filiereId = this.value;
-                if (niveauId && filiereId) {
-                    loadSpecialites(niveauId, filiereId);
+                if (specialiteSelect.value && filiereSelect.value && niveauSelect.value) {
+                    loadMatieres(niveauSelect.value, filiereSelect.value, specialiteSelect.value);
                 }
             });
+            </script>
 
-            document.getElementById('specialite_id').addEventListener('input', function () {
-                let niveauId = document.getElementById('niveau_id').value;
-                let filiereId = document.getElementById('filiere_id').value;
-                let specialiteId = this.value;
-                if (niveauId && filiereId && specialiteId) {
-                    loadMatieres(niveauId, filiereId, specialiteId);
-                }
-            });
-        </script>
     @endsection
 </x-layout>

@@ -82,11 +82,20 @@ class EnseignantController extends Controller
             $annee_id=\DB::table('annees')->where('is_active', true)->first()->id;
             // Statistiques globales pour l'enseignant
             // dd($enseignant->niveau_id);
-            $totalEtudiants = Etudiant::where('annee_id', $annee_id)
-            // ->where('niveau_id',$enseignant->niveaux?->pluck('id'))
-            // ->where('filiere_id', $enseignant->filieres?->pluck('id'))
-            // ->where('specialite_id', $enseignant->specialites?->pluck('id'))
-            ->count();
+            $totalEtudiants = 0;
+
+            // Vérifier l'existence de niveaux, filières et spécialités
+            if ($enseignant->niveaux && $enseignant->niveaux->isNotEmpty() &&
+                $enseignant->filieres && $enseignant->filieres->isNotEmpty() &&
+                $enseignant->specialites && $enseignant->specialites->isNotEmpty()) {
+
+                // Tous les éléments existent, alors effectuer la requête
+                $totalEtudiants = Etudiant::where('annee_id', $annee_id)
+                    ->whereIn('niveau_id', $enseignant->niveaux->pluck('id'))
+                    ->whereIn('filiere_id', $enseignant->filieres->pluck('id'))
+                    ->whereIn('specialite_id', $enseignant->specialites->pluck('id'))
+                    ->count();
+            }
             // dump($totalEtudiants);
             // Total des cours donnés par cet enseignant
             // dd($totalEtudiants);

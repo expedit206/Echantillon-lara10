@@ -47,29 +47,31 @@
             const filiereSelect = document.getElementById("filiereModal");
 
             // Fonction pour mettre à jour les semestres
-            function updateSemestres(anneeId) {
-                fetch(`/semestres/${anneeId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        semestreSelect.innerHTML = ""; // Clear previous options
-                        data.forEach(semestre => {
-                            let option = document.createElement("option");
-                            option.value = semestre.id;
-                            option.textContent = semestre.nom;
-                            semestreSelect.appendChild(option);
-                        });
-                        // Déclencher l'événement input pour mettre à jour les niveaux
-                        const event = new Event('input', { bubbles: true });
-                        semestreSelect.dispatchEvent(event);
-                    });
-            }
+            // function updateSemestres(anneeId) {
+            //     fetch(`/semestres/${anneeId}`)
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             semestreSelect.innerHTML = ""; // Clear previous options
+            //             data.forEach(semestre => {
+            //                 let option = document.createElement("option");
+            //                 option.value = semestre.id;
+            //                 option.textContent = semestre.nom;
+            //                 semestreSelect.appendChild(option);
+            //             });
+            //             // Déclencher l'événement input pour mettre à jour les niveaux
+            //             const event = new Event('input', { bubbles: true });
+            //             semestreSelect.dispatchEvent(event);
+            //         });
+            // }
             // Fonction pour mettre à jour les semestres
+            if(filiereSelect){
+
             function updatefilieres(niveauId) {
                 fetch(`/filieres/${niveauId}`)
                     .then(response => response.json())
                     .then(data => {
                         filiereSelect.innerHTML = ""; // Clear previous options
-                       
+
                         let option = document.createElement("option");
                         option.value = '';
                         option.textContent = '';
@@ -85,6 +87,7 @@
                         filiereSelect.dispatchEvent(event);
                     });
             }
+        }
 
             // Fonction pour mettre à jour les spécialités
             function updateSpecialites(niveauId) {
@@ -93,7 +96,7 @@
                     .then(response => response.json())
                     .then(data => {
                         specialiteSelect.innerHTML = ""; // Clear previous options
-                        
+
                         let option = document.createElement("option");
                         option.value = '';
                         option.textContent = '';
@@ -109,18 +112,18 @@
                         specialiteSelect.dispatchEvent(event);
                     });
                 }
-                
+
             function updateSpecialitesniv_fil(niveauId, filiereId) {
                 fetch(`/specialites/${niveauId}/${filiereId}`)
                 .then(response => response.json())
                     .then(data => {
-                        
+
                         specialiteSelect.innerHTML = ""; // Clear previous options
                         let option = document.createElement("option");
                         option.value = '';
                         option.textContent = '';
                         specialiteSelect.appendChild(option);
-                        
+
                         data.forEach(specialite => {
                             let option = document.createElement("option");
                             option.value = specialite.id;
@@ -173,19 +176,26 @@
             }
 
             // Mise à jour des sélecteurs lors du chargement de la page
-            if (anneeSelect.value) {
-                updateSemestres(anneeSelect.value);
-            }
+            // if (anneeSelect.value) {
+            //     updateSemestres(anneeSelect.value);
+            // }
                 if (niveauSelect.value) {
-                    updatefilieres(niveauSelect.value);
+
+                   if(filiereSelect){
+
+                       updatefilieres(niveauSelect.value);
+                   }
 
                 updateSpecialites(niveauSelect.value);
                 // updateSpecialitesniv_fil(niveauSelect.value, filiereSelect.value); // Appel modifié ici
 
             }
-            if (filiereSelect.value) {
-                updateSpecialitesniv_fil(this.value, filiereSelect.value); // Appel modifié ici
-                
+            if(filiereSelect){
+
+                if (filiereSelect.value) {
+                    updateSpecialitesniv_fil(this.value, filiereSelect.value); // Appel modifié ici
+
+                }
             }
             if (specialiteSelect.value) {
                 updateMatieresBySpecialite(semestreSelect.value,specialiteSelect.value);
@@ -195,14 +205,16 @@
             }
 
             // Ajouter les event listeners pour les changements dynamiques après sélection
-            anneeSelect.addEventListener("input", function () {
-                updateSemestres(this.value);
-            });
+            // anneeSelect.addEventListener("input", function () {
+            //     updateSemestres(this.value);
+            // });
+if(filiereSelect){
 
-            filiereSelect.addEventListener("input", function () {
-                updateSpecialitesniv_fil(this.value, filiereSelect.value); // Appel modifié ici
+    filiereSelect.addEventListener("input", function () {
+        updateSpecialitesniv_fil(this.value, filiereSelect.value); // Appel modifié ici
 
-            });
+    });
+}
 
             niveauSelect.addEventListener("input", function () {
 

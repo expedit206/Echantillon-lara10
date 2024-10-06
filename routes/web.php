@@ -117,9 +117,10 @@ Route::resource('uniteValeur', UniteValeurController::class);
 // route pour note
 
 Route::get('/notes/show', [NoteController::class, 'index'])->name('notes.index');
-Route::get('/notes/create', [NoteController::class, 'create'])->name('notes.create');
-// Affiche le formulaire d'attribution des notes
+// Affiche le formulaire d'attribution des notesb
 Route::get('/notes/assign', [NoteController::class, 'create'])->name('notes.create');
+
+Route::get('/notes/store', [NoteController::class, 'store'])->name('notes.store');
 
 // Traite la soumission du formulaire d'attribution des notes
 Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');

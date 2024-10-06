@@ -1,10 +1,10 @@
 <x-layout>
     @section('title', 'Students')
-    
+
     @section('content')
         <x-header />
         <x-menu />
-    
+
         <div class="container mx-auto mt-2 bg-slate-500 py-4 rounded-md">
             <div class="font-bold flex justify-between">
                 <h1 class="text-2xl font-bold">Ajouter une Unité de Valeur</h1>
@@ -20,10 +20,10 @@
                     </select>
                 </form>
             </div>
-    
+
             <form action="{{ route('uniteValeur.store') }}" method="POST" class="space-y-6 p-6 rounded-lg shadow-blue-950 shadow-xl border-t-2 border-slate-500 ">
                 @csrf
-    
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Code -->
                     <div class="mb-4">
@@ -31,21 +31,21 @@
                         <x-text-input id="code" class="block mt-1 w-full" type="text" name="code" :value="old('code')" required placeholder="exemple : PAN112" />
                         <x-input-error :messages="$errors->get('code')" class="mt-2" />
                     </div>
-    
+
                     <!-- Nom -->
                     <div class="mb-4">
                         <x-input-label for="nom" :value="__('Nom')" />
                         <x-text-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('nom')" required placeholder="Mathématiques" />
                         <x-input-error :messages="$errors->get('nom')" class="mt-2" />
                     </div>
-    
+
                     <!-- Crédit -->
                     <div class="mb-4">
                         <x-input-label for="credit" :value="__('Crédit')" />
                         <x-text-input id="credit" class="block mt-1 w-full" type="number" name="credit" :value="old('credit')" required placeholder="2" />
                         <x-input-error :messages="$errors->get('credit')" class="mt-2" />
                     </div>
-    
+
                     <!-- Description -->
                     <div class="mb-4 col-span-1 md:col-span-1">
                         <x-input-label for="description" :value="__('Description')" />
@@ -53,50 +53,10 @@
                         <x-input-error :messages="$errors->get('description')" class="mt-2" />
                     </div>
                 </div>
-    
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Niveau -->
-                    <div class="mb-4">
-                        <x-input-label for="niveau_id" :value="__('Niveau')" />
-                        <select id="niveauModal" name="niveau_id" class="block mt-1 w-full" required>
-                            <option value="">-- Sélectionnez un niveau --</option>
-                            @foreach($niveaux as $niveau)
-                                <option value="{{ $niveau->id }}" {{ old('niveau_id') == $niveau->id ? 'selected' : '' }}>
-                                    {{ $niveau->nom }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <x-input-error :messages="$errors->get('niveau_id')" class="mt-2" />
-                    </div>
-    
-                    <!-- Filière -->
-                    <div class="mb-4">
-                        <x-input-label for="filiere_id" :value="__('Filière')" />
-                        <select id="filiereModal" name="filiere_id" class="block mt-1 w-full" required>
-                            <option value="">-- Sélectionnez une filière --</option>
-                            @foreach($filieres as $filiere)
-                                <option value="{{ $filiere->id }}" {{ old('filiere_id') == $filiere->id ? 'selected' : '' }}>
-                                    {{ $filiere->nom }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <x-input-error :messages="$errors->get('filiere_id')" class="mt-2" />
-                    </div>
-    
-                    <!-- Spécialité -->
-                    <div class="mb-4">
-                        <x-input-label for="specialite_id" :value="__('Spécialité')" />
-                        <select id="specialiteModal" name="specialite_id" class="block mt-1 w-full" required>
-                            <option value="">-- Sélectionnez une spécialité --</option>
-                            @foreach($specialites as $specialite)
-                                <option value="{{ $specialite->id }}" {{ old('specialite_id') == $specialite->id ? 'selected' : '' }}>
-                                    {{ $specialite->nom }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <x-input-error :messages="$errors->get('specialite_id')" class="mt-2" />
-                    </div>
-    
+                    
+
                     <!-- Semestre -->
                     <div class="mb-4">
                         <x-input-label for="semestre_id" :value="__('Semestre')" />
@@ -110,7 +70,7 @@
                         </select>
                         <x-input-error :messages="$errors->get('semestre_id')" class="mt-2" />
                     </div>
-    
+
                     <!-- Catégorie -->
                     <div class="mb-4">
                         <x-input-label for="category_id" :value="__('Catégorie')" />
@@ -125,7 +85,7 @@
                         <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
                     </div>
                 </div>
-    
+
                 <!-- Bouton de soumission -->
                 <div class="flex justify-end">
                     <button class="ml-3 bg-blue-500 rounded-lg p-3 px-4 text-white font-bold text-1xl">
@@ -136,14 +96,14 @@
         </div>
     @endsection
     </x-layout>
-    
+
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const semestreSelect = document.getElementById("semestreModal");
         const niveauSelect = document.getElementById("niveauModal");
         const filiereSelect = document.getElementById("filiereModal");
         const specialiteSelect = document.getElementById("specialiteModal");
-    
+
         // Fonction pour mettre à jour les spécialités en fonction du niveau et de la filière
         function updateSpecialites(niveauId, filiereId) {
             fetch(`/specialites/${niveauId}/${filiereId}`)
@@ -162,10 +122,10 @@
                 specialiteSelect.dispatchEvent(event);
             });
         }
-    
+
         function updateFilieres(niveauId) {
             console.log(`Niveau ID: ${niveauId}`);
-    
+
             fetch(`/filieres/${niveauId}`)
             .then(response => response.json())
             .then(data => {
@@ -181,12 +141,12 @@
                 filiereSelect.dispatchEvent(event);
             });
         }
-    
+
         niveauSelect.addEventListener("change", function () {
             const niveauId = this.value;
             updateFilieres(niveauId);
         });
-    
+
         filiereSelect.addEventListener("change", function () {
             const filiereId = this.value;
             const niveauId = niveauSelect.value;
@@ -194,4 +154,3 @@
         });
     });
     </script>
-    

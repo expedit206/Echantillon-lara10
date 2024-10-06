@@ -37,18 +37,20 @@ class NoteController extends Controller
         $annee_id = $request->annee;
         // Filtrer les étudiants avec les critères spécifiques
         $students = Etudiant::where('annee_id', $annee_id)
-        ->where('specialite_id',$specialite_id)
-        ->whereRelation('uniteValeurs','unite_valeur_id', $unite_de_valeur_id)
+        -> whereHas('specialite', function($q)use($specialite_id, $unite_de_valeur_id){
+            $q->where('specialite_id', $specialite_id)
+            ->whereHas('uniteValeurs',function($q) use($unite_de_valeur_id){
+                $q->where('unite_de_valeur_id', $unite_de_valeur_id);
+            });
+        })
         ->whereRelation('notes.uniteValeur', 'niveau_id', $niveau_id)
         ->whereRelation('notes.uniteValeur', 'id', $unite_de_valeur_id)
         ->whereRelation('notes.uniteValeur', 'semestre_id', $semestre_id)
         ->whereRelation('notes.uniteValeur', 'specialite_id', $specialite_id)
 
          ->paginate(30);
+// dd($students);
 
-        // foreach ($students as $student ) {
-        //     echo('<br>'.$student->id);
-        // }
         $semestre = Semestre::find($semestre_id);
         $annee_academique = $semestre->annee->nom ?? 'Année académique non spécifiée';
 
@@ -103,9 +105,9 @@ public function getMatieresBySpecialite($semestre,$specialite)
     // dd($matieres);
     // dd($enseignant, $semestre, $specialite);
     if ($enseignant) {
-        // Si l'utilisateur est un enseignant, récupérer uniquement les données liées à ses unités de valeur
-        $matieres = UniteValeur::whereHas('enseignants', function ($query) use ($enseignant) {
-            $query->where('id', $enseignant->id);
+        $matieres = UniteValeur::
+        whereHas('enseignants', function ($query) use ($enseignant) {
+            $query->where('enseignant_id', $enseignant->id);
         })
         ->whereRelation('annee', 'is_active', true)
         ->get();
@@ -252,11 +254,17 @@ public function create(Request $request)
     $etudiants = Etudiant::with('notes')
     ->whereRelation('annee', 'id', $annee)
     ->where('niveau_id', $niveau)
-    ->where('specialite_id', $specialite)
+    -> whereHas('specialite', function($q)use($specialite, $semestre){
+
+        $q->where('specialite_id', $specialite)
+        ->whereHas('uniteValeurs',function($q) use($semestre){
+            $q->where('semestre_id', $semestre);
+        } );
+    })
     ->where('filiere_id', $filiere)
-     -> whereHas('uniteValeurs', function($query) use($semestre){
-        $query->whereRelation('semestre', 'semestre_id', $semestre);
-     })
+    //  -> whereHas('uniteValeurs', function($query) use($semestre){
+    //     $query->whereRelation('semestre', 'semestre_id', $semestre);
+    //  })
     ->paginate(20);
     // select * from etudiants where specialite_id=4 and niveau_id=1 and filiere_id=5 and annee_id=1
 // dd(value)
@@ -291,28 +299,65 @@ public function create(Request $request)
 }
 
 
-
 public function store(Request $request)
 {
+    // Validation des données envoyées
     $validated = $request->validate([
         'annee' => 'required|exists:annees,id',
         'semestre' => 'required|exists:semestres,id',
-        'matiere' => 'required|exists:matieres,id',
+        'unite_valeur' => 'required|exists:unite_de_valeurs,id',
         'notes' => 'required|array',
-        'notes.*' => 'numeric|min:0|max:20',
+        'notes.*.controle_continu' => 'nullable|numeric|min:0|max:20',
+        'notes.*.session_normale' => 'nullable|numeric|min:0|max:20',
+        'notes.*.rattrapage' => 'nullable|numeric|min:0|max:20',
     ]);
-
-    // Enregistrez les notes
+// dd(request('matieres'));
+    // Parcourir chaque étudiant et enregistrer ou mettre à jour les notes
     foreach ($validated['notes'] as $etudiantId => $note) {
-        Note::updateOrCreate(
-            ['etudiant_id' => $etudiantId, 'matiere_id' => $validated['matiere']],
-            ['note' => $note]
-        );
+        // dd($etudiantId);
+        // dd($note);
+        // Enregistrer ou mettre à jour la note pour Contrôle Continu
+        if (isset($note['controle_continu'])) {
+            Note::updateOrCreate(
+                [
+                    'etudiant_id' => $etudiantId,
+                    'unite_valeur_id' => $validated['unite_valeur'],
+                    'type' => 'Controle continu'
+                ],
+                [
+                    'note' => $note['controle_continu'],
+                'unite_valeur_id'=> $validated['unite_valeur'],
+                ]
+            );
+        }
+
+        // Enregistrer ou mettre à jour la note pour la Session Normale
+        if (isset($note['session_normale'])) {
+            Note::updateOrCreate(
+                [
+                    'etudiant_id' => $etudiantId,
+                    'unite_valeur_id' => $validated['unite_valeur'],
+                    'type' => 'Normale'
+                ],
+                ['note' => $note['session_normale']]
+            );
+        }
+
+        // Enregistrer ou mettre à jour la note pour Rattrapage
+        if (isset($note['rattrapage'])) {
+            Note::updateOrCreate(
+                [
+                    'etudiant_id' => $etudiantId,
+                    'unite_valeur_id' => $validated['unite_valeur'],
+                    'type' => 'Rattrapage'
+                ],
+                ['note' => $note['rattrapage']]
+            );
+        }
     }
 
-    return redirect()->route('notes.create')->with('success', 'Notes attribuées avec succès.');
+    return redirect()->back()->with('success', 'Notes attribuées avec succès.');
 }
-
 
 
 }
