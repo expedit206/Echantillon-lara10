@@ -36,9 +36,9 @@ class DatabaseSeeder extends Seeder
             NiveauSeeder::class,
                 FiliereSeeder::class,
             specialiteSeeder::class,
-            // EtudiantSeeder::class,
+            EtudiantSeeder::class,
         //     EtudiantUniteValeurSeeder::class,
-        //     NoteSeeder::class,
+            NoteSeeder::class,
         ]);
         // User::factory()->create([
         //     'name' => 'Test User',

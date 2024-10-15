@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->id(); // String nom
 
-            $table->string('code');
+            $table->string('code')->nullable() ;
             $table->string('nom'); // String nom, unique
             $table->string('description'); // String description
             $table->integer('credit'); // int credit

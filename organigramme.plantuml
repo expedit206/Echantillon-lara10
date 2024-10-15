@@ -1,0 +1,36 @@
+@startuml
+skinparam rectangle {
+    BorderColor black
+    BackgroundColor white
+    FontSize 12
+}
+
+rectangle "Promoteur" as P
+rectangle "Directeur Général" as DG
+
+P -down-> DG
+
+rectangle "Consultant" as C
+rectangle "Secrétariat de direction 1" as SD1
+rectangle "Secrétariat de direction 2" as SD2
+
+DG -down-> C
+DG -down-> SD1
+DG -down-> SD2
+
+rectangle "Division Affaires Académiques" as DAA
+rectangle "Division des Affaires Comptables" as DAC
+rectangle "Division des Affaires Générales" as DAG
+rectangle "Division des Affaires Techniques" as DAT
+
+SD1 -down-> DAA
+SD1 -down-> DAC
+
+SD2 -down-> DAG
+SD2 -down-> DAT
+
+' Connexions horizontales
+C -right-> SD1
+C -left-> SD2
+
+@enduml

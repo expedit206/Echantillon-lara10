@@ -15,7 +15,7 @@
 </head>
 <style>
     #main::after {
-        content: "";
+        /* content: ""; */
         width: 100%;
         height: 100%;
         position: absolute;
@@ -27,23 +27,23 @@
 <body class="max-h-[100vh] light-mode overflow-hidden" data-bs-theme="light" style="
 z-index: -5;
 ">
-
+<div class="haut w-full bg-red-500"></div>
     <main class=""
         style="
   display: grid;
   grid-template-rows: 12% 89%;
   height: 98.7vh;
   width: 100vw;
-  /* background: url('/img/bgwelcome.webp') no-repeat  center/cover; */
-  /* background: url('/img/bgwelcome4.jpg') no-repeat  center/cover; */
-  /* background: url('/img/bgwelcome3.jpg') no-repeat  center/cover; */
-  /* background: url('/img/bgwelcome5.jpg') no-repeat  center/cover; */
-  background: url('/img/bgwelcome6.jpg') no-repeat  center/cover;
+  /* background: url('/img/bgprof2.webp') no-repeat  center/cover; */
 
+  background: url('/img/bgprof.jpg') no-repeat  center/cover;
   "
         id='main'>
 
-        <nav class=" grid min-w-full px-2  item-center  border-gray-200 lg:px-3 z-10 bg-red-800 bg-opacity-100" >
+        <nav class=" grid min-w-full px-2 md:px-5  item-center  border-gray-200 lg:px-3 z-10   bg-transparent"
+            style="
+        /* background: RGB(214, 215, 225); */
+        ">
             <div class="flex flex-wrap items-center justify-between gap-2 px-2">
                 <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
                     <img src="/img/logo.webp" class="h-14" alt="logo ESCa">
@@ -53,7 +53,7 @@ z-index: -5;
                 <div class="h-full  hidden md:flex  items-center justify-between w-full md:w-auto md:order-1"
                     id="navbar-sticky">
                     <ul
-                        class="flex flex-col items-center justify-center p-2  md:p-0 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-blue-900  dark:border-gray-700">
+                        class="flex flex-col items-center justify-center p-2  md:p-0 font-medium border border-gray-100 rounded-lg  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 bg-sky-500  dark:border-gray-700">
                         <li>
                             <a href="#"
                                 class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
@@ -71,15 +71,15 @@ z-index: -5;
                 </div>
 
                 <div class="flex gap-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                    <div class="flex-col text-white font-bold border-red-500 border-3 p-2 rounded-lg hidden lg:flex">
+                    <div class="flex-col text-black font-bold  border-0 w-full p-2 rounded-lg hidden lg:flex">
                         <div>
-                            <marquee behavior="" direction="" class='bg-red-300 bg-opacity-30'>
+                            <marquee behavior="" direction="" class=' bg-opacity-30'>
 
                                 <span>un etudiant -</span>
-                                <span>une entreprise</span>
-
-
                                 <span>- un projet</span>
+
+
+                                <span>une entreprise</span>
                                 <span>- un suivi</span>
                             </marquee>
                         </div>
@@ -108,43 +108,48 @@ z-index: -5;
 
         {{-- hero section --}}
 
-        <section id="hero" class=" flex justify-center items-center h-full p-5 z-10 lg:mt-0"
-         style="
-  /* background: url('/img/bgwelcome6.jpg') no-repeat  center/cover; */
+        <section id="hero" class=" flex items-center  h-full p-5 z-10 lg:mt-0"
+                            style="
+                /* background: url('/img/bgwelcome6.jpg') no-repeat  center/cover; */
+                /* background: url('/img/bgprof.jpg') no-repeat  center/cover; */
 
-         "
-         >
+                  /* background: url('/img/bgprof2.webp') no-repeat  center/cover; */
+
+         ">
 
 
-            <div
-                class=" first flex item-center py-0 justify-center flex-col lg:gap-12 gap-8 text-white w-[75%] mt-2 lg:h-full" style="
-font-family: 'Pacifico', cursive;
+            <div class=" first flex item-center py-0 justify-center flex-col lg:gap-12 gap-8 text-black md:w-[60%] mt-2 lg:h-full"
+                style="
+                        font-family: Arial, Helvetica, sans-serif;
 
                 ">
                 <h1 class="font-bold"
-                    style="text-align: center;
-         font-size: clamp(60px, 10vw , 90px);
-         /* font-family: 'Roboto', sans-serif;
-font-family: 'Playfair Display', serif;
-font-family: 'Pacifico', cursive; */
+                            style="text-align: start;
+                font-size: clamp(60px, 10vw , 90px);
 
-         ">!!StudAdmin!!
-                </h1>
+                ">!!StudAdmin!!
+                        </h1>
 
-                <p class="flex font-semibold font-serif flex-wrap"
-                    style="
-        text-align: center;
-        font-size: clamp(20px, 3vw , 100px);
-font-family: 'Pacifico', cursive;
-font-family: 'Montserrat', sans-serif;
+                        <p class="flex font-semibold font-serif flex-wrap"
+                            style="
+                                text-align: start;
+                        font-size: clamp(20px, 2vw , 100px);
+                font-family: 'Pacifico', cursive;
+                /* font-family: 'Montserrat', sans-serif; */
 
 
         ">
                     Bienvenue sur l'appplication qui revolutionne la gestion de vos relevés de notes </p>
-                <div class="flex gap-2 text-white justify-center">
-                    <a href="{{ route('login') }}" class="rounded-md p-2 px-4 text-2xl hover:bg-red-500 bg-red-800 ">Se
-                        connecter</a>
+                <div class="flex gap-2 text-white justify-start">
+                    <a href="{{ route('login') }}" class="btn-welcome rounded-md p-3 px-4 text-3xl bg-sky-600 hover:translate-x-2 hover:py-2 font-bold animate-bounce hover:bg-sky-500 hover:text-blue-800  transition-all duration-100 border-1 border-black "
+                    style="
+                    font-family:  sans-serif;
+                    " >Se  connecter</a>
                 </div>
+            </div>
+
+            <div class="img hidden lg:flex">
+                <img src="./img/cercle.png" alt="" class="animate-spin">
             </div>
 
         </section>

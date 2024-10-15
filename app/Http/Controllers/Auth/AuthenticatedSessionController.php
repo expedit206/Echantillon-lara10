@@ -29,8 +29,8 @@ class AuthenticatedSessionController extends Controller
     {
 
         // student
+        dd($request);
         if($request->user_type == 'student'){
-            // dd($request);
             if (Auth::guard('etudiant')->attempt([
                 'email' => $request->email,
                 'password' => $request->password

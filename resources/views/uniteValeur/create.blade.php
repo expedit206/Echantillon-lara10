@@ -25,12 +25,6 @@
                 @csrf
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Code -->
-                    <div class="mb-4">
-                        <x-input-label for="code" :value="__('Code')" />
-                        <x-text-input id="code" class="block mt-1 w-full" type="text" name="code" :value="old('code')" required placeholder="exemple : PAN112" />
-                        <x-input-error :messages="$errors->get('code')" class="mt-2" />
-                    </div>
 
                     <!-- Nom -->
                     <div class="mb-4">
@@ -47,7 +41,7 @@
                     </div>
 
                     <!-- Description -->
-                    <div class="mb-4 col-span-1 md:col-span-1">
+                    <div class="mb-4 col-span-1 md:col-span-2">
                         <x-input-label for="description" :value="__('Description')" />
                         <textarea id="description" name="description" class="block w-full px-3 py-2 mt-1 border rounded-md shadow-slate-900 shadow-md" placeholder="Description de l'UV">{{ old('description') }}</textarea>
                         <x-input-error :messages="$errors->get('description')" class="mt-2" />
@@ -55,7 +49,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    
+
 
                     <!-- Semestre -->
                     <div class="mb-4">

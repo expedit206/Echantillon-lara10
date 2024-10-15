@@ -6,7 +6,7 @@
         <x-menu />
 
         <div class="bg-slate-300">
-            <h2 class="text-3xl font-bold mb-6 text-gray-900">Évolution des Statistiques par Année</h2>
+            <h2 class="text-3xl font-bold mb-6 text-gray-900">Statistiques d'Évolution du nombre  par Année</h2>
         
             <canvas id="evolutionChart" width="400" height="200"></canvas>
         

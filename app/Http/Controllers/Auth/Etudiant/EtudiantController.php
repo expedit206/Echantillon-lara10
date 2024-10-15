@@ -25,8 +25,6 @@ class EtudiantController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->dataService = $dataService;
-
-        // $this->middleware('guest')->only('showRegister');
     }
 
         public function showRegister()

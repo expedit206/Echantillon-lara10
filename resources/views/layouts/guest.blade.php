@@ -26,5 +26,19 @@
                 {{ $slot }}
             </div>
         </div>
+        <script>
+            const ball = document.querySelector('.ball');
+console.log(ball);
+
+// Fonction pour déplacer la boule
+function moveBall(event) {
+    const x = event.clientX - ball.offsetWidth; // Centrer la boule sur le curseur
+    const y = event.clientY - ball.offsetHeight ; // Centrer la boule sur le curseur
+    ball.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+// Écouteur d'événement pour le mouvement de la souris
+document.addEventListener('mousemove', moveBall);
+</script>
     </body>
 </html>

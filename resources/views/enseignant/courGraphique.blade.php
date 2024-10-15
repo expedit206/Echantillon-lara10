@@ -6,7 +6,7 @@
     <x-menu />
 
     <div class="container mx-auto p-6 bg-slate-400">    
-        <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">Graphique du Cours: {{ $cours->nom }}</h1>
+        <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">Graphique de reussite du Cours de : {{ $cours->nom }}</h1>
 
         <!-- Graphique -->
         <div class="mb-10">

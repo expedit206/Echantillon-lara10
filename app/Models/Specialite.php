@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Filiere;
+use App\Models\Etudiant;
 use App\Models\Enseignant;
 use App\Models\UniteValeur;
 use Illuminate\Database\Eloquent\Model;
@@ -36,5 +37,10 @@ class Specialite extends Model
      public function enseignants(): BelongsToMany
      {
          return $this->belongsToMany(Enseignant::class);
+     }
+
+     public function etudiants()
+     {
+         return $this->hasMany(Etudiant::class);
      }
 }

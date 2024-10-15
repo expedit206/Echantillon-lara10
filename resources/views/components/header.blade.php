@@ -1,6 +1,6 @@
 
 
-<header class="header border-b-2  border-black relative px-0 body-pd" id="header">
+<header class="header border-b-2  border-black relative px-0 body-pd fixed" id="header">
     <div class="header_toggle"> <i class='bx bx-menu bx-x' id="header-toggle"></i> STUDAMIN</div>
 
     @if (Route::currentRouteName() == 'students' || Route::currentRouteName() == 'teachers')
@@ -54,7 +54,7 @@
     </div>
 
     <!-- Menu déroulant -->
-   
+
     </div>
 
     {{-- rofile menu --}}
@@ -73,7 +73,7 @@
     <div id="profileMenu"  class="w-[100%]  absolute right-0 top-[-800%] lg:top-[-600%]  mt-0  bg-white rounded-lg shadow-lg  transition-all duration-250 ease-in-out ">
     <ul class="py-2 font-bold font-serif bg-slate-300 rounded-md">
         <li>
-       
+
             @if (Auth::guard('enseignant')->check())
             <a href="{{ route('teacher.show', $id) }}" class="block px-4 py-2 text-green-800 hover:bg-gray-200 text-center">Informations personnelles</a>
         @elseif (Auth::guard('admin')->check())

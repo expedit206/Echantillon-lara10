@@ -1,11 +1,18 @@
 <x-guest-layout>
     <!-- Session Status -->
+    <style>
+        body{
+            overflow:hidden
+        }
+    </style>
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
+    <div class="ball"></div>
     <form method="POST" action="{{ route('login') }}"
-        class="bg-white shadow-md shadow-red-500 rounded-lg px-8 pt-6 pb-8 mb-4 z-10" style="
+        class="bg-white shadow-md shadow-red-500 rounded-lg px-8 pt-6 pb-8 mb-4 z-10 mt-8 font-bold text-2xl" style="
         border-top-left-radius:4rem;
         border-top-right-radius:4rem;
+        font-family:sans-serif
+
         ">
         @csrf
 
@@ -29,7 +36,7 @@
 
         <!-- Email -->
         <div class="mb-6">
-            <label class="text-gray-900" for="email">Adresse email</label>
+            <label class="text-gray-900" for="email">Adresse mail</label>
             <x-text-input id="email"
                 class="block mt-1 w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                 type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />

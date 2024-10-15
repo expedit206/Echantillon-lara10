@@ -59,7 +59,7 @@ class EnseignantController extends Controller
             $q->where('unite_valeur_id', $request->uniteValeur);
         });
     }
-    $teachers = $query->paginate(10);
+    $teachers = $query->paginate(20);
     $total = $teachers->total();
 
 
@@ -82,37 +82,42 @@ class EnseignantController extends Controller
             $annee_id=\DB::table('annees')->where('is_active', true)->first()->id;
             // Statistiques globales pour l'enseignant
             // dd($enseignant->niveau_id);
-            $totalEtudiants = 0;
+          $totalEtudiants = 0;
 
-            // Vérifier l'existence de niveaux, filières et spécialités
-            if ($enseignant->niveaux && $enseignant->niveaux->isNotEmpty() &&
-                $enseignant->filieres && $enseignant->filieres->isNotEmpty() &&
-                $enseignant->specialites && $enseignant->specialites->isNotEmpty()) {
+// Vérifier l'existence de niveaux, filières et spécialités
+if ($enseignant->niveaux && $enseignant->niveaux->isNotEmpty() &&
+    $enseignant->filieres && $enseignant->filieres->isNotEmpty() &&
+    $enseignant->specialites && $enseignant->specialites->isNotEmpty()) {
 
-                // Tous les éléments existent, alors effectuer la requête
-                $totalEtudiants = Etudiant::where('annee_id', $annee_id)
-                    ->whereIn('niveau_id', $enseignant->niveaux->pluck('id'))
-                    ->whereIn('filiere_id', $enseignant->filieres->pluck('id'))
-                    ->whereIn('specialite_id', $enseignant->specialites->pluck('id'))
-                    ->count();
-            }
+    // Tous les éléments existent, alors effectuer la requête
+    $totalEtudiants = Etudiant::where('annee_id', $annee_id)
+        ->whereIn('niveau_id', $enseignant->niveaux->pluck('id'))
+        ->whereIn('filiere_id', $enseignant->filieres->pluck('id'))
+        ->whereIn('specialite_id', $enseignant->specialites->pluck('id'))
+        ->count();
+}
             // dump($totalEtudiants);
             // Total des cours donnés par cet enseignant
             // dd($totalEtudiants);
             $totalCours = UniteValeur::where('annee_id', $annee_id)
             ->whereRelation('enseignants', 'enseignant_id', $enseignant?->id)->count();
-
+// dump($totalCours);
             // Statistiques par cours
             $cours = UniteValeur::where('annee_id', $annee_id)
             ->whereRelation('enseignants', 'enseignant_id', $enseignant?->id)
-                          ->withCount('etudiants')
-                          ->get()
-                          ->map(function ($cour) {
-                              $cour->reussite = $this->calculateReussite($cour); // Assurez-vous d'avoir une méthode pour calculer la réussite
-                              return $cour;
-                          });
-                          $annee=Annee::where('is_active',true)->first()-> nom;
+            ->withCount(['specialites as etudiants_count' => function ($query) {
+                // Compter les étudiants associés à la spécialité de l'unité de valeur
+                $query->whereHas('etudiants');
+            }])
+            ->get()
+            ->map(function ($cour) {
+                $cour->reussite = $this->calculateReussite($cour);
+                return $cour;
+            });
 
+
+                          $annee=Annee::where('is_active',true)->first()-> nom;
+// dd($cours);
             return view('enseignant.dashboard', compact('totalEtudiants', 'annee','totalCours', 'cours'));
         }
 

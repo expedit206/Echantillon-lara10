@@ -3,10 +3,11 @@
 namespace App\Services;
 
 use App\Models\Annee;
-use App\Models\Enseignant;
-use App\Models\Filiere;
 use App\Models\Niveau;
+use App\Models\Filiere;
+use App\Models\Category;
 use App\Models\Semestre;
+use App\Models\Enseignant;
 use App\Models\Specialite;
 use App\Models\UniteValeur;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ $enseignant=Auth::guard('enseignant')->user();
             })
             ->whereRelation('annee', 'is_active', true)
             ->paginate(20);
-            
+
             //  dd( $unitesValeurs);
 
             // Filtrer les autres entités en fonction des unités de valeur de l'enseignant
@@ -45,7 +46,7 @@ $enseignant=Auth::guard('enseignant')->user();
                 $query->where('enseignant_id', $enseignant->id);})
                 ->get();
 
-                
+
             $semestres = Semestre::whereHas('uniteValeurs', function ($query) use ($enseignant) {
                 $query->whereRelation('enseignants', 'enseignant_id', $enseignant->id);})
                 ->get();
@@ -57,7 +58,7 @@ $enseignant=Auth::guard('enseignant')->user();
                 'niveaux' => $niveaux,
                 'filieres' => $filieres,
                 'uniteValeurs' => $unitesValeurs,
-                'total' => $unitesValeurs->count(),
+                'totalUnite' => $unitesValeurs->count(),
             ];
         } else {
             // Si ce n'est pas un enseignant, retourner toutes les données
@@ -69,7 +70,8 @@ $enseignant=Auth::guard('enseignant')->user();
                 'filieres' => Filiere::orderBy('created_at', 'desc')->get(),
                 'uniteValeurs' => UniteValeur::orderBy('created_at', 'desc')->get(),
                 'enseignants' => Enseignant::orderBy('created_at', 'desc')->get(),
-                'total' => UniteValeur::count(),
+                'categories' => Category::orderBy('created_at', 'desc')->get(),
+                'totalUnite' => UniteValeur::count(),
 
             ];
         }

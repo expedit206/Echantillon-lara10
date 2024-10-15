@@ -70,7 +70,7 @@ class UniteValeurController extends Controller
         $annee_id = Annee::where('is_active', true)->first()->id;
         // Validation des données du formulaire
         $request->validate([
-            'code' => 'required|string|max:255',
+            'code' => 'nullable|string|max:255',
             'nom' => 'required|string|max:255',
             'description' => 'nullable|string',
             'credit' => 'required|integer|min:1',
@@ -80,7 +80,7 @@ class UniteValeurController extends Controller
 
         // Création de l'unité de valeur avec les données validées
         UniteValeur::create([
-            'code' => $request->input('code'),
+            // 'code' => $request->input('code'),
             'nom' => $request->input('nom'),
             'description' => $request->input('description'),
             'credit' => $request->input('credit'),
@@ -96,7 +96,7 @@ class UniteValeurController extends Controller
     public function show(UniteValeur $uniteValeur)
     {
         // Assure-toi que toutes les relations nécessaires sont chargées pour éviter les N+1 queries
-        $uniteValeur->load('niveau', 'filiere', 'specialite', 'enseignant');
+        // $uniteValeur->load('specialites', 'enseignants');
 
         return view('unitevaleur.show', [
             'unitevaleur' => $uniteValeur,
@@ -105,33 +105,37 @@ class UniteValeurController extends Controller
 
     public function edit(UniteValeur $uniteValeur)
     {
-        // Récupère les listes de niveaux, filières, spécialités et enseignants pour les sélectionner dans le formulaire
-        $niveaux = Niveau::all();
-        $filieres = Filiere::all();
-        $specialites = Specialite::all();
-        $enseignants = Enseignant::all();
 
-        return view('unitevaleur.edit', compact('uniteValeur', 'niveaux', 'filieres', 'specialites', 'enseignants'));
+        return view('unitevaleur.edit',array_merge(compact('uniteValeur'),  $this->dataService->getAllData()));
     }
 
     public function update(Request $request, UniteValeur $uniteValeur)
-    {
-        // Validation des données
-        $request->validate([
-            'code' => 'required|string|max:255',
-            'nom' => 'required|string|max:255',
-        ]);
+{
+    // Validation des données
+    $request->validate([
+        'nom' => 'required|string|max:255',
+        'category_id' => 'required|exists:categories,id',
+        'credit' => 'required|integer|min:0',
+        'description' => 'nullable|string|max:1000',
+        'semestre_id' => 'required|exists:semestres,id',
+        'annee_id' => 'required|exists:annees,id',
+    ]);
 
-        // Mise à jour des données
-        $uniteValeur->update([
-            'code' => $request->input('code'),
-            'nom' => $request->input('nom'),
-        ]);
+    // Mise à jour des données
+    $uniteValeur->update([
+        'nom' => $request->input('nom'),
+        'category_id' => $request->input('category_id'),
+        'credit' => $request->input('credit'),
+        'description' => $request->input('description'),
+        'semestre_id' => $request->input('semestre_id'),
+        'annee_id' => $request->input('annee_id'),
+    ]);
 
-        // Redirection vers la vue de détails avec un message de succès
-        return redirect()->route('uniteValeur.show', $uniteValeur->id)
-            ->with('success', 'Unité de valeur mise à jour avec succès.');
-    }
+    // Redirection vers la vue de détails avec un message de succès
+    return redirect()->back()
+        ->with('success', 'Unité de valeur mise à jour avec succès.');
+}
+
     public function destroy(UniteValeur $uniteValeur)
     {
         $uniteValeur->delete();

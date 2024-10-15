@@ -63,39 +63,39 @@ Route::get('/password/edit', [PasswordController::class, 'editPassword'])->name(
 
 Route::get('students', [App\Http\Controllers\EtudiantController::class, 'index'])->name('students')->middleware('monAuth');
 Route::post('studentsP', [App\Http\Controllers\EtudiantController::class, 'index'])->middleware('monAuth');
-Route::get('students/{student}', [App\Http\Controllers\EtudiantController::class, 'show'])->name('student.show');
-Route::get('students/edit/{student}', [EtudiantController::class, 'edit'])->name('student.edit');
-Route::post('students/update/{student}', [EtudiantController::class, 'update'])->name('student.update');
+Route::get('students/{student}', [App\Http\Controllers\EtudiantController::class, 'show'])->name('student.show')->middleware('monAuth');
+Route::get('students/edit/{student}', [EtudiantController::class, 'edit'])->name('student.edit')->middleware('monAuth');
+Route::post('students/update/{student}', [EtudiantController::class, 'update'])->name('student.update')->middleware('monAuth');
 
-Route::get('students/filiere/{filiere}', [App\Http\Controllers\EtudiantController::class, 'studentsByFiliere'])->name('studentsByFiliere');
-Route::get('students/niveau/{niveau}', [App\Http\Controllers\EtudiantController::class, 'studentsByNiveau'])->name('studentsByNiveau');
+Route::get('students/filiere/{filiere}', [App\Http\Controllers\EtudiantController::class, 'studentsByFiliere'])->name('studentsByFiliere')->middleware('monAuth');
+Route::get('students/niveau/{niveau}', [App\Http\Controllers\EtudiantController::class, 'studentsByNiveau'])->name('studentsByNiveau')->middleware('monAuth');
 
 //route concernant l'enseignant
 Route::get('enseignant/register', [App\Http\Controllers\Auth\enseignant\EnseignantController::class, 'create'])->name('enseignant.register');
 // Route::post('register', [App\Http\Controllers\Auth\EnseignantController::class, 'create'])->name('enseignant.register');
 // Route::post('teachersP', [App\Http\Controllers\EnseignantController::class, 'index'])->name('enseignant.register');
 
-Route::post('teachersP', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers');
-Route::get('teachers', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers');
+Route::post('teachersP', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers')->middleware('monAuth');
+Route::get('teachers', [App\Http\Controllers\EnseignantController::class, 'index'])->name('teachers')->middleware('monAuth');
 
 
 Route::post('register', [EnseignantController::class, 'store']);
-Route::get('enseignant/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'show'])->name('teacher.show');
-Route::get('enseignant/edit/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'edit'])->name('teacher.edit');
+Route::get('enseignant/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'show'])->name('teacher.show')->middleware('monAuth');
+Route::get('enseignant/edit/{enseignant}', [App\Http\Controllers\EnseignantController::class, 'edit'])->name('teacher.edit')->middleware('monAuth');
 
 
-Route::get('/enseignants/logout', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'logout'])->name('enseignant.logout');
+Route::get('/enseignants/logout', [\App\Http\Controllers\Auth\Enseignant\EnseignantController::class, 'logout'])->name('enseignant.logout')->middleware('monAuth');
 
 Route::get('enseignants/dashboard', [EnseignantController::class, 'dashboard'])->name('enseignant.dashboard')->middleware('monAuth');
 
 Route::resource('enseignants', \App\Http\Controllers\Auth\Enseignant\EnseignantController::class);
 
-Route::get('/assigner-matiere', [EnseignantController::class, 'assignMatiere'])->name('assigner-matiere.create');
-Route::post('/assigner-matiere', [EnseignantController::class, 'storeAssignMatiere'])->name('assigner-matiere.store');
+Route::get('/assigner-matiere', [EnseignantController::class, 'assignMatiere'])->name('assigner-matiere.create')->middleware('monAuth');
+Route::post('/assigner-matiere', [EnseignantController::class, 'storeAssignMatiere'])->name('assigner-matiere.store')->middleware('monAuth');
 // routes/web.php
 
 
-Route::get('/cours/{uniteValeur}/graphique', [EnseignantController::class, 'graphique'])->name('coursGraphique');
+Route::get('/cours/{uniteValeur}/graphique', [EnseignantController::class, 'graphique'])->name('coursGraphique')->middleware('monAuth');
 
 
 
@@ -108,31 +108,31 @@ Route::prefix('etudiant')->middleware('monGuest:etudiant')->group(function () {
     // Route::get('login/{email?}/{code?}', [EtudiantController::class, 'showLogin'])->name('etudiant.login');
     // Route::post('login', [EtudiantController::class, 'login']);
 });
-Route::get('etudian/logout', [EtudiantController::class, 'logout'])->name('etudiant.logout')->middleware('monAuth:etudiant');
-Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'home'])->name('etudiant.home');
+Route::get('etudian/logout', [EtudiantController::class, 'logout'])->name('etudiant.logout')->middleware('monAuth:etudiant')->middleware('monAuth');
+Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'home'])->name('etudiant.home')->middleware('monAuth');
 
 // route pour uniteValeur
 Route::resource('uniteValeur', UniteValeurController::class);
 
 // route pour note
 
-Route::get('/notes/show', [NoteController::class, 'index'])->name('notes.index');
+Route::get('/notes/show', [NoteController::class, 'index'])->name('notes.index')->middleware('monAuth');
 // Affiche le formulaire d'attribution des notesb
-Route::get('/notes/assign', [NoteController::class, 'create'])->name('notes.create');
+Route::get('/notes/assign', [NoteController::class, 'create'])->name('notes.create')->middleware('monAuth');
 
-Route::get('/notes/store', [NoteController::class, 'store'])->name('notes.store');
+Route::get('/notes/store', [NoteController::class, 'store'])->name('notes.store')->middleware('monAuth');
 
 // Traite la soumission du formulaire d'attribution des notes
-Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
+Route::post('/notes', [NoteController::class, 'store'])->name('notes.store')->middleware('monAuth');
 
 
 // route pour specialite
 
-Route::get('/specialite/select', [SpecialiteController::class, 'selectUnite'])->name('specialite.selectUnite');
+Route::get('/specialite/select', [SpecialiteController::class, 'selectUnite'])->name('specialite.selectUnite')->middleware('monAuth');
 
 
-Route::get('/specialite/{specialite}/assign-unite', [SpecialiteController::class, 'showAssignUnite'])->name('specialite.showAssignUnite');
-Route::post('/specialite/{specialite}/assign-unite', [SpecialiteController::class, 'assignUnite'])->name('specialite.assignUnite');
+Route::get('/specialite/{specialite}/assign-unite', [SpecialiteController::class, 'showAssignUnite'])->name('specialite.showAssignUnite')->middleware('monAuth');
+Route::post('/specialite/{specialite}/assign-unite', [SpecialiteController::class, 'assignUnite'])->name('specialite.assignUnite')->middleware('monAuth');
 
 //breeze
 
@@ -176,7 +176,7 @@ Route::get('/specialites/{niveau}/{filiere}', [UniteValeurController::class, 'ge
 Route::get('/filieres/{niveau}', [UniteValeurController::class, 'getFilieres'])->name('getFiliereByNiveau');
 
 
-Route::get('/releve/{etudiant}/{annee}', [NoteController::class, 'showReleveDeNotes'])->name('releve.show');
+Route::get('/releve/{etudiant}/{annee}', [NoteController::class, 'showReleveDeNotes'])->name('releve.show')->middleware('monAuth');
 
 
 // Route pour récupérer les matières par niveau, filière et spécialité

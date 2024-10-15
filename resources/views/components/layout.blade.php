@@ -61,34 +61,34 @@
 
     @endphp
 
-@if (session('success'))
-<div id="success-message" class="bg-green-200 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 transition-opacity duration-500">
-    {{ session('success') }}
-</div>
-@endif
-@if (session('error'))
-<div id="error-message" class="bg-red-200 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 transition-opacity duration-500">
-    {{ session('error') }}
-</div>
-@endif
+    @if (session('success'))
+        <div id="success-message" class="bg-green-200 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 transition-opacity duration-500">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div id="error-message" class="bg-red-200 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 transition-opacity duration-500">
+            {{ session('error') }}
+        </div>
+    @endif
 
-<script>
-// Fonction pour masquer le message après 5 secondes
-setTimeout(() => {
-    const successMessage = document.getElementById('success-message');
-    const errorMessage = document.getElementById('error-message');
-    
-    if (successMessage) {
-        successMessage.classList.add('opacity-0');
-        setTimeout(() => successMessage.remove(), 500); // Remove after fade out
-    }
+    <script>
+        // Fonction pour masquer le message après 5 secondes
+        setTimeout(() => {
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
 
-    if (errorMessage) {
-        errorMessage.classList.add('opacity-0');
-        setTimeout(() => errorMessage.remove(), 500); // Remove after fade out
-    }
-}, 5000);
-</script>
+            if (successMessage) {
+                successMessage.classList.add('opacity-0');
+                setTimeout(() => successMessage.remove(), 500); // Remove after fade out
+            }
+
+            if (errorMessage) {
+                errorMessage.classList.add('opacity-0');
+                setTimeout(() => errorMessage.remove(), 500); // Remove after fade out
+            }
+        }, 5000);
+    </script>
 
 
     @yield('content')

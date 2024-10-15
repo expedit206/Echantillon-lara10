@@ -25,7 +25,7 @@
                 @endif
 
 
-                <a href="{{ route('uniteValeur.index') }}" class="nav_link"> <i
+                <a href="{{ route('uniteValeur.index') }}" class="nav_link" id='unites'> <i
                         class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">
             @if(Auth::guard('admin')->check())
             liste des Unités de Valeur
@@ -36,7 +36,7 @@
                 </a>
 
                 @if(Auth::guard('admin')->check())
-                <a href="{{ route('assigner-matiere.create') }}" class="nav_link"> <i
+                <a href="{{ route('assigner-matiere.create') }}" class="nav_link" id='unite_enseignant'> <i
                         class='bx bx-message-square-detail nav_icon' ></i> <span class="nav_name">
             Associer  Unité de Valeur-enseignant
         </span>
@@ -44,7 +44,7 @@
     @endif
 
                 @if(Auth::guard('admin')->check())
-                <a href="#" class="nav_link" id="showFormLink"> <i
+                <a href="#" class="nav_link" id="showFormLink" id='show'> <i
                         class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">
             Associer matieres-specialite
         </span>
@@ -63,7 +63,7 @@
     $anneeActive = \App\Models\Annee::where('is_active', true)->first();
 @endphp
 
-                <a href="{{ route('NoteGraphique', $anneeActive) }}" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span
+                <a href="{{ route('NoteGraphique', $anneeActive) }}" class="nav_link" id='stats'> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span
                         class="nav_name">Stats</span>
                 </a>
             </div>
@@ -72,15 +72,15 @@
         <div>
             @if(Auth::guard('admin')->check())
 
-            <a href="{{ route('etudiant.register') }}" class="nav_link">
+            <a href="{{ route('etudiant.register') }}" class="nav_link" id='add_student'>
                 <i class='bx bx-plus nav_icon'></i>
                 <span class="nav_name">Ajouter un etudiant</span>
             </a>
-            <a href="{{ route('enseignants.create') }}" class="nav_link">
+            <a href="{{ route('enseignants.create') }}" class="nav_link" id='add_teacher'>
                 <i class='bx bx-plus nav_icon'></i>
                 <span class="nav_name">Ajouter un enseignant</span>
             </a>
-            <a href="{{ route('uniteValeur.create') }}" class="nav_link">
+            <a href="{{ route('uniteValeur.create') }}" class="nav_link" id='add_unites'>
                 <i class='bx bx-plus nav_icon'></i>
                 <span class="nav_name">Ajouter une unité de valeur</span>
             </a>

@@ -86,7 +86,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="text-center">Aucun étudiant trouvé.</td>
+                        <td colspan="8" class="text-center">Les releves de notes ne sont pas encore prêt</td>
                     </tr>
                 @endforelse
             </tbody>

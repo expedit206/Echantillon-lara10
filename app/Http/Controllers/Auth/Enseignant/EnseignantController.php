@@ -7,6 +7,7 @@ use App\Mail\CodeMail;
 use App\Models\Enseignant;
 use App\Models\UniteValeur;
 use Illuminate\Http\Request;
+use App\Services\DataService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,12 @@ use Illuminate\Support\Facades\Validator;
 
 class EnseignantController extends Controller
 {
+
+    public function __construct(DataService $dataService)
+    {
+        $this->dataService = $dataService;
+    }
+
     // Afficher le formulaire d'inscription
     public function create()
     {
@@ -94,9 +101,9 @@ class EnseignantController extends Controller
         ]);
 
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput()->with('status', 'Erreur de validation. Veuillez vérifier les informations.');
-        }
+        // if ($validator->fails()) {
+        //     return redirect()->back()->withErrors($validator)->withInput()->with('status', 'Erreur de validation. Veuillez vérifier les informations.');
+        // }
 
         // Gérer le téléchargement de la photo
         $photoPath = null;
@@ -134,10 +141,14 @@ class EnseignantController extends Controller
             'email'=>$data['email'],
             'route'=>'login'
         ];
+        $teachers=Enseignant::paginate(20);
+        $total=Enseignant::count();
 
         Mail::to($data['email'])->send(new CodeMail('reucperation du code', $dataMail, 'Admin@gmail.com', 'Administrateur'));
         // Rediriger après l'inscription
-        return redirect()->route('dashboard')->with('success', 'Enseignant ajouté avec succès.');
+        return redirect()->route('teachers')->with('success', 'Enseignant enregistrée avec succès');
+            // return view('admin.teachers',
+            // array_merge($this->dataService->getAllData(),compact('teachers', 'total')))->with('success', 'Enseignant ajouté avec succès.');
     }
 
     // Afficher le formulaire de connexion

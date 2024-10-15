@@ -143,7 +143,7 @@
                         response => response.json()
                     )
                     .then(data => {
-                        // console.log(data);
+                        console.log(data);
 
                         matiereSelect.innerHTML = ""; // Clear previous options
                         data.forEach(matiere => {
@@ -243,6 +243,8 @@ if(filiereSelect){
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
+
             if (data.success) {
                 // alert('Année académique mise à jour avec succès');
             } else {

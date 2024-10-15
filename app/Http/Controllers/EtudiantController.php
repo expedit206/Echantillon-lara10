@@ -25,7 +25,7 @@ class EtudiantController extends Controller
     public function index(Request $request)
     {
         $annee_id = Annee::where('is_active', true)->first()->id;
-    
+
         if (Auth::guard('enseignant')->check()) {
             $enseignantData = $this->getStudentsForEnseignant(Auth::guard('enseignant')->user(), $annee_id, $request);
             $students = $enseignantData['students'];
@@ -33,27 +33,28 @@ class EtudiantController extends Controller
         } else {
             $students = $this->getStudentsForAdmin($annee_id, $request);
             $total = $students->count();
+            // dd($total);
         }
-    
+
         // Récupérer les filtres pour les recherches
         $search = $request->input('search');
         $annees = Annee::all();
-    
+
         if ($request->ajax()) {
             return response()->json([
-                // 'students' => $students,
+                'students' => $students,
                 'students' => $students->items(),
                 'total' => $total,
             ]);
         }
-    
+
         return view('admin.students', array_merge([
             'search' => $search,
             'students' => $students,
             'total' => $total,
         ], $this->dataService->getAllData()));
     }
-    
+
 
 
 private function getStudentsForEnseignant($enseignant, $annee_id, Request $request)

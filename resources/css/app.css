@@ -89,5 +89,57 @@ display: none;
     left: 0;
     z-index: -1;
 }
+.btn-welcome{
+position: relative;
+overflow: hidden;
+}
+.btn-welcome::after
+{
 
+content:"";
+position: absolute;
+top:0;
+left:-50%;
+transform: skew(180deg, 50deg);
+/* transform: rotateY(180deg); */
+height:100%;
+width: 20%;
+background: rgba(238, 130, 238, 0.806);
+transition: ease .4s;
+}
+.btn-welcome::before
+{
 
+content:"";
+position: absolute;
+top:0;
+right:-50%;
+transform: skew(180deg, 50deg);
+/* transform: rotateY(180deg); */
+height:100%;
+width: 20%;
+background: rgba(238, 130, 238, 0.806);
+transition: ease .4s;
+}
+
+.btn-welcome:hover::after{
+ left: 100%;
+    /* display: none; */
+}
+.btn-welcome:hover::before{
+ right: 100%;
+    /* display: none; */
+}
+.animate-spin:hover {
+    animation: spin .5s linear infinite;
+    cursor: crosshair;
+}
+.ball {
+    width: 50px;
+    height: 50px;
+    background-color: #3498db;
+    border-radius: 50%;
+    position: absolute;
+    transition: transform .5s ease;
+    /* z-index: -.9; */
+}

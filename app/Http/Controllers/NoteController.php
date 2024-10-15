@@ -35,6 +35,7 @@ class NoteController extends Controller
         $unite_de_valeur_id = $request->matieres;
         $niveau_id = $request->niveau;
         $annee_id = $request->annee;
+        // dump($request);
         // Filtrer les étudiants avec les critères spécifiques
         $students = Etudiant::where('annee_id', $annee_id)
         -> whereHas('specialite', function($q)use($specialite_id, $unite_de_valeur_id){
@@ -48,7 +49,8 @@ class NoteController extends Controller
         ->whereRelation('notes.uniteValeur', 'semestre_id', $semestre_id)
         ->whereRelation('notes.uniteValeur', 'specialite_id', $specialite_id)
 
-         ->paginate(30);
+        ->paginate(30);
+        // dump($students);
 // dd($students);
 
         $semestre = Semestre::find($semestre_id);
@@ -115,8 +117,8 @@ public function getMatieresBySpecialite($semestre,$specialite)
 
         $matieres = UniteValeur::
         whereRelation('specialites','specialite_id', $specialite)
-        ->where('semestre_id', $semestre)
-        ->whereRelation('annee', 'is_active', true)
+        // ->where('semestre_id', $semestre)
+        // ->whereRelation('annee', 'is_active', true)
 
         ->get();
     }
@@ -239,6 +241,7 @@ private function getSessionDate($semestreNom, $rattrapage)
 
 public function create(Request $request)
 {
+    // dump($request);
     // Récupérer l'enseignant connecté
     $enseignant = auth()->user();
 
@@ -249,6 +252,7 @@ public function create(Request $request)
     $semestre = $request->input('semestre');
     $matiere = $request->input('matieres');
     $filiere = Filiere::whereRelation('specialites', 'id', $specialite)->first()->id ?? null;
+    // dump($filiere);
 
     // Récupérer les étudiants filtrés selon l'année, le niveau, la filière, et la spécialité
     $etudiants = Etudiant::with('notes')
@@ -270,10 +274,11 @@ public function create(Request $request)
 // dd(value)
     // Récupérer les notes des étudiants filtrés
     $notes = [];
+    // dump($etudiants);
     foreach ($etudiants as $etudiant) {
-        $controleContinu = $etudiant->notes()->where('type', 'Controle continu')->first();
-        $sessionNormale = $etudiant->notes()->where('type', 'Normale')->first();
-        $rattrapage = $etudiant->notes()->where('type', 'Rattrapage')->first();
+        $controleContinu = $etudiant->notes()->where('type', 'Controle continu')->where('unite_valeur_id',$matiere )->first();
+        $sessionNormale = $etudiant->notes()->where('type', 'Normale')->where('unite_valeur_id',$matiere )->first();
+        $rattrapage = $etudiant->notes()->where('type', 'Rattrapage')->where('unite_valeur_id',$matiere )->first();
 
         // Calcul de la moyenne
         $moyenne = 0;

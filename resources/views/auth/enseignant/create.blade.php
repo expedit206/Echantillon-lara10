@@ -1,5 +1,5 @@
 <x-layout>
-    @section('title', 'Ajouter un Etudiant')
+    @section('title', 'Ajouter un Enseignant')
 
     @section('content')
         <x-header />
@@ -17,7 +17,7 @@
         @endif
 
         <div class="mt-5 bg-slate-500 px-5 rounded-md py-6">
-            <h1 class="text-3xl font-bold text-center mb-6">Ajouter un Etudiant</h1>
+            <h1 class="text-3xl font-bold text-center mb-6">Ajouter un Enseignant</h1>
 
             {{-- Form for Student Registration --}}
             <form method="POST" action="{{ route('enseignants.store') }}" enctype="multipart/form-data">

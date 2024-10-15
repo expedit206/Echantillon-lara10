@@ -20,16 +20,21 @@ class NoteFactory extends Factory
         }
 
         // Sélection d'un étudiant qui a cette unité de valeur
-        $etudiant = Etudiant::whereHas('uniteValeurs', function($query) use ($uniteValeur) {
-            $query->where('unite_valeur_id', $uniteValeur->id);
-        })->inRandomOrder()->first();
+        $etudiant = Etudiant::whereHas('specialite', function($q)use($uniteValeur){
+            $q->whereRelation('uniteValeurs', 'unite_de_valeur_id', $uniteValeur->id);
+        } )
+        // whereHas('uniteValeurs', function($query) use ($uniteValeur) {
+            //     $query->where('unite_valeur_id', $uniteValeur->id);
+        // })
+        ->inRandomOrder()->first();
 
+        // dump($etudiant->id);
         if (!$etudiant) {
             return []; // Retourner un tableau vide si aucun étudiant n'est trouvé pour l'unité de valeur
         }
 
         // Sélection d'un enseignant qui enseigne cette unité de valeur
-        $enseignant = $uniteValeur->enseignant()->inRandomOrder()->first() ?? Enseignant::factory()->create();
+        $enseignant = $uniteValeur->enseignants()->inRandomOrder()->first() ?? null;
 
         // Type de l'examen
         $typeExamen = $this->faker->randomElement(['Controle continu', 'Normale', 'Rattrapage']);
