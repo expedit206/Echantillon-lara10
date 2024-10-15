@@ -29,15 +29,15 @@ class AuthenticatedSessionController extends Controller
     {
 
         // student
-        dd($request);
         if($request->user_type == 'student'){
             if (Auth::guard('etudiant')->attempt([
                 'email' => $request->email,
                 'password' => $request->password
                 ])) {
-                // Si la tentative de connexion est réussie
-                return redirect()->intended('etudiant/home');
-            }
+                    // Si la tentative de connexion est réussie
+                    return redirect()->intended('etudiant/home');
+                }
+                dd($request);
 
             // Si l'authentification échoue
             return back()->withErrors([
