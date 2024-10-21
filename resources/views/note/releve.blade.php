@@ -1,10 +1,16 @@
 <x-layout>
+
+
     @section('title', 'Relevé de Notes')
 
     @section('content')
+   
         <x-header />
         <x-menu />
-        <div class="releve border-3 border-black ">
+        <div class="releve border-3 border-black " id="releve">
+
+
+
 
             <div class="container mx-auto px-4 py-2 ">
                 <div class="school-info text-center mb-8">
@@ -64,7 +70,7 @@
                                 <th class="border-b px-4 py-[1px] text-center font-semibold">Crédit</th>
                                 <th class="border-b px-4 py-[1px] text-center font-semibold">Note * Crédit</th>
                                 <th class="border-b px-4 py-[1px] text-center font-semibold">Appréciation</th>
-                                <th class="border-b px-4 py-[1px] w-[4rem] text-center font-semibold">Session de</th>
+                                <th class="border-b px-4 py-[1px] w-[4rem] text-center font-semibold">Session</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -208,7 +214,7 @@
                     <div class="text-xs  flex flex-col gap-12 items-center justify-center pt-3 pb-3 mb-2" >
                         <div class="flex flex-col gap-2 items-center justify-center">
                             <div class="first flex flex-col items-center">
-                                
+
                                 <span> Fait a Bafoussam le :</span>
                                 <span>Ussed in Bafoussam on</span>
                             </div>
@@ -217,9 +223,9 @@
                                 <span>The Director</span>
                             </div>
                         </div>
-                        
+
                         <div class="italic flex flex-col items-center justify-end text-xs w-full">
-                            <span class="h-[.1rem] bg-black w-[85%] mb-1" ></span>               
+                            <span class="h-[.1rem] bg-black w-[85%] mb-1" ></span>
 
                             <p>Il n'est delivré qu'un seul exemplaire de relevé de notes. Le titulaire peut etablir et faire certifier les copies conforme</p>
                             <p>Only one copy of the marks transcript is issued. The hokdercan reproduce and optain certified copies</p>

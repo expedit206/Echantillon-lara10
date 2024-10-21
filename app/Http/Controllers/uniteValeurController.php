@@ -28,10 +28,15 @@ class UniteValeurController extends Controller
         $query = UniteValeur::query();
 
         $enseignant = Auth::guard('enseignant')->user();
+        $etudiant = Auth::guard('etudiant')->user();
 // dd($enseignant);
         $query = $query->whereRelation('annee', 'is_active', true);
         if ($enseignant) {
             $query->whereRelation('enseignants', 'enseignant_id', $enseignant->id);
+            // die;
+        }
+        if ($etudiant) {
+            $query->whereRelation('specialites', 'specialite_id', $etudiant->specialite_id);
         }
 
         if ($request->filled('niveau')) {

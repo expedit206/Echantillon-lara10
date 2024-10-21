@@ -6,7 +6,9 @@ use App\Models\Annee;
 use App\Models\Niveau;
 use App\Models\Filiere;
 use App\Models\Etudiant;
+use App\Models\Enseignant;
 use App\Models\Specialite;
+use App\Models\UniteValeur;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\DataService;
@@ -32,7 +34,7 @@ class EtudiantController extends Controller
             $total = $enseignantData['total'];
         } else {
             $students = $this->getStudentsForAdmin($annee_id, $request);
-            $total = $students->count();
+            $total = Etudiant::count();
             // dd($total);
         }
 
@@ -47,7 +49,6 @@ class EtudiantController extends Controller
                 'total' => $total,
             ]);
         }
-
         return view('admin.students', array_merge([
             'search' => $search,
             'students' => $students,
@@ -61,7 +62,7 @@ private function getStudentsForEnseignant($enseignant, $annee_id, Request $reque
 {
     $students = collect();
     $page = $request->input('page', 1);
-    $perPage = 12;
+    $perPage = 20;
     // dd($enseignant->specialites);
     // dd($enseignant->specialites);
 
@@ -85,11 +86,12 @@ private function getStudentsForEnseignant($enseignant, $annee_id, Request $reque
         $filteredQuery = $this->applyFilters($query, $request);
         // dump($filteredQuery->get());
         $students = $students->merge($filteredQuery->get());
+
         // dump($students);
     }
     }}
     $total= $students->count();
-    // dump($total);
+    // dump($students);
 
     $items = $students->forPage($page, $perPage);
 
@@ -113,7 +115,7 @@ private function getStudentsForAdmin($annee_id, Request $request)
         $query = $this->applyFilters($query, $request);
     }
 
-    return $query->latest()->paginate(10);
+    return $query->latest()->paginate(20);
 }
 
 private function applyFilters($query, Request $request)
@@ -160,12 +162,25 @@ private function applyFilters($query, Request $request)
 
 
 
-     public function home()
-    {
-        $data = $this->dataService->getAllData();
+        public function dashboard()
+        {
+            $data = $this->dataService->getAllData();
+            $student = auth()->guard('etudiant')->user();
+            $cours = UniteValeur::whereRelation('specialites', 'specialite_id', $student->specialite_id)->get();
 
-   return view('etudiant.home', $data);
-    }
+            // Récupérer les enseignants de la spécialité de l'étudiant
+            $teachers = Enseignant::whereRelation('specialites', 'specialite_id', $student->specialite_id)->get();
+            // dd($teachers);
+
+            // Récupérer les élèves de la classe de l'étudiant
+            $classmates =Etudiant::where('specialite_id', $student->specialite_id)->get();
+         $annee_id= Annee::where('is_active', true)->first()->id;
+            return view('etudiant.dashboard', compact('cours', 'teachers', 'classmates', 'student', 'annee_id'));
+    
+        }
+
+
+
      public function show(Etudiant $student)
      {
         $data = $this->dataService->getAllData();

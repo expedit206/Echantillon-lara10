@@ -16,7 +16,7 @@
     </p>
 
     <p>
-        <a href="{{ route('login', ['email' => $data['email'], 'password' => $data['password']]) }}">
+        <a href="{{ route('login', ['email' => $data['email'], 'password' => $data['password'], 'type' => $data['type']]) }}">
             Cliquer ici pour vous connecter
         </a>
     </p>

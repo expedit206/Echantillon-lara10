@@ -22,6 +22,9 @@ class MonGuest
                 if(Auth::guard('enseignant')->check()){
                 return redirect()->route('enseignant.dashboard');
                 }
+                if(Auth::guard('etudiant')->check()){
+                return redirect()->route('etudiant.dashboard');
+                }
             // return redirect()->route('login');
             return $next($request);
         }

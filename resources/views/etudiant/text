@@ -1,0 +1,65 @@
+<x-layout>
+    @section('title', 'Dashboard Étudiant')
+
+    @section('content')
+    <x-header />
+    <x-menu />
+    <div class="max-w-5xl mx-auto p-8 bg-slate-300 rounded-lg shadow-lg mt-10">
+        <div class="flex items-center space-x-4 mb-6">
+            <img src="{{ $student->photo ? asset('storage/' . $student->photo) : 'https://via.placeholder.com/150' }}" alt="Photo de l'étudiant" class="w-32 h-32 object-cover rounded-full">
+            <div>
+                <p class="text-blue-600 underline">#{{ $student->matricule }}</p>
+                <h1 class="text-3xl font-bold mb-2">{{ $student->nom }} {{ $student->prenom }}</h1>
+                <p class="text-gray-600 mb-4">{{ $student->filiere->nom }}</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-2 text-indigo-600">Mes Cours</h2>
+                <ul class="list-disc pl-5">
+                    @foreach($cours as $cours)
+                    <li>{{ $cours->nom }}</li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-2 text-indigo-600">Mes Enseignants</h2>
+                <ul class="list-disc pl-5">
+                    @foreach($teachers as $teacher)
+                    <li>{{ $teacher->nom }} (
+                        @foreach ($teacher->uniteValeurs as $uniteValeur)
+                        @foreach ($uniteValeur->specialites as $specialite)
+                            @if ($specialite->id == $student->specialite_id)
+                                {{ $uniteValeur->nom }},
+                            @endif
+                        {{-- @dump($specialite) --}}
+                        @endforeach
+                    @endforeach
+                    )</li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold mb-2 text-indigo-600">Mes Camarades de Classe</h2>
+                <ul class="list-disc pl-5">
+                    @foreach($classmates as $classmate)
+                    <li>{{ $classmate->nom }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-6 flex justify-between">
+            <a href="{{ route('students') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 text-white rounded-md shadow-sm hover:bg-gray-700">
+                Retour à la liste
+            </a>
+            <a href="{{ route('student.edit', $student->id) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-500">
+                Éditer les informations
+            </a>
+        </div>
+    </div>
+    @endsection
+</x-layout>

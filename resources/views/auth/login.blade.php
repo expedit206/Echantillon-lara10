@@ -22,12 +22,12 @@
             <div class="flex items-center mt-1">
                 <label class="flex items-center me-4">
                     <input type="radio" id="student" name="user_type" value="student"
-                        class="text-blue-600 focus:ring-blue-500">
+                        class="text-blue-600 focus:ring-blue-500" request('type')=='student'? checked:''>
                     <span class="ms-2 text-sm text-gray-900">{{ __('Etudiant') }}</span>
                 </label>
                 <label class="flex items-center">
                     <input type="radio" id="teacher" name="user_type" value="teacher"
-                        class="text-blue-600 focus:ring-blue-500">
+                        class="text-blue-600 focus:ring-blue-500" request('type')=='student'? checked:''>
                     <span class="ms-2 text-sm text-gray-900">{{ __('Enseignant') }}</span>
                 </label>
             </div>
@@ -39,16 +39,16 @@
             <label class="text-gray-900" for="email">Adresse mail</label>
             <x-text-input id="email"
                 class="block mt-1 w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                type="email" name="email" :value="request('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
-
+{{-- @dump(request('email')) --}}
         <!-- Mot de passe -->
         <div class="mb-6">
             <label class="text-gray-900" for="password">Mot de passe</label>
             <x-text-input id="password"
                 class="block mt-1 w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                type="password" name="password" required autocomplete="current-password" />
+                type="password" name="password" required autocomplete="current-password" :value="request('password')"/>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 

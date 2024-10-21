@@ -28,17 +28,17 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call([
-            AnneesSeeder::class,
+            // AnneesSeeder::class,
             AdminSeeder::class,
             CategorySeeder::class,
             SemestreSeeder::class,
             // EnseignantSeeder::class,
             NiveauSeeder::class,
-                FiliereSeeder::class,
-            specialiteSeeder::class,
-            EtudiantSeeder::class,
+                // FiliereSeeder::class,
+            // specialiteSeeder::class,
+            // EtudiantSeeder::class,
         //     EtudiantUniteValeurSeeder::class,
-            NoteSeeder::class,
+            // NoteSeeder::class,
         ]);
         // User::factory()->create([
         //     'name' => 'Test User',

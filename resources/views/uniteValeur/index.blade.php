@@ -13,7 +13,7 @@
     <h1 class="p-2 mt-2 font-bold text-2xl bg-slate-400 rounded-lg ">Liste de
         @if(@auth()->guard('admin')->check())
             tous les
-        @elseif(@auth()->guard('enseignant')->check())
+        @else
             mes
         @endif
          unités de valeurs

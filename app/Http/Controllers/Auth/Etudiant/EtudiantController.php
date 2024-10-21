@@ -71,7 +71,8 @@ class EtudiantController extends Controller
                 'matricule' => $this->data['matricule'],
                 'password' => '00000000',
                 'email' => $this->data['email'],
-                'route' => route('login')
+                'route' => route('login'),
+                'type' => 'student'
             ];
             $students = Etudiant::whereRelation('annee', 'is_active', true)->paginate(20);
             // dd($students);

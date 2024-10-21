@@ -1,5 +1,5 @@
 <x-layout>
-    @section('title', 'Teachers')
+    @section('title', 'student')
 
     @section('content')
     <x-header />

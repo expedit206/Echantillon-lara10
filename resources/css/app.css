@@ -143,3 +143,10 @@ transition: ease .4s;
     transition: transform .5s ease;
     /* z-index: -.9; */
 }
+#printButton{
+    background-color: rgba(129, 75, 3, 0.829);
+    padding: 0.5rem;
+    border-radius: 7px;
+    color:white;
+    font-weight: bold;
+}

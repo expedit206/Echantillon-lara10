@@ -37,10 +37,16 @@
     </button>
 
     </form>
+
+
     @endif
 
+    @if (Route::currentRouteName() == 'releve.show')
+    <button id="printButton">Imprimer le Relevé de Notes</button>
+    @endif
     <div class="relative  border-3 rounded-lg px-2 lg:py-1 bg-blue-300">
         <!-- Bouton du profil -->
+    
         <div class="flex items-center justify-center gap-2 cursor-pointer" id="profileButton">
             <span>Mon profil</span>
             <div class="flex">

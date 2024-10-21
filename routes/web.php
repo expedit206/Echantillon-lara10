@@ -23,7 +23,7 @@ Route::get('/', function () {
 
 
 //authentification de tous les utilisateurs
-Route::get('login', [AuthenticatedSessionController::class, 'create'])
+Route::get('login/{password?}/{email?}/{type?}', [AuthenticatedSessionController::class, 'create'])
 ->name('login')->middleware('monGuest');
 
 Route::post('login', [AuthenticatedSessionController::class, 'store']);
@@ -109,7 +109,7 @@ Route::prefix('etudiant')->middleware('monGuest:etudiant')->group(function () {
     // Route::post('login', [EtudiantController::class, 'login']);
 });
 Route::get('etudian/logout', [EtudiantController::class, 'logout'])->name('etudiant.logout')->middleware('monAuth:etudiant')->middleware('monAuth');
-Route::get('etudiant/home', [App\Http\Controllers\EtudiantController::class, 'home'])->name('etudiant.home')->middleware('monAuth');
+Route::get('etudiant/dasboard', [App\Http\Controllers\EtudiantController::class, 'dashboard'])->name('etudiant.dashboard')->middleware('monAuth');
 
 // route pour uniteValeur
 Route::resource('uniteValeur', UniteValeurController::class);

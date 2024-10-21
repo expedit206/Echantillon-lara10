@@ -37,7 +37,7 @@
                     </div>
                     <div class="flex flex-col bg-gray-700 p-4 rounded-md border border-gray-600">
                         <strong class="text-gray-200 text-lg">annee :</strong>
-                        <p class="text-xl text-gray-300">{{ $unitevaleur->annee->nom }}</p>
+                        <p class="text-xl text-gray-300">{{ $unitevaleur->annee?->nom }}</p>
                     </div>
                     <div class="flex flex-col bg-gray-700 p-4 rounded-md border border-gray-600">
                         <strong class="text-gray-200 text-lg">Créé le :</strong>
@@ -53,7 +53,7 @@
                     class="btn bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md">Éditer</a>
                 <a href="{{ route('uniteValeur.index') }}"
                     class="btn bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-md">Retour à la liste</a>
-               <form action="{{ route('uniteValeur.destroy', $uniteValeur->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette unité de valeur ?');">
+               <form action="{{ route('uniteValeur.destroy', $unitevaleur->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette unité de valeur ?');">
     @csrf
     @method('DELETE')
     <button type="submit" class="btn bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md">

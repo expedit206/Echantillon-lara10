@@ -18,9 +18,11 @@
 
     <link rel="stylesheet" href="/menuVertical/css/style.css">
     <link rel="stylesheet" href="/menuHorizontal/css/style.css">
+    <link rel="stylesheet" href="/releve/releve.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     @vite('resources/css/app.css')
+
 </head>
 
 <body id="body-pd" class="body-pd">
@@ -103,6 +105,7 @@
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="/swiper.dash/swiper.js"></script>
+    <script src="/releve/releve.js"></script>
 </body>
 
 </html>

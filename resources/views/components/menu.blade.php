@@ -6,6 +6,8 @@
             {{ route('dashboard') }}
             @elseif (Auth::guard('enseignant')->check())
             {{ route('enseignant.dashboard') }}
+            @elseif (Auth::guard('etudiant')->check())
+            {{ route('etudiant.dashboard') }}
             @endif
             " class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i>
                 <span class="nav_logo-name">Tableau de bord</span> </a>
@@ -60,8 +62,8 @@
                 </a>
                     @endif
                     @php
-    $anneeActive = \App\Models\Annee::where('is_active', true)->first();
-@endphp
+              $anneeActive = \App\Models\Annee::where('is_active', true)->first();
+              @endphp
 
                 <a href="{{ route('NoteGraphique', $anneeActive) }}" class="nav_link" id='stats'> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span
                         class="nav_name">Stats</span>
@@ -92,6 +94,9 @@
             @endif
             @if(Auth::guard('admin')->check())
                 {{ route('admin.logout') }}
+            @endif
+            @if(Auth::guard('etudiant')->check())
+                {{ route('etudiant.logout') }}
             @endif
 
                 " class="nav_link">
