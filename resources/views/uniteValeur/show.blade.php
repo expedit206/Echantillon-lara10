@@ -37,12 +37,29 @@
                     </div>
                     <div class="flex flex-col bg-gray-700 p-4 rounded-md border border-gray-600">
                         <strong class="text-gray-200 text-lg">annee :</strong>
-                        <p class="text-xl text-gray-300">{{ $unitevaleur->annee?->nom }}</p>
+                        <p class="text-xl text-gray-300">{{ $unitevaleur->annee->nom }}</p>
                     </div>
+                    @if ($student = auth()->guard('etudiant')->user())
+                        
+                    <div class="flex flex-col bg-gray-700 p-4 rounded-md border border-gray-600">
+                        <strong class="text-gray-200 text-lg">Professeur :</strong>
+                        <p class="text-xl text-gray-300">
+                            @foreach ( $unitevaleur->enseignants as $enseignant )
+                            @foreach ($enseignant->specialites as $specialite)
+                            @if ($student->specialite_id == $specialite->id )
+                            {{ $enseignant->nom }}
+                            @endif
+                            @endforeach
+                            @endforeach
+                        </p>
+                    </div>
+                    @else
                     <div class="flex flex-col bg-gray-700 p-4 rounded-md border border-gray-600">
                         <strong class="text-gray-200 text-lg">Créé le :</strong>
                         <p class="text-xl text-gray-300">{{ $unitevaleur->created_at }}</p>
                     </div>
+
+                    @endif
 
                 </div>
 

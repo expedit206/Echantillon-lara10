@@ -12,17 +12,28 @@
             " class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i>
                 <span class="nav_logo-name">Tableau de bord</span> </a>
             <div class="nav_list">
+            @if(Auth::guard('admin')->check() || Auth::guard('enseignant')->check() )
+
                 <a href="{{ route('students') }}" class="nav_link " id='etudiants'>
                     <i class='bx bx-grid-alt nav_icon'></i>
                     <span class="nav_name">
                        Liste des Etudiants
                     </span>
                 </a>
+                @endif
+                
             @if(Auth::guard('admin')->check())
 
                 <a href="{{ route('teachers') }}" class="nav_link" id='enseignants'> <i class='bx bx-user nav_icon'></i>
                     <span class="nav_name">
                       Liste des  Enseignants</span>
+                </a>
+                @endif
+            @if(Auth::guard('etudiant')->check())
+
+                <a href="{{ route('teachers') }}" class="nav_link" id='enseignants'> <i class='bx bx-user nav_icon'></i>
+                    <span class="nav_name">
+                      Mes Enseignants</span>
                 </a>
                 @endif
 
@@ -31,7 +42,7 @@
                         class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">
             @if(Auth::guard('admin')->check())
             liste des Unités de Valeur
-            @elseif(Auth::guard('enseignant')->check())
+            @elseif(Auth::guard('enseignant')->check() || Auth::guard('etudiant')->check() )
             Mes Unités de Valeur
                 @endif
                         </span>
