@@ -23,8 +23,7 @@
             <!-- Mon Relevé -->
             <div class="bg-gray-800 text-white p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
                 <h2 class="text-4xl font-semibold mb-6 text-center">Mon Relevé</h2>
-                <a href="#" class="open-modal block bg-blue-600 hover:bg-blue-700 text-white text-center py-4 px-6 rounded-lg mb-4 transition duration-300">Consulter mon Relevé</a>
-                <a href="{{ route('releve.show', ['etudiant'=>$student,'annee'=>$annee_id]) }}" class="block bg-green-600 hover:bg-green-700 text-white text-center py-4 px-6 rounded-lg transition duration-300">Ajouter un Relevé</a>
+                <a href="{{ route('releve.show', ['etudiant'=>$student,'annee'=>$annee_id]) }}" class="block bg-blue-600 hover:bg-blue-700 text-white text-center py-4 px-6 rounded-lg mb-4 transition duration-300">Consulter mon Relevé</a>
             </div>
         </div>
 

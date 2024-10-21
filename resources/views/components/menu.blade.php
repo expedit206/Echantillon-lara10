@@ -64,6 +64,7 @@
     </a>
     @endif
 
+    
                 <a href="#" class="open-modal nav_link" id='consulter'> <i
                         class='bx bx-bookmark nav_icon open-modal'></i> <span class="nav_name open-modal">consulter les evaluations</span>
                 </a>
