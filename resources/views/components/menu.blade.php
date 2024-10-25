@@ -1,4 +1,4 @@
-<div class="l-navbar show " id="nav-bar">
+<div class="l-navbar show overflow-scroll" id="nav-bar">
     <nav class="nav">
         <div>
             <a href="
@@ -9,7 +9,7 @@
             @elseif (Auth::guard('etudiant')->check())
             {{ route('etudiant.dashboard') }}
             @endif
-            " class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i>
+            " class="nav_logo nav_link" id='dashboard'> <i class='bx bx-layer nav_logo-icon'></i>
                 <span class="nav_logo-name">Tableau de bord</span> </a>
             <div class="nav_list">
             @if(Auth::guard('admin')->check() || Auth::guard('enseignant')->check() )
@@ -21,7 +21,7 @@
                     </span>
                 </a>
                 @endif
-                
+
             @if(Auth::guard('admin')->check())
 
                 <a href="{{ route('teachers') }}" class="nav_link" id='enseignants'> <i class='bx bx-user nav_icon'></i>
@@ -64,7 +64,7 @@
     </a>
     @endif
 
-    
+
                 <a href="#" class="open-modal nav_link" id='consulter'> <i
                         class='bx bx-bookmark nav_icon open-modal'></i> <span class="nav_name open-modal">consulter les evaluations</span>
                 </a>

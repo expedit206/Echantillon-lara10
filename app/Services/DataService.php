@@ -35,9 +35,10 @@ $enseignant=Auth::guard('enseignant')->user();
                 ->get();
                 // dd($niveaux);
 
-            $filieres = Filiere::whereHas('enseignants', function ($query) use ($enseignant) {
-                $query->where('enseignant_id', $enseignant->id);
-            })->get();
+            // $filieres = Filiere::whereHas('enseignants', function ($query) use ($enseignant) {
+            //     $query->where('enseignant_id', $enseignant->id);
+            // })->get();
+            $filieres = Filiere::whereRelation('enseignants', 'enseignant_id', $enseignant->id)->get();
         // whereHas('uniteValeurs', function ($query) use ($unitesValeurs) {
         //     $query->whereIn('id', $unitesValeurs->pluck('id'))
         //     ->whereRelation('annee', 'is_active', true);

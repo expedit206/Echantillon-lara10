@@ -1,11 +1,11 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-   
+
     const showNavbar = (toggleId, navId, bodyId, headerId) =>{
     const toggle = document.getElementById(toggleId),
     nav = document.getElementById(navId),
     bodypd = document.getElementById(bodyId),
     headerpd = document.getElementById(headerId)
-    
+
     // Validate that all variables exist
     if(toggle && nav && bodypd && headerpd){
     toggle.addEventListener('click', ()=>{
@@ -20,12 +20,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     })
     }
     }
-    
+
     showNavbar('header-toggle','nav-bar','body-pd','header')
-    
+
     /*===== LINK ACTIVE =====*/
     const linkColor = document.querySelectorAll('.nav_link')
-    
+
     // function colorLink(){
     // if(linkColor){
     // linkColor.forEach(l=> l.classList.remove('active'))
@@ -33,18 +33,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // }
     // }
     // linkColor.forEach(l=> l.addEventListener('click', colorLink))
-    document.getElementById('etudiants').classList.add('active');
-    
+    document.getElementById('dashboard').classList.add('active');
+
     function colorLink(){
         if(linkColor){
             linkColor.forEach(l=> l.classList.remove('active'));
             this.classList.add('active');
             localStorage.setItem('activeLink', this.id);
         }
-    }   
-    
+    }
+
     linkColor.forEach(l=> l.addEventListener('click', colorLink));
-    
+
     // Récupérer le lien actif après le rechargement
     const activeLinkId = localStorage.getItem('activeLink');
     if (activeLinkId) {
@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         document.getElementById(activeLinkId).classList.add('active');
     }
-    
+
      // Your code to run since DOM is loaded and ready
     });
-    
